@@ -29,6 +29,9 @@ $(document).ready(function() {
     // Checks whether the mobile nav is open or closed to it can act accordingly
     if (open == true) {
       closeNav();
+      setTimeout(function() {
+        location.reload();
+      }, 420);
       open = false;
     } else {
       openNav();

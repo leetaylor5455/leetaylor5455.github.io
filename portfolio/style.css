@@ -197,15 +197,16 @@ section {
     padding: 12px;
   }
 
-  nav li:not(.btn-nav-toggle) {
+   nav li {
     display: none;
   }
 
-  nav a:not(.btn-nav-toggle) {
-    display: none;
+  .current-page {
+    border-bottom: none;
+    font-size: 24px;
   }
 
-  .btn-nav-toggle {
+  .btn-nav-toggle, li.current-page {
     display: block;
   }
 
