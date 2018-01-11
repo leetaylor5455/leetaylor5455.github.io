@@ -12,6 +12,25 @@ body {
   color: #37383c;
 }
 
+h2 {
+  font-size: 22px;
+}
+
+h1, h2 {
+  margin: 8px;
+  font-weight: 200;
+}
+
+p {
+  margin: 8px;
+}
+
+h1 {
+  font-size: 28px;
+  padding: 8px, 0;
+  width: auto;
+}
+
 nav {
   position: relative;
   top: 0;
@@ -60,6 +79,13 @@ nav {
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.wrapper {
+  display: grid;
+  /* grid-template-columns: repeat(3, 1fr); */
+  grid-gap: 4px;
+  grid-auto-rows: minmax(20px, auto);
 }
 
 nav .container {
