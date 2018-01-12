@@ -39,7 +39,17 @@ $(document).ready(function() {
     }
   });
 
-  $('.btn-nav-close, section').click(function() {
+  $('section').click(function() {
+    if (open == true) {
+      closeNav();
+      setTimeout(function() {
+        location.reload();
+      }, 420);
+      open = false;
+    }
+  });
+
+  $('.btn-nav-close').click(function() {
     closeNav();
     // Temporary fix for navbar-fade not working after return to page
     setTimeout(function() {
