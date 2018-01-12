@@ -1,5 +1,3 @@
-
-
 function bubbleSort(list) {
   var len = list.length;
   var swapped;
@@ -26,7 +24,6 @@ function insertionSort(list) {
     }                               // Loop exits when temp is larger or reached the back
     list[j+1] = temp;               // temp value inserted
   }
-
   return list;
 }
 

@@ -44,6 +44,7 @@ nav {
   position: relative;
   transition: .4s;
   z-index: 1000;
+  min-height: 800px;
 }
 
 .return {
@@ -218,6 +219,10 @@ section {
   text-align: justify;
   margin-bottom: 80px;
   position: relative;
+}
+
+li {
+  text-align: left;
 }
 
 @media only screen and (max-width: 500px) {
