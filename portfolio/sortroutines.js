@@ -19,12 +19,12 @@ function bubbleSort(list) {
 
 function insertionSort(list) {
   var len = list.length;
-  for (var i=1; i < len; i++) {                       // Indexing starts on second list item to mark start of unsorted lists
-    var temp = list[i];                               // Create temporary variable to be inserted later
-    for (var j=i-1; j >= 0 && list[j] > temp; j--) {  // j is first assigned to the nearest value in the unsorted list and iterates backwards
-      list[j+1] = list[j];                            // If the value of temp is smaller than comparison, comparison value shifted upwards
-    }                                                 // Loop exits when temp is larger or reached the back
-    list[j+1] = temp;                                 // temp value inserted
+  for (var i=1; i < len; i++) {     // Indexing starts on second list item
+    var temp = list[i];             // Create temporary variable to be inserted later
+    for (var j=i-1; j >= 0 && list[j] > temp; j--) {
+      list[j+1] = list[j];          // If temp is smaller than comparison, comparison value shifted
+    }                               // Loop exits when temp is larger or reached the back
+    list[j+1] = temp;               // temp value inserted
   }
 
   return list;
@@ -33,16 +33,16 @@ function insertionSort(list) {
 function quickSort(list) {
   var len = list.length;
   if (len <= 1) {
-    return list;
+    return list;                    // List is returned if there is 1 or less items
   }
-  var pivot = list[0];
+  var pivot = list[0];              // Pivot is selected as first item
   var left = [];
-  var right = [];
+  var right = [];                   // Left right values defined
   for (var i=1; i < len; i++) {
     list[i] < pivot ? left.push(list[i]) : right.push(list[i]);
-  }
+  }                                 // Values are pushed either side of the pivot depending on size
   return quickSort(left).concat(pivot, quickSort(right));
-};
+};                                  // Concatenates values back together
 
 var list = [7, 2, 9, 1, 3];
 
