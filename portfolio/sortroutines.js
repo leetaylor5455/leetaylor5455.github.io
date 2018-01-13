@@ -35,9 +35,9 @@ $(document).ready(function() {
     if (len <= 1) {
       return list;                    // List is returned if there is 1 or less items
     }
-    var pivot = list[0];              // Pivot is selected as first item
+    var pivot = list[0];              // Pivot selected as first item
     var left = [];
-    var right = [];                   // Left right values defined
+    var right = [];                   // Empty lists for left and right
     for (var i=1; i < len; i++) {
       if (list[i] < pivot) {
         left.push(list[i]);
