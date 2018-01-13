@@ -10,34 +10,93 @@
   <link rel="stylesheet" href="style.css">
   <title>Home</title>
   <style>
-
-  #bubblesort-table, #insertionsort-table, #quicksort-table {
-    width: 40%;
-    margin: 20px 30% 20px 30%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
-  }
-
-  #bubble-code img, #insertion-code img, #quicksort-code img {
-    width: 100%;
-    border-radius: 3px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
-  }
-
-  @media only screen and (max-width: 700px) {
-    #bubblesort-table, #insertionsort-table, #quicksort-table {
-      width: 85%;
-      margin: 20px 7.5% 20px 7.5%;
+    #bubblesort-table,
+    #insertionsort-table,
+    #quicksort-table {
+      width: 40%;
+      margin: 20px 30% 20px 30%;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     }
-    #bubble-code, #insertion-code, #quicksort-code {
-      width: 95%;
-      margin: 40px 2.5%;
-    }
-  }
 
+    #bubble-code img,
+    #insertion-code img,
+    #quicksort-code img {
+      width: 100%;
+      border-radius: 3px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+      margin-top: 10px;
+    }
+
+    .sort-demo {
+      border-radius: 3px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    .inputs, .outputs {
+      padding: 8px;
+      text-align: left;
+      overflow: auto;
+    }
+
+    input[type=text] {
+      padding: 7px 5px;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+    }
+
+    input[type=button] {
+      width: auto;
+      background-color: #35a0ff;
+      color: white;
+      padding: 8px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    input[type=button]:hover {
+      background-color: #207bcc;
+    }
+
+    .radio-buttons input, label {
+      display: inline;
+    }
+
+    .radio-buttons li {
+      padding: 4px 0;
+    }
+
+    @media only screen and (max-width: 800px) {
+      .sort-demo {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+      }
+    }
+
+    @media only screen and (max-width: 700px) {
+      #bubblesort-table,
+      #insertionsort-table,
+      #quicksort-table {
+        width: 85%;
+        margin: 20px 7.5% 20px 7.5%;
+      }
+      #bubble-code,
+      #insertion-code,
+      #quicksort-code {
+        width: 95%;
+        margin: 40px 2.5%;
+      }
+    }
   </style>
-  <script>
-  </script>
+
 </head>
 
 <body>
@@ -97,6 +156,37 @@
       <div class="container">
         <div class="wrapper">
           <h1 style="display: table;">Sort Routines</h1>
+          <div class="sort-demo">
+            <div class="inputs">
+              <form id="try-it-form">
+                <div class="radio-buttons">
+                  <h3>Choose Sorting Method</h3>
+                  <ul style="list-style-type: none; padding: 0; margin-top: 10px;">
+                    <li><input type="radio" id="sortChoice1" name="sort" value="bubbleSort" checked><label for="sortChoice1">Bubble Sort</label></li>
+                    <li><input type="radio" id="sortChoice2" name="sort" value="insertionSort"><label for="sortChoice2">Insertion Sort</label></li>
+                    <li><input type="radio" id="sortChoice2" name="sort" value="quickSort"><label for="sortChoice3">Quicksort</label></li>
+                  </ul>
+                </div>
+                <div style="width: auto">
+                  <h3>Custom List</h3>
+                  <input type="text" id="arrayInput" placeholder="Enter array (e.g. 6, 5, 3, 1)">
+                  <input id="btnSort" type="button" value="Sort">
+                </div>
+                <div style="width: auto">
+                  <h3>Generate List</h3>
+                  <input type="text" id="genArraySizeInput" placeholder="List length" size="5">
+                  <input id="btnGen" type="button" value="Generate and Sort">
+                </div>
+              </form>
+            </div>
+            <div class="outputs">
+              <h3>Output</h3>
+              <p>Sorting method: <strong id="sortingMethod"></strong></p>
+              <p>Unsorted list: <strong id="unsortedList"></strong></p>
+              <p>Sorted list: <strong id="sortedList"></strong></p>
+              <p>Time Taken: <strong id="timeCompleted"></strong></p>
+            </div>
+          </div>
           <div class="bubble-sort">
             <h2>Bubble Sort</h2>
             <p>The bubble sort routine works by comparing two values and swapping their positions depending on their values. For example, if a list is required to be ordered from smallest to largest, the bigger values will be moved to the right and the smaller
@@ -243,10 +333,6 @@
               <h3>Code Snippet (JavaScript)</h3>
               <img src="images\bubblesortjs.png" alt="Bubble Sort Algorithm in JS">
             </div>
-            <form>
-              <input type="text" id="arrayInput" placeholder="Enter array">
-              <input type="submit" value="Try it!" class="submit-button">
-            </form>
           </div>
           <div class="insertion-sort">
             <h2>Insertion Sort</h2>
@@ -485,13 +571,10 @@
 
     </footer>
   </div>
-
-
   <script src="jquery-3.2.1.min.js"></script>
   <script src="jquery-ui.min.js"></script>
   <script src="jqueryscript.js"></script>
   <script src="sortroutines.js"></script>
-
 </body>
 
 </html>

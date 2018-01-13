@@ -48,22 +48,52 @@ $(document).ready(function() {
     return quickSort(left).concat(pivot, quickSort(right));
   };                                  // Concatenates values back together
 
-  $('.try-it').click(function() {
-    array = split.arrayInput.val();
-
+  $('#btnSort').click(function() {
+    var unsplitListInput = $('#arrayInput').val();
+    var listInput = unsplitListInput.split(/[\s,]+/);
+    referToSort(listInput);
   });
 
-  function calculate(callback, input) {
-    var list = input.split(",");
-    alert('Sorted list: ' + callback(list));
+  $('#btnGen').click(function() {
+    var listGenLength = $('#genArraySizeInput').val();
+    generateSampleArray(listGenLength);
+  });
+
+  function referToSort(list) {
+    $('#unsortedList').text(list);
+    var functionCall = $("input[type=radio][name=sort]:checked").val();
+    if (functionCall == 'bubbleSort') {
+      calculate(list, bubbleSort, 'Bubble Sort');
+    } else if (functionCall == 'insertionSort') {
+      calculate(list, insertionSort, 'Insertion Sort');
+    } else if (functionCall == 'quickSort') {
+      calculate(list, quickSort, 'Quick Sort');
+    } else {
+      alert('Invalid Choice, try again')
+    }
   }
 
-  $('form').submit(function() {
-    calculate(($(this).arrayInput).val(), $(this).attr('data-function'));
-  });
+  function generateSampleArray(size) {
+    var listGen = [];
+    for (var i = 0; i <= size-1; i++) {
+      listGen.push(Math.floor((Math.random() * 10) + 1));
+    }
+    referToSort(listGen);
+  }
+
+  function calculate(input, callback, method) {
+    var unsorted = input;
+    var t0 = performance.now();
+    var sorted = callback(input);
+    var t1 = performance.now();
+    var timeTaken = (t1 - t0).toFixed(4) + 'ms'
+    output(method, unsorted, sorted, timeTaken);
+  };
+
+  function output(method, unsorted, sorted, timeTaken) {
+    $('#sortingMethod').text(method);
+    $('#sortedList').text(sorted);
+    $('#timeCompleted').text(timeTaken);
+  };
 
 });
-
-// var list = [7, 2, 9, 1, 3];
-//
-// alert(quickSort(list));
