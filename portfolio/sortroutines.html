@@ -17,14 +17,10 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
   }
 
-  #bubble-code img {
-    width: 85%;
-  }
-
   #bubble-code img, #insertion-code img, #quicksort-code img {
     width: 100%;
     border-radius: 3px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     margin-top: 10px;
   }
 
@@ -40,6 +36,8 @@
   }
 
   </style>
+  <script>
+  </script>
 </head>
 
 <body>
@@ -245,6 +243,10 @@
               <h3>Code Snippet (JavaScript)</h3>
               <img src="images\bubblesortjs.png" alt="Bubble Sort Algorithm in JS">
             </div>
+            <form>
+              <input type="text" id="arrayInput" placeholder="Enter array">
+              <input type="submit" value="Try it!" class="submit-button">
+            </form>
           </div>
           <div class="insertion-sort">
             <h2>Insertion Sort</h2>
@@ -488,6 +490,8 @@
   <script src="jquery-3.2.1.min.js"></script>
   <script src="jquery-ui.min.js"></script>
   <script src="jqueryscript.js"></script>
+  <script src="sortroutines.js"></script>
+
 </body>
 
 </html>
