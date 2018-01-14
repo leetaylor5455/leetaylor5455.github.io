@@ -35,18 +35,18 @@ $(document).ready(function() {
     if (len <= 1) {
       return list;                    // List is returned if there is 1 or less items
     }
-    var pivot = list[0];              // Pivot selected as first item
-    var left = [];
+    var pivot = list[Math.floor((Math.random() * list.length) + 1)];
+    var left = [];                    // Pivot selected as random item
     var right = [];                   // Empty lists for left and right
     for (var i=1; i < len; i++) {
-      if (list[i] < pivot) {
-        left.push(list[i]);
+      if (list[i] < pivot) {          // If selected item is less than pivot
+        left.push(list[i]);           // Item is placed in left list
       } else {
-        right.push(list[i]);
+        right.push(list[i]);          // Else, item is placed in right hand list
       }
-    }                                 // Values are pushed either side of the pivot depending on size
+    }                                 // Left and right lists are pushed back either side
     return quickSort(left).concat(pivot, quickSort(right));
-  };                                  // Concatenates values back together
+  };                                  // Recursion
 
   $('#btnSort').click(function() {
     var unsplitListInput = $('#arrayInput').val();
