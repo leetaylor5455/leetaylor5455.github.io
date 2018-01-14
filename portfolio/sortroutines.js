@@ -35,7 +35,7 @@ $(document).ready(function() {
     if (len <= 1) {
       return list;                    // List is returned if there is 1 or less items
     }
-    var pivot = list[Math.floor((Math.random() * list.length) + 1)];
+    var pivot = list[Math.floor(Math.random() * len)];
     var left = [];                    // Pivot selected as random item
     var right = [];                   // Empty lists for left and right
     for (var i=1; i < len; i++) {
