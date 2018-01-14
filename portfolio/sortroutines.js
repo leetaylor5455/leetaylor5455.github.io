@@ -30,7 +30,7 @@ $(document).ready(function() {
     return list;
   }
 
-  function quickSort(list) {
+  /*function quickSort(list) {
     var len = list.length;
     if (len <= 1) {
       return list;                    // List is returned if there is 1 or less items
@@ -46,7 +46,38 @@ $(document).ready(function() {
       }
     }                                 // Left and right lists are pushed back either side
     return quickSort(left).concat(pivot, quickSort(right));
-  };                                  // Recursion
+  }; */                               // Recursion
+
+  function  quickSort(list, left, right) {
+  	var i = left;
+  	var j = right;                   // Pointers for either side of the list created
+  	var temp;                        // For swapping later
+  	median = (left + right) / 2;     // Selecting a median and creating the pivot
+  	var pivot = list[median.toFixed()];
+  	while (i <= j) {                 // Until the pointers 'collide'
+  		while (list[i] < pivot) {
+        i++;
+      }
+  		while (list[j] > pivot) {      // Pointers iterate towards middle until incorrect sort found
+        j--;
+      }
+  		if (i <= j) {                  // Values should both be on incorrect sides of the pivot at this point
+  			temp = list[i];              // Therefore, they are swapped
+  			list[i] = list[j];
+  			list[j] = temp;
+  			i++;
+  			j--;                         // Pointers continue to iterate
+  		}
+  	}
+
+  	if (left < j) {
+      quickSort(list, left, j);      // Recursion called on new unsorted partitions
+    }	
+  	if (i < right) {
+  		quickSort(list, i, right);
+    }
+  	return list;
+  }
 
   $('#btnSort').click(function() {
     var unsplitListInput = $('#arrayInput').val();
@@ -67,7 +98,7 @@ $(document).ready(function() {
     } else if (functionCall == 'insertionSort') {
       calculate(list, insertionSort, 'Insertion Sort');
     } else if (functionCall == 'quickSort') {
-      calculate(list, quickSort, 'Quick Sort');
+      calculate(list, quickSort, 'Quicksort');
     } else {
       alert('Invalid Choice, try again')
     }
@@ -79,12 +110,18 @@ $(document).ready(function() {
       listGen.push(Math.floor((Math.random() * 10) + 1));
     }
     referToSort(listGen);
+    // quickSort(listGen, 0, listGen.length-1);
+    // $('#sortedList').text(listGen);
   }
 
   function calculate(input, callback, method) {
     var unsorted = input;
     var t0 = performance.now();
-    var sorted = callback(input);
+    if (method == 'Quicksort') {
+      var sorted = callback(input, 0, input.length-1);
+    } else {
+      var sorted = callback(input);
+    }
     var t1 = performance.now();
     var timeTaken = (t1 - t0).toFixed(4) + 'ms'
     output(method, unsorted, sorted, timeTaken);
