@@ -24,6 +24,60 @@
     margin-top: 10px;
   }
 
+  .search-demo {
+    border-radius: 3px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .inputs, .outputs {
+    padding: 8px;
+    text-align: left;
+    overflow: auto;
+  }
+
+  input[type=text] {
+    padding: 7px 5px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+  }
+
+  input[type=button] {
+    width: auto;
+    background-color: #35a0ff;
+    color: white;
+    padding: 8px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  input[type=button]:hover {
+    background-color: #207bcc;
+  }
+
+  .radio-buttons input, label {
+    display: inline;
+  }
+
+  .radio-buttons li {
+    padding: 4px 0;
+  }
+
+  @media only screen and (max-width: 800px) {
+    .search-demo {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr auto;
+    }
+  }
+
   @media only screen and (max-width: 700px) {
     #linear-code, #binary-code {
       width: 95%;
@@ -93,6 +147,40 @@
       <div class="container">
         <div class="wrapper">
           <h1 style="display: table;">Search Routines</h1>
+          <div class="search-demo">
+            <div class="inputs">
+              <form class="try-it-form">
+                <div class="radio-buttons">
+                  <h3>Choose Searching Method</h3>
+                  <ul style="list-style-type: none; padding: 0; margin-top: 10px;">
+                    <li><input type="radio" id="searchChoice1" name="sort" value="linearSearch"><label for="searchChoice1">Linear Search</label></li>
+                    <li><input type="radio" id="searchChoice2" name="sort" value="binarySearch" checked><label for="searchChoice2">Binary</label></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3>Target</h3>
+                  <input style="margin: 8px 0;"type="text" id="targetInput" placeholder="E.g. 8" size="2">
+                </div>
+                <div>
+                  <h3>Custom List</h3>
+                  <input type="text" id="arrayInputSearch" placeholder="Enter array (e.g. 6, 5, 3, 1)">
+                  <input id="btnSearch" type="button" value="Search">
+                </div>
+                <div>
+                  <h3>Generate List (items will be values 1-10)</h3>
+                  <input type="text" id="genArraySizeInputSearch" placeholder="List length" size="5">
+                  <input id="btnGenSearch" type="button" value="Generate and Search">
+                </div>
+              </form>
+            </div>
+            <div class="outputs">
+              <h3>Output</h3>
+              <p>Sorting method: <strong id="sortingMethod">None</strong></p>
+              <p>List: <strong id="finalList"></strong></p>
+              <p>Found: <strong id="found"></strong></p>
+              <p>Time Taken: <strong id="timeCompleted"></strong></p>
+            </div>
+          </div>
           <div class="linear-search">
             <h2>Linear Search</h2>
             <p>The linear search routine works by checking every list item sequentiallly
@@ -147,7 +235,7 @@
   <script src="jquery-3.2.1.min.js"></script>
   <script src="jquery-ui.min.js"></script>
   <script src="jqueryscript.js"></script>
-  <script src="sortroutines.js"></script>
+  <script src="searchroutines.js"></script>
 
 </body>
 

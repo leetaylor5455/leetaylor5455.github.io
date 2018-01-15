@@ -72,7 +72,7 @@ $(document).ready(function() {
 
   	if (left < j) {
       quickSort(list, left, j);      // Recursion called on new unsorted partitions
-    }	
+    }
   	if (i < right) {
   		quickSort(list, i, right);
     }
@@ -110,8 +110,6 @@ $(document).ready(function() {
       listGen.push(Math.floor((Math.random() * 10) + 1));
     }
     referToSort(listGen);
-    // quickSort(listGen, 0, listGen.length-1);
-    // $('#sortedList').text(listGen);
   }
 
   function calculate(input, callback, method) {
