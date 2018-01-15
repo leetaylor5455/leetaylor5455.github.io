@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="images\icon.svg.png">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>Home</title>
+  <style>
+
+  #bubblesort-table, #insertionsort-table, #quicksort-table {
+    width: 40%;
+    margin: 20px 30% 20px 30%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  #linear-code img, #binary-code img {
+    width: 100%;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+  }
+
+  @media only screen and (max-width: 700px) {
+    #linear-code, #binary-code {
+      width: 95%;
+      margin: 40px 2.5%;
+    }
+  }
+
+  </style>
+  <script>
+  </script>
+</head>
+
+<body>
+  <header>
+
+  </header>
+
+  <div id="nav-overlay" class="overlay">
+    <!-- <span class="btn-nav-close">&times;</span> -->
+    <ul>
+      <li class="btn-nav-close">&times;</li>
+    </ul>
+    <div class="overlay-content">
+      <div class="slide-in from-right">
+        <div class="slide-in-content">
+          <a class="active-page" href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="faq.html">FAQ</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="content">
+    <nav>
+      <!-- Standard navbar -->
+      <div class="navbar-full">
+        <div class="container">
+          <ul>
+            <li class="current-page"><a href="index.html"></a>Home</li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li class="btn-nav-toggle">&#8801;</li>
+
+          </ul>
+        </div>
+      </div>
+      <!-- Navbar which fades in/out after scroll -->
+      <div id="navbar-fade" class="navbar-full navbar-fade">
+        <div class="container">
+          <ul style="text-align: right;">
+            <li class="current-page"><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li class="btn-nav-toggle">&#8801;</li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <section>
+      <div class="container">
+        <div class="wrapper">
+          <h1 style="display: table;">Search Routines</h1>
+          <div class="linear-search">
+            <h2>Linear Search</h2>
+            <p>The linear search routine works by checking every list item sequentiallly
+              until the desired is found or the end of the list is reached.</p>
+            <h3>Advantages</h3>
+            <ul>
+              <li>Easy to understand</li>
+              <li>Easy to implement</li>
+              <li>Performs well on small lists</li>
+              <li>Can be used on unsorted lists</li>
+            </ul>
+            <h3>Disadvantages</h3>
+            <ul>
+              <li>Very slow on large lists</li>
+            </ul>
+            <div id="linear-code">
+              <h3>Code Snippet (JavaScript)</h3>
+              <img src="images\linearsearchjs.png" alt="Linear Search Algorithm in JS">
+            </div>
+          </div>
+          <div class="binary-search">
+            <h2>Binary Search</h2>
+            <p>The binary search must take in a sorted list to work. This search routine works by splitting a set of
+            items into two and comparing the middle item against the target.
+            If the split item is bigger than the target, all items beyond must also be larger, so they can
+            be excluded from the search. If the split item is smaller than the target, all items below can be excluded.
+            This <strong>recursive</strong> process is continued until the item is found or the list is 1 item in length and isn't the target.</p>
+            <h3>Advantages</h3>
+            <ul>
+              <li>Efficient on large sets of data</li>
+              <li>Easy to implement</li>
+              <li>Faster than linear search</li>
+            </ul>
+            <h3>Disadvantages</h3>
+            <ul>
+              <li>The list must be sorted</li>
+            </ul>
+            <div id="binary-code">
+              <h3>Code Snippet (JavaScript)</h3>
+              <img src="images\binarysearchjs.png" alt="Binary Search Algorithm in JS">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer>
+
+    </footer>
+  </div>
+
+
+  <script src="jquery-3.2.1.min.js"></script>
+  <script src="jquery-ui.min.js"></script>
+  <script src="jqueryscript.js"></script>
+  <script src="sortroutines.js"></script>
+
+</body>
+
+</html>
