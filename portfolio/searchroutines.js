@@ -87,7 +87,7 @@ function linearSearch(list, target) {
   return false;
 }*/
 
-function binarySearch(list, target) {
+/*function binarySearch(list, target) {
 
   var middleIndex = parseInt((list.length / 2).toFixed(), 10);       // Middle point between left and right
   console.log('Array: ', list);
@@ -111,11 +111,31 @@ function binarySearch(list, target) {
       return true;                                 // Index is returned
     }
   }
+}*/
+
+function binarySearch(list, left, right, target) {
+  console.log('Left:', left, 'Right:', right);
+  if (right <= left && list[left] != target) {
+    console.log('NOT FOUND!');
+    return false;                                         // Found = false
+  }
+  var middleIndex = parseInt(((left + right) / 2).toFixed(), 10);       // Middle point between left and right
+  console.log('Middle Index: ', middleIndex, '(', list[middleIndex], ')');
+  if (list[middleIndex] > target) {                       // If this value is larger than target
+    console.log('Not in right side: ', list);
+    return binarySearch(list, left, middleIndex-1, target);      // Right side of list is cut out of search
+  } else if (list[middleIndex] < target) {                // If this value is smaller than target
+    console.log('Not in left side: ', list);
+    return binarySearch(list, middleIndex+1, right, target);     // Left side of list is cut out of search
+  } else {                                                // If this value is target
+    console.log('FOUND!');
+    return true;                                          // Found = true
+  }
 }
 
 
 function blah2(target) {
-  var foundIt = binarySearch([1,2,4,6,9], target);
+  var foundIt = binarySearch([1, 2, 4, 6, 9, 10, 56], 0, 6, target);
 
   console.log('### found it? ', foundIt);
 }
@@ -143,9 +163,9 @@ $(document).ready(function() {
     var listInput = unsplitListInput.split(/[\s,]+/);
     parseIntArray(listInput);
     if ($('input:checked').val() == 'linearSearch') {
-      referToSearch(target, linearSearch, listInput);
+      referToSearch(target, 'linear', listInput);
     } else {
-      referToSearch(target, binarySearch, quickSort(listInput, 0, listInput.length-1));
+      referToSearch(target, 'binary', listInput);
     }
   });
 
@@ -161,9 +181,11 @@ $(document).ready(function() {
       listGen.push(Math.floor((Math.random() * 10) + 1));
     }
     if ($('input:checked').val() == 'linearSearch') {
-      referToSearch(target, linearSearch, listGen);
+      console.log('Linear referred')
+      referToSearch(target, 'linear', listGen);
     } else {
-      referToSearch(target, binarySearch, quickSort(listGen, 0, listGen.length-1));
+      console.log('Binary referred')
+      referToSearch(target, 'binary', quickSort(listGen, 0, listGen.length-1));
     }
   }
 
@@ -176,10 +198,12 @@ $(document).ready(function() {
       return;
     }
     var t0 = performance.now();
-    if (method == 'binarySearch') {
-      var found = method(list, target);
+    if (method == 'binary') {
+      console.log('Binary Search Called')
+      var found = binarySearch(quickSort(list, 0, list.length-1), 0, list.length-1, target);
     } else {
-      var found = method(list, target);
+      console.log('Linear Search Called')
+      var found = linearSearch(list, target);
     }
     var t1 = performance.now();
     var timeTaken = (t1 - t0).toFixed(4) + 'ms';
