@@ -35,9 +35,7 @@ function linearSearch(list, target) {
     if (list[i] == target) {      // If target is found at current list index
       return true;                // List index is returned
     }
-    else if (i >= len-1) {        // If end of list is reached
-      return false;               // False is returned
-    }
+    return false;                 // Element not found if reached end of loop without return true
   }
 }
 
