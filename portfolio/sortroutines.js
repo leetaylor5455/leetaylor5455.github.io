@@ -85,7 +85,7 @@ $(document).ready(function() {
     referToSort(listInput);
   });
 
-  $('#btnGen').click(function() {
+  $('#btnGenSort').click(function() {
     var listGenLength = $('#genArraySizeInput').val();
     generateSampleArray(listGenLength);
   });
