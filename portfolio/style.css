@@ -218,13 +218,10 @@ section {
   padding-top: 15px;
   margin-bottom: 80px;
   position: relative;
-}
-
-section:not(h1, h2, h3) {
   text-align: justify;
 }
 
-li {
+ul {
   text-align: left;
 }
 
