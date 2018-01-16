@@ -41,52 +41,6 @@ function linearSearch(list, target) {
   }
 }
 
-/*function binarySearch(list, left, right, target) {
-  if (right - left <= 0 && list[left] != target) {
-    return null;
-    alert('not found');
-  }
-  var split = ((left + right) / 2).toFixed();       // Middle point between left and right
-  if (list[split] > target) {                       // If this value is larger than target
-    binarySearch(list, left, split-1, target);      // Right side of list is cut out of search
-  } else if (list[split] < target) {                // If this value is smaller than target
-    binarySearch(list, split+1, right, target);     // Left side of list is cut out of search
-  } else {                                          // If this value is target
-    return split;                                   // Index is returned
-    alert(split);
-  }
-}*/
-
-/*function binarySearch(list, target) {
-  // This defines the index of the list (rounding up); for example, it will be the 3rd of a 5 item list
-  var middleIndex = parseInt(((list.length) / 2).toFixed(), 10);    // Middle point between left and right
-  //console.log('Split: ', split);
-  //console.log('Split value: ', list[split]);
-  console.log('Array: ', list);
-  if (list[middleIndex] > target) {
-    console.log('Left side: ', list.splice(0, middleIndex+1));        // If this value is larger than target
-    if (binarySearch(list.splice(0, middleIndex+1), target) === true) {
-      // found it!
-      return true;
-    }
-
-  } else if (list[middleIndex] < target) {                          // If this value is smaller than target
-    console.log('Right side: ', list.splice(middleIndex));
-    if (binarySearch(list.splice(middleIndex), target) === true) {
-      // found it!
-      return true;
-    }
-    console.log('Right side: ', list);
-  } else {
-    if (list[middleIndex] === target) {
-      return true;
-    }
-    console.log('NOT FOUND');
-  }
-
-  return false;
-}*/
-
 /*function binarySearch(list, target) {
 
   var middleIndex = parseInt((list.length / 2).toFixed(), 10);       // Middle point between left and right
@@ -114,22 +68,16 @@ function linearSearch(list, target) {
 }*/
 
 function binarySearch(list, left, right, target) {
-  console.log('Left:', left, 'Right:', right);
-  if (right <= left && list[left] != target) {
-    console.log('NOT FOUND!');
-    return false;                                         // Found = false
-  }
-  var middleIndex = parseInt(((left + right) / 2).toFixed(), 10);       // Middle point between left and right
-  console.log('Middle Index: ', middleIndex, '(', list[middleIndex], ')');
-  if (list[middleIndex] > target) {                       // If this value is larger than target
-    console.log('Not in right side: ', list);
-    return binarySearch(list, left, middleIndex-1, target);      // Right side of list is cut out of search
-  } else if (list[middleIndex] < target) {                // If this value is smaller than target
-    console.log('Not in left side: ', list);
-    return binarySearch(list, middleIndex+1, right, target);     // Left side of list is cut out of search
-  } else {                                                // If this value is target
-    console.log('FOUND!');
-    return true;                                          // Found = true
+  if (right <= left && list[left] != target) {                      // If searched list is only 1 item
+    return false;                                                   // And item is not target
+  }                                                                 // Target not found returned
+  var middleIndex = parseInt(((left + right) / 2).toFixed(), 10);   // Middle point between left and right
+  if (list[middleIndex] > target) {                                 // If this value is larger than target
+    return binarySearch(list, left, middleIndex-1, target);         // Right side of list is cut out of search
+  } else if (list[middleIndex] < target) {                          // If this value is smaller than target
+    return binarySearch(list, middleIndex+1, right, target);        // Left side of list is cut out of search
+  } else {                                                          // If this value is target
+    return true;                                                    // Target found returned
   }
 }
 
