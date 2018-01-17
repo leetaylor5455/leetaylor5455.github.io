@@ -10,15 +10,25 @@ const sort = {
     if (unsortedList.length <= 1) {
       return unsortedList;
     }
-    // Runs a pass for each item in the list
-    for (var i = 0; i < unsortedList.length - 1; i++) {
-      if (unsortedList[i] > unsortedList[i + 1]) {
-        // Swap function
-        var temp = unsortedList[i];
-        unsortedList[i] = unsortedList[i + 1];
-        unsortedList[i + 1] = temp;
+
+    // Allows the array to remain in the loop until all swaps have been completed
+    let swapped;
+
+    // Runs until there are no more swaps necessary
+    do {
+      swapped = false;
+      // Runs a pass for each item in the list
+      for (var i = 0; i < unsortedList.length - 1; i++) {
+        if (unsortedList[i] > unsortedList[i + 1]) {
+          // Swap function
+          var temp = unsortedList[i];
+          unsortedList[i] = unsortedList[i + 1];
+          unsortedList[i + 1] = temp;
+          swapped = true;
+        }
       }
-    }
+    } while (swapped);
+
     // For clarity of naming
     const sortedList = unsortedList;
     return sortedList;
@@ -56,11 +66,70 @@ const sort = {
 
   /**
    * @param {array<int>} unsortedList
+   * @returns {array<int>} the sorted array
+   */
+  mergeSort: function(unsortedList) {
+
+    // If unsortedList is an empty array or one item array it is returned
+    if (unsortedList.length <= 1) {
+      return unsortedList;
+    }
+
+    // Get midway point of array (rounded up)
+    const midwayIndex = search.getMidIndex(unsortedList);
+
+    // Get left side of array
+    const leftSideArr = unsortedList.slice(0, midwayIndex);
+
+    // Get right side of array
+    const rightSideArr = unsortedList.slice(midwayIndex);
+
+    /**
+     * @param {array<int>} leftSideArr
+     * @param {array<int>} rightSideArr
+     * @returns {array<int>} merged/partially merged array
+     */
+    var merge = function(leftSideArr, rightSideArr) {
+
+      // Declares the returned sorted array
+      let result = [];
+
+      // Pointers for left and right arrays start at 0
+      let leftIndex = 0;
+      let rightIndex = 0;
+
+      // Left and right pointers iterate through their lists
+      while (leftIndex < leftSideArr.length && rightIndex < rightSideArr.length) {
+
+        // Smaller values are pushed onto the list first (push = add from left)
+        if (leftSideArr[leftIndex] < rightSideArr[rightIndex]) {
+          result.push(leftSideArr[leftIndex]);
+          // Pointer moves to next list item
+          leftIndex++;
+
+        } else {
+          result.push(rightSideArr[rightIndex]);
+          // Pointer moves to next list item
+          rightIndex++;
+        }
+      }
+
+      // Returns the lists back concatenated into one array
+      return result.concat(leftSideArr.slice(leftIndex)).concat(rightSideArr.slice(rightIndex));
+    }
+
+    // Recursed unstil list is sorted and final sorted list is returned
+    return merge(sort.mergeSort(leftSideArr), sort.mergeSort(rightSideArr));
+
+  },
+
+  /**
+   * @param {array<int>} unsortedList
    * @param {int} *left most side of unsorted items
    * @param {int} *right most side of unsorted items
    * @returns {array<int>} the sorted array
    */
-  quickSort: function(unsortedList, mostLeftOfArr = 0, mostRightOfArr = unsortedList.length-1) {
+  quickSort: function(unsortedList, mostLeftOfArr = 0, mostRightOfArr = unsortedList.length - 1) {
 
     // If unsortedList is an empty array or one item array it is returned
     if (unsortedList.length <= 1) {
@@ -131,7 +200,7 @@ const search = {
    * @param {int} searchFor
    * @returns {boolean} whether the searchFor exists in the searchIn array
    */
-  binarySearch: function(searchIn, searchFor, mostLeftOfArr = 0, mostRightOfArr = searchIn.length-1) {
+  binarySearch: function(searchIn, searchFor, mostLeftOfArr = 0, mostRightOfArr = searchIn.length - 1) {
 
     // if searchIn is an empty array we haven't found it
     if (searchIn.length === 0) {
@@ -158,12 +227,12 @@ const search = {
     // If middle value is larger than target
     if (midwayVal > searchFor) {
       // Binary search is run on the portion excluding the right side (values are larger than target)
-      return search.binarySearch(searchIn, searchFor, mostLeftOfArr, midwayIndex-1);
+      return search.binarySearch(searchIn, searchFor, mostLeftOfArr, midwayIndex - 1);
 
       // If middle value is smaller than target
     } else if (midwayVal < searchFor) {
       // Binary search is run on the portion excluding the left side (values are smaller than target)
-      return search.binarySearch(searchIn, searchFor, midwayIndex+1, mostRightOfArr);
+      return search.binarySearch(searchIn, searchFor, midwayIndex + 1, mostRightOfArr);
 
       // Only combination left is that midwayVal = the target
     } else {
@@ -180,7 +249,7 @@ const search = {
    */
   linearSearch: function(searchIn, searchFor) {
     // Iterates through all items in array
-    for (var i=0; i < searchIn.length; i++) {
+    for (var i = 0; i < searchIn.length; i++) {
       // If currently indexed item is the target
       if (searchIn[i] === searchFor) {
         // Found
@@ -219,7 +288,7 @@ const utility = {
   generateSampleArray: function(arrLength) {
     var listGen = [];
     // Fills array with random integers between 1-10
-    for (var i = 0; i <= arrLength-1; i++) {
+    for (var i = 0; i <= arrLength - 1; i++) {
       listGen.push(Math.floor((Math.random() * 10) + 1));
     }
     return listGen;
@@ -267,8 +336,10 @@ const utility = {
       sortedList = sort.bubbleSort(unsortedList);
     } else if (sortingMethod == 'insertionSort') {
       sortedList = sort.insertionSort(unsortedList);
-    } else {
+    } else if (sortingMethod == 'quickSort') {
       sortedList = sort.quickSort(unsortedList);
+    } else {
+      sortedList = sort.mergeSort(unsortedList);
     }
 
     // Takes time after function call
