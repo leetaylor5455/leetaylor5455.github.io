@@ -64,6 +64,11 @@
     padding: 4px 0;
   }
 
+  #sortedListWhole {
+    display: none;
+  }
+
+
   @media only screen and (max-width: 800px) {
     .search-demo {
       grid-template-columns: 1fr;
@@ -169,7 +174,8 @@
             <div class="outputs">
               <h3>Output</h3>
               <p>Sorting method: <strong id="sortingMethod">None</strong></p>
-              <p>List: <strong id="finalList"></strong></p>
+              <p>Unsorted List: <strong id="unsortedList"></strong></p>
+              <p id="sortedListWhole">Sorted List: <strong id="sortedList"></strong></p>
               <p>Found: <strong id="found"></strong></p>
               <p>Time Taken: <strong id="timeCompleted"></strong></p>
             </div>

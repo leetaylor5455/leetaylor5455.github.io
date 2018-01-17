@@ -256,9 +256,9 @@ const utility = {
     var t1 = performance.now();
 
     // Time taken calculated and assigned
-    var timeTaken = (t1 - t0).toFixed(4) + 'ms';
+    var timeTaken = (t1 - t0).toFixed(3) + 'ms';
 
-    utility.searchOutput(found, target, timeTaken);
+    utility.searchOutput(list, found, target, timeTaken);
 
   },
 
@@ -283,7 +283,7 @@ const utility = {
     var t1 = performance.now();
 
     // Time taken calculated and assigned
-    var timeTaken = (t1 - t0).toFixed(4) + 'ms';
+    var timeTaken = (t1 - t0).toFixed(3) + 'ms';
 
     // Calls to output values on screen
     utility.sortOutput(sortedList, sortingMethod, timeTaken);
@@ -298,13 +298,15 @@ const utility = {
   },
 
   // Outputs the searching data on screen
-  searchOutput: function(found, target, timeTaken) {
+  searchOutput: function(sortedList, found, target, timeTaken) {
+    $('#sortedList').text(sortedList);
     $('#found').text(found);
     $('#target').text(target);
     $('#timeCompleted').text(timeTaken);
   }
 
 }
+
 
 // Event listeners (main loop)
 $(document).ready(function() {
@@ -314,9 +316,11 @@ $(document).ready(function() {
     if ($('input:checked').val() == 'linearSearch') {
       $('#sortingMethod').text('None');
       $('#btnGenSearch').val('Generate and Search');
+      $('#sortedListWhole').slideUp(100);
     } else {
-      $('#sortingMethod').text('Quicksort');
+      $('#sortingMethod').text('quickSort');
       $('#btnGenSearch').val('Generate, Sort and Search');
+      $('#sortedListWhole').slideDown(100);
     }
 
   });
@@ -333,7 +337,7 @@ $(document).ready(function() {
     list = utility.parseIntArray(list);
 
     // Shows text for unsorted list before it is affected
-    $('#finalList').text(list);
+    $('#unsortedList').text(list);
 
     utility.referToSearch(list);
 
@@ -349,7 +353,7 @@ $(document).ready(function() {
     var list = utility.parseIntArray(utility.generateSampleArray(arrLength));
 
     // Shows text for unsorted list before it is affected
-    $('#finalList').text(list);
+    $('#unsortedList').text(list);
 
     // Sends off to be appropriately sorted
     utility.referToSearch(list);
@@ -392,8 +396,5 @@ $(document).ready(function() {
     utility.referToSort(list);
 
   });
-
-
-
 
 });
