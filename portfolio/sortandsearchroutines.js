@@ -14,11 +14,13 @@ const sort = {
     // Allows the array to remain in the loop until all swaps have been completed
     let swapped;
 
+    // Allows less items to be checked for each pass (items at end will be sorted)
+    let len = unsortedList.length;
     // Runs until there are no more swaps necessary
     do {
       swapped = false;
       // Runs a pass for each item in the list
-      for (var i = 0; i < unsortedList.length - 1; i++) {
+      for (var i = 0; i < len; i++) {
         if (unsortedList[i] > unsortedList[i + 1]) {
           // Swap function
           var temp = unsortedList[i];
@@ -27,6 +29,7 @@ const sort = {
           swapped = true;
         }
       }
+      len--;
     } while (swapped);
 
     // For clarity of naming

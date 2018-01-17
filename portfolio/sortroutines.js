@@ -1,19 +1,19 @@
 $(document).ready(function() {
 
   function bubbleSort(list) {
-    var len = list.length;
+    let len = list.length;
     let swapped;
-
     do {                               // Runs until there are no more swaps necessary
-      swapped = false;
-      for (var i=0; i < len-1; i++) {  // For loop runs a pass for each item in the list
+      swapped = false;                 // To exit to do loop when code after if statement isn't run
+      for (var i=0; i < len; i++) {    // Runs check for each item in list
         if (list[i] > list[i+1]) {
           var temp = list[i];          // Temporary variable must be created for swap function
           list[i] = list[i+1];
           list[i+1] = temp;
-          swapped = true;              // To indicate there can been a swap
-        }
+          swapped = true;              // Remain in the do loop
+        }                              // If no swap occurs, all items must be sorted
       }
+      len--;                           // Items at end will be sorted so no need to check them
     } while (swapped);
     return list;
   }
