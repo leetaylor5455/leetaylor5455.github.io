@@ -3,17 +3,14 @@ $(document).ready(function() {
   function bubbleSort(list) {
     var len = list.length;
     var swapped;
-    do {
-      swapped = false;                 // To break the 'do while' when all passes have finished
-      for (var i=0; i < len-1; i++) {  // For loop runs a pass for each item in the list
-        if (list[i] > list[i+1]) {
-          var temp = list[i];          // Temporary variable must be created for swap function
-          list[i] = list[i+1];
-          list[i+1] = temp;
-          swapped = true;              // To indicate there can been a swap
-        }
+    for (var i=0; i < len-1; i++) {  // For loop runs a pass for each item in the list
+      if (list[i] > list[i+1]) {
+        var temp = list[i];          // Temporary variable must be created for swap function
+        list[i] = list[i+1];
+        list[i+1] = temp;
+        swapped = true;              // To indicate there can been a swap
       }
-    } while (swapped);                 // Loop runs until all passes are complete
+    }
     return list;
   }
 

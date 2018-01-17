@@ -2,7 +2,7 @@ const sort = {
 
   /**
    * @param {array<int>} unsortedList
-   * @returns {array} the sorted array
+   * @returns {array<int>} the sorted array
    */
   bubbleSort: function(unsortedList) {
 
@@ -10,25 +10,15 @@ const sort = {
     if (unsortedList.length <= 1) {
       return unsortedList;
     }
-
-    // Declare variable before looping
-    var swapped;
-    do {
-      // To break the do loop after all swaps have been completed
-      swapped = false;
-      // Runs a pass for each item in the list
-      for (var i = 0; i < unsortedList.length - 1; i++) {
-        if (unsortedList[i] > unsortedList[i + 1]) {
-          // Swap function
-          var temp = unsortedList[i];
-          unsortedList[i] = unsortedList[i + 1];
-          unsortedList[i + 1] = temp;
-          // To remain in the do loop
-          swapped = true;
-        }
+    // Runs a pass for each item in the list
+    for (var i = 0; i < unsortedList.length - 1; i++) {
+      if (unsortedList[i] > unsortedList[i + 1]) {
+        // Swap function
+        var temp = unsortedList[i];
+        unsortedList[i] = unsortedList[i + 1];
+        unsortedList[i + 1] = temp;
       }
-      // Exits when last swap is complete
-    } while (swapped);
+    }
     // For clarity of naming
     const sortedList = unsortedList;
     return sortedList;
@@ -36,7 +26,7 @@ const sort = {
 
   /**
    * @param {array<int>} unsortedList
-   * @returns {array} the sorted array
+   * @returns {array<int>} the sorted array
    */
   insertionSort: function(unsortedList) {
 
@@ -49,7 +39,8 @@ const sort = {
     for (var i = 1; i < unsortedList.length; i++) {
       // Create temporary variable to be inserted later
       var temp = unsortedList[i];
-      // Second loop for checking values in sorted side
+
+      // Second loop for checking values in sorted side iterates backwards
       for (var j = i - 1; j >= 0 && unsortedList[j] > temp; j--) {
         // Comparison from sorted side is shifted upwards one position
         unsortedList[j + 1] = unsortedList[j];
@@ -57,8 +48,9 @@ const sort = {
       // Item from unsorted side (temp) is inserted in correct position in sorted side
       unsortedList[j + 1] = temp;
     }
+
     // For clarity of naming
-    var sortedList = unsortedList;
+    const sortedList = unsortedList;
     return sortedList;
   },
 
