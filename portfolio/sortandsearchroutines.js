@@ -286,10 +286,11 @@ const utility = {
 
   // Generates an array of random integers between 1 and 10
   generateSampleArray: function(arrLength) {
-    var listGen = [];
+    // Creates empty array of desired length
+    var listGen = new Array(arrLength);
     // Fills array with random integers between 1-10
     for (var i = 0; i <= arrLength - 1; i++) {
-      listGen.push(Math.floor((Math.random() * 10) + 1));
+      listGen[i] = Math.floor((Math.random() * 10) + 1);
     }
     return listGen;
   },
