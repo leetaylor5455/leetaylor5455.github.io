@@ -1,6 +1,6 @@
-var r1Pos = 1;
-var r2Pos = 1;
-var r3Pos = 1;
+var r1Pos = 0;
+var r2Pos = 0;
+var r3Pos = 0;
 
 
 function rotor(wir, not) {
@@ -36,6 +36,7 @@ const get = {
 // Temp
 const plugArr = 'YRUHQSLDPXNGOKMIEBFZCWVJAT'.split('');
 
+//                YRUHQSLDPXNGOKMIEBFZCWVJAT
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 const ukwa = new rotor('EJMZALYXVBWFCRQUONTSPIKHGD'.split(''));
@@ -44,6 +45,7 @@ const ukwb = new rotor('YRUHQSLDPXNGOKMIEBFZCWVJAT'.split(''));
 
 const ukwc = new rotor('FVPJIAOYEDRZXWGCTKUQSBNMHL'.split(''));
 
+//                        ABCDEFGHIJKLMNOPQRSTUVWXYZ
 const rotorI = new rotor('EKMFLGDQVZNTOWYHXUSPAIBRCJ'.split(''), 7);
 
 const rotorII = new rotor('AJDKSIRUXBLHWTMCQGZNPYFVOE'.split(''), 25);
@@ -106,14 +108,14 @@ const increment = {
 
     r1Pos += 1;
 
-    if (r1Pos > 26) {
-      r1Pos = 1;
+    if (r1Pos > 25) {
+      r1Pos = 0;
     }
 
     output.updateRotors();
 
-    if (r1Pos == rotorI.notchIndex + 1) {
-      increment.rotor2(r1Pos, r2Pos, r3Pos);
+    if (r1Pos == rotorI.notchIndex) {
+      increment.rotor2();
     }
 
   },
@@ -122,13 +124,13 @@ const increment = {
 
     r2Pos += 1;
 
-    if (r2Pos > 26) {
-      r2Pos = 1;
+    if (r2Pos > 25) {
+      r2Pos = 0;
     }
 
     output.updateRotors();
 
-    if (r2Pos == rotorII.notchIndex + 1) {
+    if (r2Pos == rotorII.notchIndex) {
       increment.rotor3();
     }
 
@@ -138,8 +140,8 @@ const increment = {
 
     r3Pos += 1;
 
-    if (r3Pos > 26) {
-      r3Pos = 1;
+    if (r3Pos > 25) {
+      r3Pos = 0;
     }
 
     output.updateRotors();
@@ -153,10 +155,10 @@ const passThrough = {
   plugboard: function(keyIn) {
 
     // Gets the index of the letter from the alphabet
-    const keyInIndex = get.keyIndex(keyIn);
+    const pinIn = get.keyIndex(keyIn);
 
     // Gets the matched letter from the plugboard
-    const keyOut = plugArr[keyInIndex];
+    const keyOut = plugArr[pinIn];
 
     passThrough.etw(keyOut);
 
@@ -164,85 +166,127 @@ const passThrough = {
 
   etw: function(keyIn) {
 
+    console.log('ETW key in:', keyIn)
+
     // Gets the index of the letter from the alphabet
-    const keyInIndex = get.keyIndex(keyIn);
+    const pinIn = get.keyIndex(keyIn);
 
     // As Entry Disk does not scramble, output is same as input
-    const keyOutIndex = keyInIndex;
+    const pinOut = pinIn;
 
-    passThrough.rotor1(keyOutIndex);
+    console.log('ETW key out:', alphabet[pinIn])
+
+    passThrough.rotor1(pinOut);
 
   },
 
-  rotor1: function(keyInIndex) {
+  rotor1: function(pinIn) {
 
     // Calculates the pin which will receive signal
-    keyInIndex += (r1Pos - 1);
+    pinIn += (r1Pos);
 
-    if (keyInIndex > 25) {
-      keyInIndex -= 26;
+    if (pinIn > 25) {
+      pinIn -= 26;
+    } else if (pinIn < 0) {
+      pinIn += 26
+    }
+
+    //console.log('R1 pin in:', pinIn)
+
+    // Gets the letter that has been received
+    const keyIn = alphabet[pinIn];
+
+    console.log('R1 key in:', keyIn)
+
+    // Gets the index of where that letter is connected to on the output side of the disk
+    const pinOut = get.keyIndex(keyIn, rotorI.wiring);
+
+    console.log('R1 pin out:', pinOut)
+
+    console.log('R1 key out:', alphabet[pinOut])
+
+
+    passThrough.rotor2(pinOut);
+
+  },
+
+  rotor2: function(pinIn) {
+
+    // Calculates the pin which will receive signal
+    pinIn -= (r1Pos - r2Pos);
+
+    if (pinIn > 25) {
+      pinIn -= 26;
+    } else if (pinIn < 0) {
+      pinIn += 26
     }
 
     // Gets the letter that has been received
-    const keyIn = alphabet[keyInIndex];
+    const keyIn = alphabet[pinIn];
+
+    //console.log('R2 Letter in:', keyIn)
 
     // Gets the index of where that letter is connected to on the output side of the disk
-    const keyOutIndex = get.keyIndex(keyIn, rotorI.wiring);
+    const pinOut = get.keyIndex(keyIn, rotorII.wiring);
 
-    passThrough.rotor2(keyOutIndex);
+    //console.log('R2 Letter out:', alphabet[pinOut])
+
+    passThrough.rotor3(pinOut);
 
   },
 
-  rotor2: function(keyInIndex) {
+  rotor3: function(pinIn) {
 
     // Calculates the pin which will receive signal
-    keyInIndex += (r2Pos - 1);
+    pinIn -= (r2Pos - r3Pos);
 
-    if (keyInIndex > 25) {
-      keyInIndex -= 26;
+    if (pinIn > 25) {
+      pinIn -= 26;
+    } else if (pinIn < 0) {
+      pinIn += 26
     }
+
+    //console.log('R3 pinIn:', pinIn)
 
     // Gets the letter that has been received
-    const keyIn = alphabet[keyInIndex];
+    const keyIn = alphabet[pinIn];
+
+    //console.log('R3 Letter in:', keyIn)
 
     // Gets the index of where that letter is connected to on the output side of the disk
-    const keyOutIndex = get.keyIndex(keyIn, rotorII.wiring);
+    const pinOut = get.keyIndex(keyIn, rotorIII.wiring);
 
-    passThrough.rotor3(keyOutIndex);
+    //console.log('R3 Letter out:', alphabet[pinOut])
 
+    passThrough.reflector(pinOut);
   },
 
-  rotor3: function(keyInIndex) {
+  reflector: function(pinIn) {
 
-    // Calculates the pin which will receive signal
-    keyInIndex += (r3Pos - 1);
+    pinIn -= r3Pos;
 
-    if (keyInIndex > 25) {
-      keyInIndex -= 26;
+    //console.log('Reflector pinIn:', pinIn)
+
+    if (pinIn > 25) {
+      pinIn -= 26;
+    } else if (pinIn < 0) {
+      pinIn += 26
     }
 
-    // Gets the letter that has been received
-    const keyIn = alphabet[keyInIndex];
+    const keyIn = alphabet[pinIn];
 
-    // Gets the index of where that letter is connected to on the output side of the disk
-    const keyOutIndex = get.keyIndex(keyIn, rotorIII.wiring);
+    //console.log('Reflector Letter in:', keyIn)
 
-    passThrough.reflector(keyOutIndex);
-  },
+    const keyOut = ukwb.wiring[pinIn];
 
-  reflector: function(keyInIndex) {
+    const pinOut = get.keyIndex(keyOut, ukwb.wiring)
 
-    keyInIndex -= (r3Pos + 1);
+    //console.log('Reflector Letter out:', keyOut)
 
-    if (keyInIndex < 0) {
-      keyInIndex += 26;
-    }
+    //console.log('Reflector pin out:', pinOut)
 
-    const keyIn = ukwa.wiring[keyInIndex];
 
-    const keyOutIndex = get.keyIndex(keyIn);
-
-    passBack.rotor3(keyOutIndex);
+    passBack.rotor3(pinOut);
 
   }
 
@@ -250,75 +294,84 @@ const passThrough = {
 
 const passBack = {
 
-  rotor3: function(keyInIndex) {
+  rotor3: function(pinIn) {
 
     // Calculates the pin which will receive signal
-    keyInIndex -= (r3Pos + 1);
+    pinIn += (r3Pos);
 
-    if (keyInIndex < 0) {
-      keyInIndex += 26;
+    if (pinIn > 25) {
+      pinIn -= 26;
+    } else if (pinIn < 0) {
+      pinIn += 26
     }
 
     // Gets the letter that has been received
-    const keyIn = rotorIII.wiring[keyInIndex];
+    const keyIn = alphabet[pinIn];
 
     // Gets the index of where that letter is connected to on the output side of the disk
-    const keyOutIndex = get.keyIndex(keyIn);
+    const pinOut = get.keyIndex(keyIn, rotorIII.wiring);
 
-    passBack.rotor2(keyOutIndex);
+    passBack.rotor2(pinOut);
 
   },
 
-  rotor2: function(keyInIndex) {
+  rotor2: function(pinIn) {
 
     // Calculates the pin which will receive signal
-    keyInIndex -= (r2Pos + 1);
+    pinIn += (r2Pos - r3Pos);
 
-    if (keyInIndex < 0) {
-      keyInIndex += 26;
+    if (pinIn > 25) {
+      pinIn -= 26;
+    } else if (pinIn < 0) {
+      pinIn += 26
     }
 
     // Gets the letter that has been received
-    const keyIn = rotorII.wiring[keyInIndex];
+    const keyIn = alphabet[pinIn];
 
     // Gets the index of where that letter is connected to on the output side of the disk
-    const keyOutIndex = get.keyIndex(keyIn);
+    const pinOut = get.keyIndex(keyIn, rotorII.wiring);
 
-    passBack.rotor1(keyOutIndex);
+    passBack.rotor1(pinOut);
 
   },
 
-  rotor1: function(keyInIndex) {
+  rotor1: function(pinIn) {
 
     // Calculates the pin which will receive signal
-    keyInIndex -= (r1Pos + 1);
+    pinIn += (r1Pos - r2Pos);
 
-    if (keyInIndex < 0) {
-      keyInIndex += 26;
+    if (pinIn > 25) {
+      pinIn -= 26;
+    } else if (pinIn < 0) {
+      pinIn += 26
     }
 
     // Gets the letter that has been received
-    const keyIn = rotorI.wiring[keyInIndex];
+    const keyIn = alphabet[pinIn];
 
     // Gets the index of where that letter is connected to on the output side of the disk
-    const keyOutIndex = get.keyIndex(keyIn);
+    const pinOut = get.keyIndex(keyIn, rotorI.wiring);
 
-    passBack.etw(keyOutIndex);
+    passBack.etw(pinOut);
+
   },
 
-  etw: function(keyInIndex) {
+  etw: function(pinIn) {
 
     // Calculates the pin which will receive signal
-    keyInIndex += (r1Pos - 1);
+    pinIn -= (r1Pos);
 
-    if (keyInIndex > 25) {
-      keyInIndex += 26;
+    if (pinIn > 25) {
+      pinIn -= 26;
+    } else if (pinIn < 0) {
+      pinIn += 26
     }
 
     // As Entry Disk does not scramble, output is same as input
-    const keyOutIndex = keyInIndex;
+    const pinOut = pinIn;
 
-    const keyOut = alphabet[keyOutIndex];
+    const keyOut = alphabet[pinOut];
 
     passBack.plugboard(keyOut);
 
@@ -327,12 +380,14 @@ const passBack = {
   plugboard: function(keyIn) {
 
     // Gets the index of the letter from the alphabet
-    const keyInIndex = get.keyIndex(keyIn);
+    const pinIn = get.keyIndex(keyIn);
 
     // Gets the matched letter from the plugboard
-    const keyOut = plugArr[keyInIndex];
+    const keyOut = plugArr[pinIn];
 
     console.log('Returned Key: ', keyOut);
+
+    increment.rotor1();
 
   }
 
@@ -342,9 +397,9 @@ const output = {
 
   updateRotors: function() {
 
-    $('#r1').val(r1Pos);
-    $('#r2').val(r2Pos);
-    $('#r3').val(r3Pos);
+    $('#r1').val(r1Pos + 1);
+    $('#r2').val(r2Pos + 1);
+    $('#r3').val(r3Pos + 1);
 
   }
 
@@ -365,11 +420,9 @@ $(document).ready(function() {
       $('#keyInput').val('');
     }, 100);
 
-    var r1Pos = parseInt($('#r1').val(), 10);
-    var r2Pos = parseInt($('#r2').val(), 10);
-    var r3Pos = parseInt($('#r3').val(), 10);
-
-    increment.rotor1();
+    var r1Pos = parseInt($('#r1').val(), 10) + 1;
+    var r2Pos = parseInt($('#r2').val(), 10) + 1;
+    var r3Pos = parseInt($('#r3').val(), 10) + 1;
 
   });
 
