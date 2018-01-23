@@ -1,6 +1,6 @@
-var r1Pos = 0;
-var r2Pos = 0;
-var r3Pos = 0;
+var r1Pos = parseInt($('#r1').val(), 10);
+var r2Pos = parseInt($('#r2').val(), 10);
+var r3Pos = parseInt($('#r3').val(), 10);
 
 
 function rotor(wir, not) {
@@ -48,8 +48,10 @@ const ukwc = new rotor('FVPJIAOYEDRZXWGCTKUQSBNMHL'.split(''));
 //                        ABCDEFGHIJKLMNOPQRSTUVWXYZ
 const rotorI = new rotor('EKMFLGDQVZNTOWYHXUSPAIBRCJ'.split(''), 7);
 
+//                         ABCDEFGHIJKLMNOPQRSTUVWXYZ
 const rotorII = new rotor('AJDKSIRUXBLHWTMCQGZNPYFVOE'.split(''), 25);
 
+//                          ABCDEFGHIJKLMNOPQRSTUVWXYZ
 const rotorIII = new rotor('BDFHJLCPRTXVZNYEIWGAKMUSQO'.split(''), 11);
 
 const rotorIV = new rotor('ESOVPZJAYQUIRHXLNFTGKDCMWB'.split(''), 6);
@@ -166,7 +168,7 @@ const passThrough = {
 
   etw: function(keyIn) {
 
-    console.log('ETW key in:', keyIn)
+    //console.log('ETW key in:', keyIn)
 
     // Gets the index of the letter from the alphabet
     const pinIn = get.keyIndex(keyIn);
@@ -174,7 +176,7 @@ const passThrough = {
     // As Entry Disk does not scramble, output is same as input
     const pinOut = pinIn;
 
-    console.log('ETW key out:', alphabet[pinIn])
+    //console.log('ETW key out:', alphabet[pinIn])
 
     passThrough.rotor1(pinOut);
 
@@ -196,14 +198,14 @@ const passThrough = {
     // Gets the letter that has been received
     const keyIn = alphabet[pinIn];
 
-    console.log('R1 key in:', keyIn)
+    //console.log('R1 key in:', keyIn)
+
+    const keyOut = rotorI.wiring[pinIn]
 
     // Gets the index of where that letter is connected to on the output side of the disk
-    const pinOut = get.keyIndex(keyIn, rotorI.wiring);
+    const pinOut = get.keyIndex(keyOut);
 
-    console.log('R1 pin out:', pinOut)
-
-    console.log('R1 key out:', alphabet[pinOut])
+    //console.log('R1 key out:', keyOut)
 
 
     passThrough.rotor2(pinOut);
@@ -224,12 +226,14 @@ const passThrough = {
     // Gets the letter that has been received
     const keyIn = alphabet[pinIn];
 
-    //console.log('R2 Letter in:', keyIn)
+    //console.log('R2 key in:', keyIn)
+
+    const keyOut = rotorII.wiring[pinIn]
 
     // Gets the index of where that letter is connected to on the output side of the disk
-    const pinOut = get.keyIndex(keyIn, rotorII.wiring);
+    const pinOut = get.keyIndex(keyOut);
 
-    //console.log('R2 Letter out:', alphabet[pinOut])
+    //console.log('R2 key out:', keyOut)
 
     passThrough.rotor3(pinOut);
 
@@ -251,12 +255,14 @@ const passThrough = {
     // Gets the letter that has been received
     const keyIn = alphabet[pinIn];
 
-    //console.log('R3 Letter in:', keyIn)
+    //console.log('R3 key in:', keyIn)
+
+    const keyOut = rotorIII.wiring[pinIn]
 
     // Gets the index of where that letter is connected to on the output side of the disk
-    const pinOut = get.keyIndex(keyIn, rotorIII.wiring);
+    const pinOut = get.keyIndex(keyOut);
 
-    //console.log('R3 Letter out:', alphabet[pinOut])
+    //console.log('R3 key out:', alphabet[pinOut])
 
     passThrough.reflector(pinOut);
   },
@@ -275,13 +281,13 @@ const passThrough = {
 
     const keyIn = alphabet[pinIn];
 
-    //console.log('Reflector Letter in:', keyIn)
+    //console.log('Reflector key in:', keyIn)
 
     const keyOut = ukwb.wiring[pinIn];
 
-    const pinOut = get.keyIndex(keyOut, ukwb.wiring)
+    const pinOut = get.keyIndex(keyOut)
 
-    //console.log('Reflector Letter out:', keyOut)
+    //console.log('Reflector key out:', keyOut)
 
     //console.log('Reflector pin out:', pinOut)
 
@@ -308,8 +314,14 @@ const passBack = {
     // Gets the letter that has been received
     const keyIn = alphabet[pinIn];
 
+    //console.log('R3 key in:', keyIn)
+
+    const keyOut = alphabet[get.keyIndex(keyIn, rotorIII.wiring)]
+
     // Gets the index of where that letter is connected to on the output side of the disk
-    const pinOut = get.keyIndex(keyIn, rotorIII.wiring);
+    const pinOut = get.keyIndex(keyOut);
+
+    //console.log('R3 key out:', keyOut)
 
     passBack.rotor2(pinOut);
 
@@ -329,8 +341,14 @@ const passBack = {
     // Gets the letter that has been received
     const keyIn = alphabet[pinIn];
 
+    //console.log('R2 key in:', keyIn)
+
+    const keyOut = alphabet[get.keyIndex(keyIn, rotorII.wiring)]
+
     // Gets the index of where that letter is connected to on the output side of the disk
-    const pinOut = get.keyIndex(keyIn, rotorII.wiring);
+    const pinOut = get.keyIndex(keyOut);
+
+    //console.log('R2 key out:', keyOut)
 
     passBack.rotor1(pinOut);
 
@@ -350,8 +368,14 @@ const passBack = {
     // Gets the letter that has been received
     const keyIn = alphabet[pinIn];
 
+    //console.log('R1 key in:', keyIn)
+
+    const keyOut = alphabet[get.keyIndex(keyIn, rotorI.wiring)]
+
     // Gets the index of where that letter is connected to on the output side of the disk
-    const pinOut = get.keyIndex(keyIn, rotorI.wiring);
+    const pinOut = get.keyIndex(keyOut);
+
+    //console.log('R1 key out:', keyOut)
 
     passBack.etw(pinOut);
 
@@ -368,10 +392,14 @@ const passBack = {
       pinIn += 26
     }
 
+    //console.log('ETW key in:', alphabet[pinIn])
+
     // As Entry Disk does not scramble, output is same as input
     const pinOut = pinIn;
 
     const keyOut = alphabet[pinOut];
+
+  //  console.log('ETW key in:', keyOut)
 
     passBack.plugboard(keyOut);
 
@@ -379,11 +407,15 @@ const passBack = {
 
   plugboard: function(keyIn) {
 
+    //console.log('Plugboard key in:', keyIn)
+
     // Gets the index of the letter from the alphabet
     const pinIn = get.keyIndex(keyIn);
 
     // Gets the matched letter from the plugboard
     const keyOut = plugArr[pinIn];
+
+    //console.log('Plugboard key out:', keyOut)
 
     console.log('Returned Key: ', keyOut);
 
@@ -420,11 +452,17 @@ $(document).ready(function() {
       $('#keyInput').val('');
     }, 100);
 
-    var r1Pos = parseInt($('#r1').val(), 10) + 1;
-    var r2Pos = parseInt($('#r2').val(), 10) + 1;
-    var r3Pos = parseInt($('#r3').val(), 10) + 1;
+  });
+
+  $('input[type=number]').change(function() {
+
+    r1Pos = $(this).val();
+
+    output.updateRotors();
 
   });
 
 
 });
+
+output.updateRotors();
