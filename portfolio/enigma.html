@@ -6,8 +6,78 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="icon" href="images\icon.svg.png">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <title>Enigma</title>
+  <style>
+
+    input {
+      text-align: center;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=button] {
+      width: auto;
+      background-color: #35a0ff;
+      color: white;
+      padding: 8px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    input[type=button]:hover {
+      background-color: #207bcc;
+    }
+
+    #r1, #r2, #r3 {
+      width: 50px
+    }
+
+    #keyInput {
+      width: 30px;
+      border: #a00 solid 1px;
+      margin: 0 5px;
+    }
+
+    #outputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 15px;
+    }
+
+    #stringInput, #textIn, #textOut {
+      margin: 5px;
+      font-family:'Roboto', sans-serif;
+    }
+
+    #plugboard input {
+      width: 30px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    table, input:not(input[type=button]), select {
+      font-family: 'Inconsolata', monospace;
+      font-weight: 700;
+    }
+
+    td {
+      display: table-cell;
+      padding: 0 5px 5px 5px;
+      width: 30px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+  </style>
 </head>
 <body>
   <header>
@@ -46,15 +116,126 @@
     </nav>
     <section>
       <div class="container">
-        <div id="rotors">
-          <input id="r3" type="number" min="1" max="26" value="0">
-          <input id="r2" type="number" min="1" max="26" value="0">
-          <input id="r1" type="number" min="1" max="26" value="0">
+        <div class="wrapper">
+          <div id="rotors" style="text-align: center; margin-top: 50px;">
+            <h3 style="text-align: center; padding-bottom: 15px;">Rotors</h3>
+            <table style="margin: auto;">
+              <tr>
+                <td><select id="r3Choice">
+                  <option value="I">I</option>
+                  <option value="II">II</option>
+                  <option value="III" selected>III</option>
+                  <option value="IV">IV</option>
+                  <option value="V">V</option>
+                </select></td>
+                <td><select id="r2Choice">
+                  <option value="I">I</option>
+                  <option value="II" selected>II</option>
+                  <option value="III">III</option>
+                  <option value="IV">IV</option>
+                  <option value="V">V</option>
+                </select></td>
+                <td><select id="r1Choice">
+                  <option value="I" selected>I</option>
+                  <option value="II">II</option>
+                  <option value="III">III</option>
+                  <option value="IV">IV</option>
+                  <option value="V">V</option>
+                </select></td>
+              </tr>
+              <tr>
+                <td><input id="r3" type="number" min="1" max="26" value="0"></td>
+                <td><input id="r2" type="number" min="1" max="26" value="0"></td>
+                <td><input id="r1" type="number" min="1" max="26" value="0"></td>
+              </tr>
+            </table>
+          </div>
+          <div id="inputs">
+            <div id="plugboard" style="margin: 30px;">
+              <h3 style="text-align: center; padding-bottom: 15px;">Plugboard</h3>
+              <table style="margin: auto;">
+                <tr>
+                  <td><label for="plugA">A</label>
+                  <input id="plugA" type="text" maxlength="1"></td>
+                  <td><label for="plugB">B</label>
+                  <input id="plugB" type="text" maxlength="1"></td>
+                  <td><label for="plugC">C</label>
+                  <input id="plugC" type="text" maxlength="1"></td>
+                  <td><label for="plugD">D</label>
+                  <input id="plugD" type="text" maxlength="1"></td>
+                  <td><label for="plugE">E</label>
+                  <input id="plugE" type="text" maxlength="1"></td>
+                  <td><label for="plugF">F</label>
+                  <input id="plugF" type="text" maxlength="1"></td>
+                  <td><label for="plugG">G</label>
+                  <input id="plugG" type="text" maxlength="1"></td>
+                  <td><label for="plugH">H</label>
+                  <input id="plugH" type="text" maxlength="1"></td>
+                  <td><label for="plugI">I</label>
+                  <input id="plugI" type="text" maxlength="1"></td>
+                  <td><label for="plugJ">J</label>
+                  <input id="plugJ" type="text" maxlength="1"></td>
+                  <td><label for="plugK">K</label>
+                  <input id="plugK" type="text" maxlength="1"></td>
+                  <td><label for="plugL">L</label>
+                  <input id="plugL" type="text" maxlength="1"></td>
+                  <td><label for="plugM">M</label>
+                  <input id="plugM" type="text" maxlength="1"></td>
+                </tr>
+                <tr>
+                  <td><label for="plugN">N</label>
+                  <input id="plugN" type="text" maxlength="1"></td>
+                  <td><label for="plugA">O</label>
+                  <input id="plugO" type="text" maxlength="1"></td>
+                  <td><label for="plugO">P</label>
+                  <input id="plugA" type="text" maxlength="1"></td>
+                  <td><label for="plugQ">Q</label>
+                  <input id="plugQ" type="text" maxlength="1"></td>
+                  <td><label for="plugR">R</label>
+                  <input id="plugR" type="text" maxlength="1"></td>
+                  <td><label for="plugS">S</label>
+                  <input id="plugS" type="text" maxlength="1"></td>
+                  <td><label for="plugT">T</label>
+                  <input id="plugT" type="text" maxlength="1"></td>
+                  <td><label for="plugU">U</label>
+                  <input id="plugU" type="text" maxlength="1"></td>
+                  <td><label for="plugV">V</label>
+                  <input id="plugV" type="text" maxlength="1"></td>
+                  <td><label for="plugW">W</label>
+                  <input id="plugW" type="text" maxlength="1"></td>
+                  <td><label for="plugX">X</label>
+                  <input id="plugX" type="text" maxlength="1"></td>
+                  <td><label for="plugY">Y</label>
+                  <input id="plugY" type="text" maxlength="1"></td>
+                  <td><label for="plugZ">Z</label>
+                  <input id="plugZ" type="text" maxlength="1"></td>
+                </tr>
+              </table>
+            </div>
+            <div style="text-align: center; margin-bottom: 20px;">
+              <h3 style="text-align: center; padding-bottom: 15px;">Key Input</h3>
+              >><input id="keyInput" type="text" maxlength="1" autofocus><<
+            </div>
+            <div style="text-align: center;">
+              <h3 style="text-align: center; padding-bottom: 15px;">String Input</h3>
+              <div style="display: block">
+                <textarea id="stringInput" rows="" cols="" placeholder="Text In"></textarea>
+                <input id="stringEncrypt" type="button" value="Encrypt">
+              </div>
+            </div>
+          </div>
+          <div id="outputs">
+            <div>
+              <textarea id="textIn" rows="" cols="" style="float: right; " placeholder="Text In"></textarea>
+            </div>
+            <div>
+              <textarea id="textOut" rows="" cols="" style="float: left;" placeholder="Text Out"></textarea>
+            </div>
+          </div>
+          <div style="text-align: center; margin: 10px;">
+            <input type="button" value="Reset All" onclick="location.reload();">
+          </div>
         </div>
-        <div id="inputs">
-          <input id="keyInput" type="text" maxlength="1" autofocus>
-        </div>
-
       </div>
     </section>
     <footer>

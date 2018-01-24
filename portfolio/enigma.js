@@ -28,7 +28,7 @@ const get = {
     }
     // If it hasn't been found in the for loop it isn't existant in array
     return false;
-  }
+  },
 
 }
 
@@ -162,7 +162,7 @@ const passThrough = {
     // Gets the matched letter from the plugboard
     const keyOut = plugArr[pinIn];
 
-    passThrough.etw(keyOut);
+    return passThrough.etw(keyOut);
 
   },
 
@@ -178,13 +178,13 @@ const passThrough = {
 
     //console.log('ETW key out:', alphabet[pinIn])
 
-    passThrough.rotor1(pinOut);
+    return passThrough.rotor1(pinOut);
 
   },
 
   rotor1: function(pinIn) {
 
-    // Calculates the pin which will receive signal
+    // Calculates the pin which will receive signal after rotation
     pinIn += (r1Pos);
 
     if (pinIn > 25) {
@@ -208,13 +208,13 @@ const passThrough = {
     //console.log('R1 key out:', keyOut)
 
 
-    passThrough.rotor2(pinOut);
+    return passThrough.rotor2(pinOut);
 
   },
 
   rotor2: function(pinIn) {
 
-    // Calculates the pin which will receive signal
+    // Calculates the pin which will receive signal after rotation
     pinIn -= (r1Pos - r2Pos);
 
     if (pinIn > 25) {
@@ -235,13 +235,13 @@ const passThrough = {
 
     //console.log('R2 key out:', keyOut)
 
-    passThrough.rotor3(pinOut);
+    return passThrough.rotor3(pinOut);
 
   },
 
   rotor3: function(pinIn) {
 
-    // Calculates the pin which will receive signal
+    // Calculates the pin which will receive signal after rotation
     pinIn -= (r2Pos - r3Pos);
 
     if (pinIn > 25) {
@@ -264,11 +264,12 @@ const passThrough = {
 
     //console.log('R3 key out:', alphabet[pinOut])
 
-    passThrough.reflector(pinOut);
+    return passThrough.reflector(pinOut);
   },
 
   reflector: function(pinIn) {
 
+    // Calculates the pin which will receive signal after rotation
     pinIn -= r3Pos;
 
     //console.log('Reflector pinIn:', pinIn)
@@ -289,10 +290,7 @@ const passThrough = {
 
     //console.log('Reflector key out:', keyOut)
 
-    //console.log('Reflector pin out:', pinOut)
-
-
-    passBack.rotor3(pinOut);
+    return passBack.rotor3(pinOut);
 
   }
 
@@ -323,7 +321,7 @@ const passBack = {
 
     //console.log('R3 key out:', keyOut)
 
-    passBack.rotor2(pinOut);
+    return passBack.rotor2(pinOut);
 
   },
 
@@ -350,7 +348,7 @@ const passBack = {
 
     //console.log('R2 key out:', keyOut)
 
-    passBack.rotor1(pinOut);
+    return passBack.rotor1(pinOut);
 
   },
 
@@ -377,7 +375,7 @@ const passBack = {
 
     //console.log('R1 key out:', keyOut)
 
-    passBack.etw(pinOut);
+    return passBack.etw(pinOut);
 
   },
 
@@ -401,7 +399,7 @@ const passBack = {
 
   //  console.log('ETW key in:', keyOut)
 
-    passBack.plugboard(keyOut);
+    return passBack.plugboard(keyOut);
 
   },
 
@@ -419,7 +417,9 @@ const passBack = {
 
     console.log('Returned Key: ', keyOut);
 
-    increment.rotor1();
+    //increment.rotor1();
+
+    return keyOut;
 
   }
 
@@ -433,6 +433,21 @@ const output = {
     $('#r2').val(r2Pos + 1);
     $('#r3').val(r3Pos + 1);
 
+  },
+
+  updateText: function(keyIn, keyOut) {
+
+    $('#textIn').append(keyIn);
+    $('#textOut').append(keyOut);
+
+  },
+
+  sendKey: function(keyIn) {
+
+    var keyOut = passThrough.plugboard(keyIn);
+    output.updateText(keyIn, keyOut);
+    increment.rotor1();
+
   }
 
 }
@@ -444,22 +459,45 @@ $(document).ready(function() {
 
     setTimeout(function() {
       var keyIn = $('#keyInput').val().toUpperCase();
-      passThrough.plugboard(keyIn);
+
+      if (get.keyIndex(keyIn) != false) {
+        output.sendKey(keyIn);
+      }
+
     }, 50);
 
-
+    // Resets box for next key input
     setTimeout(function() {
       $('#keyInput').val('');
     }, 100);
 
   });
 
-  $('input[type=number]').change(function() {
+  $('#stringEncrypt').click(function() {
 
-    r1Pos = $(this).val();
+    var splitStringInput = $('#stringInput').val().toUpperCase().split('');
 
+    for (var i = 0; i < splitStringInput.length; i++) {
+      if (get.keyIndex(splitStringInput[i]) != false) {
+        output.sendKey(splitStringInput[i]);
+      }
+    }
+
+  });
+
+  $('#r1').change(function() {
+    r1Pos = parseInt($(this).val() - 1, 10);
     output.updateRotors();
+  });
 
+  $('#r2').change(function() {
+    r2Pos = parseInt($(this).val() - 1, 10);
+    output.updateRotors();
+  });
+
+  $('#r3').change(function() {
+    r3Pos = parseInt($(this).val() - 1, 10);
+    output.updateRotors();
   });
 
 
