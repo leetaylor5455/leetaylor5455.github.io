@@ -3,6 +3,8 @@ var r2Pos = parseInt($('#r2').val(), 10);
 var r3Pos = parseInt($('#r3').val(), 10);
 
 
+console.log('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''))
+
 function rotor(wir, not) {
 
   this.wiring = wir || [];
@@ -18,10 +20,11 @@ const get = {
    * @returns {boolean} whether the searchFor exists in the searchIn array
    */
   keyIndex: function(searchFor, searchIn = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')) {
+    console.log(searchFor)
     // Iterates through all items in array
-    for (var i = 0; i < 26; i++) {
+    for (var i = 0; i < 25; i++) {
       // If currently indexed item is the target
-      if (searchIn[i] === searchFor) {
+      if (searchIn[i] == searchFor) {
         // Found
         return i;
       }
@@ -478,7 +481,10 @@ $(document).ready(function() {
     var splitStringInput = $('#stringInput').val().toUpperCase().split('');
 
     for (var i = 0; i < splitStringInput.length; i++) {
+      console.log('i:', i)
+      console.log('Letter:', splitStringInput[i])
       if (get.keyIndex(splitStringInput[i]) != false) {
+        console.log('key sent')
         output.sendKey(splitStringInput[i]);
       }
     }
