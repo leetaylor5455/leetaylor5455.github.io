@@ -24,8 +24,8 @@ $(document).ready(function() {
     $('#USDRateNow').text("$" + USDRateNow);
     $('#USDRateBefore').text("$" + USDRateBefore.toFixed(2));
 
-    $('#CHFRateNow').text("$" + CHFRateNow);
-    $('#CHFRateBefore').text("$" + CHFRateBefore.toFixed(2));
+    $('#CHFRateNow').text("₣" + CHFRateNow);
+    $('#CHFRateBefore').text("₣" + CHFRateBefore.toFixed(2));
 
     let EURRateChange;
     let USDRateChange;
