@@ -37,14 +37,18 @@ nav {
   font-size: 12px;
 }
 
-.rate-down {
+.rate-down:not(#dateBefore) {
   background-color: #ffdee2 !important;
   color: #8d0011;
 }
 
-.rate-up {
+.rate-up:not(#dateBefore) {
   background-color: #e4f3d5 !important;
   color: #2b4d04;
+}
+
+.dateBefore, .dateNow {
+  color: #343a40;
 }
 
 .card-back {
