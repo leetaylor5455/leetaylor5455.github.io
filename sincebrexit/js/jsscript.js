@@ -1,13 +1,22 @@
 $(document).ready(function() {
+
+  console.log($('.front').height());
+  $(".back").css("height", $(".front").height());
+  $(".back").css("width", $(".front").width());
+
   // Retreive Newest GBP Values
   $.get("https://exchangeratesapi.io/api/latest?base=GBP", function(rateReturn) {
     var EURRateNow = rateReturn.rates.EUR.toFixed(2);
     var USDRateNow = rateReturn.rates.USD.toFixed(2);
+    var CHFRateNow = rateReturn.rates.CHF.toFixed(2);
     console.log("EUR Rate: ", EURRateNow);
     console.log("USD Rate: ", USDRateNow);
+    console.log("CHF Rate: ", CHFRateNow);
+
 
     var EURRateBefore = 1.3022020236;
     var USDRateBefore = 1.4692745433;
+    var CHFRateBefore = 1.6432233616;
 
     $('#EURRateNow').text("€" + EURRateNow);
     $('#EURRateBefore').text("€" + EURRateBefore.toFixed(2));
@@ -15,11 +24,16 @@ $(document).ready(function() {
     $('#USDRateNow').text("$" + USDRateNow);
     $('#USDRateBefore').text("$" + USDRateBefore.toFixed(2));
 
+    $('#CHFRateNow').text("$" + CHFRateNow);
+    $('#CHFRateBefore').text("$" + CHFRateBefore.toFixed(2));
+
     let EURRateChange;
     let USDRateChange;
+    let CHFRateChange;
 
     $('#EURRateChange').text(rateChange(EURRateBefore, EURRateNow, $('#EURvsGBP'), ' €'));
     $('#USDRateChange').text(rateChange(USDRateBefore, USDRateNow, $('#USDvsGBP'), ' $'));
+    $('#CHFRateChange').text(rateChange(CHFRateBefore, CHFRateNow, $('#CHFvsGBP'), ' ₣'));
 
     function rateChange(rateBefore, rateNow, changer, currency) {
       if (rateNow < rateBefore) {
@@ -36,8 +50,14 @@ $(document).ready(function() {
 
   });
 
-  $('.card').click(function(){
-
+  $('.flip-container').click(function(){
+    // var cardFront = ($(this).children('div')[0]);
+    // var cardBack = ($(this).children('div')[1]);
+    // console.log(cardFront)
+    // console.log(cardBack)
+    // cardFront = 0;
+    $('#EURvsGBP').toggle()
+    $('cardBack').toggle()
   });
 
   // Date Function
