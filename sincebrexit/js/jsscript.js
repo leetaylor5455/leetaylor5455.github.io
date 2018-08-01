@@ -22,7 +22,6 @@ $(document).ready(function() {
     $('#USDRateChange').text(rateChange(USDRateBefore, USDRateNow, $('#USDvsGBP'), ' $'));
 
     function rateChange(rateBefore, rateNow, changer, currency) {
-      console.log(currency)
       if (rateNow < rateBefore) {
         changer.addClass('rate-down');
         var rateChange = (rateBefore - rateNow).toFixed(2);
@@ -32,7 +31,6 @@ $(document).ready(function() {
         var rateChange = (rateNow - rateBefore).toFixed(2);
         rateChange = 'UP BY' + currency + rateChange + " ▲";
       }
-      console.log(rateChange)
       return rateChange;
     }
 
@@ -56,12 +54,18 @@ $(document).ready(function() {
 
   day = String(day);
 
+  if (day.length < 2) {
+    var dateIndex = 0;
+  } else {
+    var dateIndex = 1;
+  }
 
-  if (day.charAt(1) == 1) {
+
+  if (day.charAt(dateIndex) == 1) {
     day = day + "st ";
-  } else if (day.charAt(1) == 2) {
+  } else if (day.charAt(dateIndex) == 2) {
     day = day + "nd ";
-  } else if (day.charAt(1) == 3) {
+  } else if (day.charAt(dateIndex) == 3) {
     day = day + "rd ";
   } else {
     day = day + "th ";
