@@ -49,6 +49,7 @@ nav {
 
 .dateBefore, .dateNow {
   color: #343a40;
+  max-width: 110px !important;
 }
 
 .card-back {

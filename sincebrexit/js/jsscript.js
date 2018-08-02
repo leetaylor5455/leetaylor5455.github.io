@@ -1,67 +1,6 @@
 $(document).ready(function() {
 
-  console.log($('.front').height());
-  $(".back").css("height", $(".front").height());
-  $(".back").css("width", $(".front").width());
-
-  // Retreive Newest GBP Values
-  $.get("https://exchangeratesapi.io/api/latest?base=GBP", function(rateReturn) {
-    var EURRateNow = rateReturn.rates.EUR.toFixed(2);
-    var USDRateNow = rateReturn.rates.USD.toFixed(2);
-    var CHFRateNow = rateReturn.rates.CHF.toFixed(2);
-    console.log("EUR Rate: ", EURRateNow);
-    console.log("USD Rate: ", USDRateNow);
-    console.log("CHF Rate: ", CHFRateNow);
-
-
-    var EURRateBefore = 1.3022020236;
-    var USDRateBefore = 1.4692745433;
-    var CHFRateBefore = 1.6432233616;
-
-    $('#EURRateNow').text("€" + EURRateNow);
-    $('#EURRateBefore').text("€" + EURRateBefore.toFixed(2));
-
-    $('#USDRateNow').text("$" + USDRateNow);
-    $('#USDRateBefore').text("$" + USDRateBefore.toFixed(2));
-
-    $('#CHFRateNow').text("₣" + CHFRateNow);
-    $('#CHFRateBefore').text("₣" + CHFRateBefore.toFixed(2));
-
-    let EURRateChange;
-    let USDRateChange;
-    let CHFRateChange;
-
-    $('#EURRateChange').text(rateChange(EURRateBefore, EURRateNow, $('#EURvsGBP'), ' €'));
-    $('#USDRateChange').text(rateChange(USDRateBefore, USDRateNow, $('#USDvsGBP'), ' $'));
-    $('#CHFRateChange').text(rateChange(CHFRateBefore, CHFRateNow, $('#CHFvsGBP'), ' ₣'));
-
-    function rateChange(rateBefore, rateNow, changer, currency) {
-      if (rateNow < rateBefore) {
-        changer.addClass('rate-down');
-        var rateChange = (rateBefore - rateNow).toFixed(2);
-        rateChange = 'DOWN BY' + currency + rateChange + " ▼";
-      } else if (rateNow > rateBefore) {
-        changer.addClass('rate-up');
-        var rateChange = (rateNow - rateBefore).toFixed(2);
-        rateChange = 'UP BY' + currency + rateChange + " ▲";
-      }
-      return rateChange;
-    }
-
-  });
-
-  $('.flip-container').click(function(){
-    // var cardFront = ($(this).children('div')[0]);
-    // var cardBack = ($(this).children('div')[1]);
-    // console.log(cardFront)
-    // console.log(cardBack)
-    // cardFront = 0;
-    $('#EURvsGBP').toggle()
-    $('cardBack').toggle()
-  });
-
   // Date Function
-
   const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
   ];
@@ -70,7 +9,9 @@ $(document).ready(function() {
 
   var month = monthNames[d.getMonth()];
   var day = d.getDate();
-  var year = d.getFullYear();
+  var dayString = '' + day;
+  var year = '' + d.getFullYear();
+
 
   day = String(day);
 
@@ -95,5 +36,95 @@ $(document).ready(function() {
 
 
   $('.dateNow').text(fullDate);
+
+  // $.get('https://api.ons.gov.uk/dataset/BB/timeseries/MGSC/data', function(data) {
+  //   var rate = data.years[data.years.length-1].value;
+  //   console.log('Unemployment Rate: ', rate);
+  // });
+
+  $.get("js\\rates.json", function(returnedVals) {
+    var EURRateNow = returnedVals.rates.EUR.toFixed(2);
+    var USDRateNow = returnedVals.rates.USD.toFixed(2);
+    var CHFRateNow = returnedVals.rates.CHF.toFixed(2);
+    var GDPNow = ((returnedVals.rates.GDP)/1000).toFixed(2);
+    var unemployNow = (((returnedVals.rates.Unemployment/1000)/35)*100).toFixed(2);
+    console.log("EUR Rate: ", EURRateNow);
+    console.log("USD Rate: ", USDRateNow);
+    console.log("CHF Rate: ", CHFRateNow);
+    console.log("UK GDP: ", GDPNow);
+    console.log("Unemployment now: ", unemployNow);
+
+    const EURRateBefore = 1.3022020236.toFixed(2);
+    const USDRateBefore = 1.4692745433.toFixed(2);
+    const CHFRateBefore = 1.6432233616.toFixed(2);
+    const GDPBefore = (2863.304/1000).toFixed(2);
+    const unemployBefore = ((1.633/34.1)*100).toFixed(2);
+
+
+    $('#EURRateNow').text("€" + EURRateNow);
+    $('#EURRateBefore').text("€" + EURRateBefore);
+
+    $('#USDRateNow').text("$" + USDRateNow);
+    $('#USDRateBefore').text("$" + USDRateBefore);
+
+    $('#CHFRateNow').text("₣" + CHFRateNow);
+    $('#CHFRateBefore').text("₣" + CHFRateBefore);
+
+    $('#GDPNow').text("$" + GDPNow);
+    $('#GDPBefore').text("$" + GDPBefore);
+
+    $('#UnemployNow').text(unemployNow + "%");
+    $('#UnemployBefore').text(unemployBefore + "%");
+
+    let EURRateChange;
+    let USDRateChange;
+    let CHFRateChange;
+    let GDPChange;
+    let unemployChange;
+
+    $('#EURRateChange').text(rateChange(EURRateBefore, EURRateNow, $('#EURvsGBP'), ' €'));
+    $('#USDRateChange').text(rateChange(USDRateBefore, USDRateNow, $('#USDvsGBP'), ' $'));
+    $('#CHFRateChange').text(rateChange(CHFRateBefore, CHFRateNow, $('#CHFvsGBP'), ' ₣'));
+    $('#GDPChange').text(rateChange(GDPBefore, GDPNow, $('#GDP'), ' $'));
+    $('#UnemployChange').text(rateChange(unemployBefore*-1, unemployNow*-1, $('#Unemploy'), '% '));
+
+
+    function rateChange(rateBefore, rateNow, changer, symbol) {
+      if (rateNow < rateBefore) {
+        changer.addClass('rate-down');
+        var rateChange = (rateBefore - rateNow).toFixed(2);
+        if (symbol == '% ') {
+          rateChange = 'UP BY ' +  rateChange + symbol + " ▲";
+        } else {
+          rateChange = 'DOWN BY' + symbol + rateChange + " ▼";
+        }
+      } else if (rateNow > rateBefore) {
+        changer.addClass('rate-up');
+        var rateChange = (rateNow - rateBefore).toFixed(2);
+        if (symbol == '% ') {
+          rateChange = 'DOWN BY ' + rateChange + symbol + " ▼";
+        } else {
+          rateChange = 'UP BY' + symbol + rateChange + " ▲";
+        }
+      }
+      return rateChange;
+    }
+
+  });
+
+  // console.log(getUKGDP(todayDateString));
+  // console.log(getUKGDP('2016-06-22'));
+
+  $('.flip-container').click(function(){
+    // var cardFront = ($(this).children('div')[0]);
+    // var cardBack = ($(this).children('div')[1]);
+    // console.log(cardFront)
+    // console.log(cardBack)
+    // cardFront = 0;
+    $('#EURvsGBP').toggle()
+    $('cardBack').toggle()
+  });
+
+
 
 });

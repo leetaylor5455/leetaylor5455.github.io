@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
@@ -34,7 +34,7 @@
       </div>
     </div>
   </nav>
-  <div class="container">
+  <div class="container" style="padding-bottom: 1rem;">
     <h4>Have things gotten better since Brexit?</h4>
     <div class="row">
       <div class="col" style="min-width: 250px;">
@@ -142,6 +142,81 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="row">
+      <div class="col" style="min-width: 250px;">
+        <div class="card mx-auto" id="GDP" style="min-width: 250px;">
+          <div class="card-body">
+            <h3 class="card-title" style="font-weight: bold; margin: 0;">UK GDP</h3>
+            <div class="row">
+              <div class="col">
+                <div class="">
+                  <div class="card-body nested-card">
+                    <p class="card-title text-muted date-title">SINCE</p>
+                    <p style="font-weight: bold;" class="dateBefore">22nd June 2016</p>
+                    <h1 class="card-text" id="GDPBefore" style="font-weight: 300"></h1>
+                    <p class="card-title text-muted date-title">Trillion</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="">
+                  <div class="card-body nested-card">
+                    <p class="card-title text-muted date-title">TODAY</p>
+                    <p style="font-weight: bold;" class="dateNow"></p>
+                    <h1 class="card-text" id="GDPNow" style="font-weight: 300"></h1>
+                    <p class="card-title text-muted date-title">Trillion</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p class="card-bottom-text">Source ⟲</p>
+              </div>
+              <div class="col align-self-end">
+                <p class="card-bottom-text" id="GDPChange"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col" style="min-width: 250px;">
+        <div class="card mx-auto" id="Unemploy" style="min-width: 250px;">
+          <div class="card-body">
+            <h3 class="card-title" style="font-weight: bold; margin: 0;">UK Unemployment</h3>
+            <div class="row">
+              <div class="col">
+                <div class="">
+                  <div class="card-body nested-card">
+                    <p class="card-title text-muted date-title">SINCE</p>
+                    <p style="font-weight: bold;" class="dateBefore">22nd June 2016</p>
+                    <h1 class="card-text" id="UnemployBefore" style="font-weight: 300"></h1>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="">
+                  <div class="card-body nested-card">
+                    <p class="card-title text-muted date-title">TODAY</p>
+                    <p style="font-weight: bold;" class="dateNow"></p>
+                    <h1 class="card-text" id="UnemployNow" style="font-weight: 300"></h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p class="card-bottom-text">Source ⟲</p>
+              </div>
+              <div class="col align-self-end">
+                <p class="card-bottom-text" id="UnemployChange"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col" style="min-width: 250px;"></div>
     </div>
   </div>
 </body>
