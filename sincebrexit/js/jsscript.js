@@ -37,10 +37,18 @@ $(document).ready(function() {
 
   $('.dateNow').text(fullDate);
 
-  // $.get('https://api.ons.gov.uk/dataset/BB/timeseries/MGSC/data', function(data) {
-  //   var rate = data.years[data.years.length-1].value;
-  //   console.log('Unemployment Rate: ', rate);
-  // });
+  $.get('https://spreadsheets.google.com/feeds/list/0AhySzEddwIC1dEtpWF9hQUhCWURZNEViUmpUeVgwdGc/1/public/basic?alt=json', function(data) {
+    fsteData = data.feed.entry
+    for (var i = 0; i < 99; i++) {
+      var splitSection = (fsteData[i].content.$t).split(", ")
+      for (var i = 0; i < 2; i++) {
+        var splitVal = splitSection[i].split(': ');
+      }
+    //  parsedData = JSON.parse('{' + fsteData[i].content.$t + '}')
+      //console.log(parsedData)
+    }
+    //console.log(data.feed.entry)
+  });
 
   $.get("js\\rates.json", function(returnedVals) {
     var EURRateNow = returnedVals.rates.EUR.toFixed(2);
