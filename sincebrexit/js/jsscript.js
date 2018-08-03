@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+  var rates = {};
+
   // Date Function
   const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -37,67 +39,61 @@ $(document).ready(function() {
 
   $('.dateNow').text(fullDate);
 
-  $.get('https://spreadsheets.google.com/feeds/list/0AhySzEddwIC1dEtpWF9hQUhCWURZNEViUmpUeVgwdGc/1/public/basic?alt=json', function(data) {
-    fsteData = data.feed.entry
-    for (var i = 0; i < 99; i++) {
-      var splitSection = (fsteData[i].content.$t).split(", ")
-      for (var i = 0; i < 2; i++) {
-        var splitVal = splitSection[i].split(': ');
-      }
-    //  parsedData = JSON.parse('{' + fsteData[i].content.$t + '}')
-      //console.log(parsedData)
-    }
-    //console.log(data.feed.entry)
-  });
+  // Update New Rates
+  function updateRatesNow() {
+    $.get("js\\rates.json", function(returnedVals) {
+      rates.EURRateNow = returnedVals.rates.EUR.toFixed(2);
+      rates.USDRateNow = returnedVals.rates.USD.toFixed(2);
+      rates.CHFRateNow = returnedVals.rates.CHF.toFixed(2);
+      rates.GDPNow = ((returnedVals.rates.GDP)/1000).toFixed(2);
+      rates.unemployNow = (((returnedVals.rates.Unemployment/1000)/35)*100).toFixed(2);
+      console.log("EUR Rate: ", rates.EURRateNow);
+      console.log("USD Rate: ", rates.USDRateNow);
+      console.log("CHF Rate: ", rates.CHFRateNow);
+      console.log("UK GDP: ", rates.GDPNow);
+      console.log("Unemployment now: ", rates.unemployNow);
 
-  $.get("js\\rates.json", function(returnedVals) {
-    var EURRateNow = returnedVals.rates.EUR.toFixed(2);
-    var USDRateNow = returnedVals.rates.USD.toFixed(2);
-    var CHFRateNow = returnedVals.rates.CHF.toFixed(2);
-    var GDPNow = ((returnedVals.rates.GDP)/1000).toFixed(2);
-    var unemployNow = (((returnedVals.rates.Unemployment/1000)/35)*100).toFixed(2);
-    console.log("EUR Rate: ", EURRateNow);
-    console.log("USD Rate: ", USDRateNow);
-    console.log("CHF Rate: ", CHFRateNow);
-    console.log("UK GDP: ", GDPNow);
-    console.log("Unemployment now: ", unemployNow);
+      $('#EURRateNow').text("€" + rates.EURRateNow);
+      $('#USDRateNow').text("$" + rates.USDRateNow);
+      $('#CHFRateNow').text("₣" + rates.CHFRateNow);
+      $('#GDPNow').text("$" + rates.GDPNow);
+      $('#UnemployNow').text(rates.unemployNow + "%");
+    });
+  }
 
-    const EURRateBefore = 1.3022020236.toFixed(2);
-    const USDRateBefore = 1.4692745433.toFixed(2);
-    const CHFRateBefore = 1.6432233616.toFixed(2);
-    const GDPBefore = (2863.304/1000).toFixed(2);
-    const unemployBefore = ((1.633/34.1)*100).toFixed(2);
+  function updateRatesBefore() {
+    $.get("js\\ratesbefore.json", function(returnedVals) {
+      rates.EURRateBefore = returnedVals.rates.EUR.toFixed(2);
+      rates.USDRateBefore = returnedVals.rates.USD.toFixed(2);
+      rates.CHFRateBefore = returnedVals.rates.CHF.toFixed(2);
+      rates.GDPBefore = ((returnedVals.rates.GDP)/1000).toFixed(2);
+      rates.unemployBefore = (((returnedVals.rates.Unemployment/1000)/35)*100).toFixed(2);
 
+      $('#EURRateBefore').text("€" + rates.EURRateBefore);
+      $('#USDRateBefore').text("$" + rates.USDRateBefore);
+      $('#CHFRateBefore').text("₣" + rates.CHFRateBefore)
+      $('#GDPBefore').text("$" + rates.GDPBefore);
+      $('#UnemployBefore').text(rates.unemployBefore + "%");
+    });
+  }
 
-    $('#EURRateNow').text("€" + EURRateNow);
-    $('#EURRateBefore').text("€" + EURRateBefore);
+  function updateRatesChange() {
 
-    $('#USDRateNow').text("$" + USDRateNow);
-    $('#USDRateBefore').text("$" + USDRateBefore);
+    // $('#EURRateChange').text(changeCalc(parseFloat(rates.EURRateBefore), parseFloat(rates.EURRateNow), $('#EURvsGBP'), ' €'));
+    // $('#USDRateChange').text(changeCalc(parseFloat(rates.USDRateBefore), parseFloat(rates.USDRateNow), $('#USDvsGBP'), ' $'));
+    // $('#CHFRateChange').text(changeCalc(parseFloat(rates.CHFRateBefore), parseFloat(rates.CHFRateNow), $('#CHFvsGBP'), ' ₣'));
+    // $('#GDPChange').text(changeCalc(parseFloat(rates.GDPBefore), parseFloat(rates.GDPNow), $('#GDP'), ' $'));
+    // $('#UnemployChange').text(changeCalc(parseFloat(rates.unemployBefore)*-1, parseFloat(rates.unemployNow)*-1, $('#Unemploy'), '% '));
+    console.log('EUR Rate Before: ', rates.EURRateBefore)
 
-    $('#CHFRateNow').text("₣" + CHFRateNow);
-    $('#CHFRateBefore').text("₣" + CHFRateBefore);
+    $('#EURRateChange').text(changeCalc(rates.EURRateBefore, rates.EURRateNow, $('#EURvsGBP'), ' €'));
+    $('#USDRateChange').text(changeCalc(rates.USDRateBefore, rates.USDRateNow, $('#USDvsGBP'), ' $'));
+    $('#CHFRateChange').text(changeCalc(rates.CHFRateBefore, rates.CHFRateNow, $('#CHFvsGBP'), ' ₣'));
+    $('#GDPChange').text(changeCalc(rates.GDPBefore, rates.GDPNow, $('#GDP'), ' $'));
+    $('#UnemployChange').text(changeCalc(rates.unemployBefore*-1, rates.unemployNow*-1, $('#Unemploy'), '% '));
 
-    $('#GDPNow').text("$" + GDPNow);
-    $('#GDPBefore').text("$" + GDPBefore);
-
-    $('#UnemployNow').text(unemployNow + "%");
-    $('#UnemployBefore').text(unemployBefore + "%");
-
-    let EURRateChange;
-    let USDRateChange;
-    let CHFRateChange;
-    let GDPChange;
-    let unemployChange;
-
-    $('#EURRateChange').text(rateChange(EURRateBefore, EURRateNow, $('#EURvsGBP'), ' €'));
-    $('#USDRateChange').text(rateChange(USDRateBefore, USDRateNow, $('#USDvsGBP'), ' $'));
-    $('#CHFRateChange').text(rateChange(CHFRateBefore, CHFRateNow, $('#CHFvsGBP'), ' ₣'));
-    $('#GDPChange').text(rateChange(GDPBefore, GDPNow, $('#GDP'), ' $'));
-    $('#UnemployChange').text(rateChange(unemployBefore*-1, unemployNow*-1, $('#Unemploy'), '% '));
-
-
-    function rateChange(rateBefore, rateNow, changer, symbol) {
+    function changeCalc(rateBefore, rateNow, changer, symbol) {
+      //console.log(rateBefore)
       if (rateNow < rateBefore) {
         changer.addClass('rate-down');
         var rateChange = (rateBefore - rateNow).toFixed(2);
@@ -117,21 +113,11 @@ $(document).ready(function() {
       }
       return rateChange;
     }
+  }
 
-  });
-
-  // console.log(getUKGDP(todayDateString));
-  // console.log(getUKGDP('2016-06-22'));
-
-  $('.flip-container').click(function(){
-    // var cardFront = ($(this).children('div')[0]);
-    // var cardBack = ($(this).children('div')[1]);
-    // console.log(cardFront)
-    // console.log(cardBack)
-    // cardFront = 0;
-    $('#EURvsGBP').toggle()
-    $('cardBack').toggle()
-  });
+  updateRatesNow();
+  updateRatesBefore();
+  updateRatesChange();
 
 
 
