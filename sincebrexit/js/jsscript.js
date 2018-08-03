@@ -58,6 +58,7 @@ $(document).ready(function() {
       $('#CHFRateNow').text("₣" + rates.CHFRateNow);
       $('#GDPNow').text("$" + rates.GDPNow);
       $('#UnemployNow').text(rates.unemployNow + "%");
+      updateRatesChange();
     });
   }
 
@@ -117,7 +118,6 @@ $(document).ready(function() {
 
   updateRatesNow();
   updateRatesBefore();
-  updateRatesChange();
 
 
 
