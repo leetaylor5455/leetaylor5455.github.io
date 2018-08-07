@@ -13,7 +13,7 @@ $(document).ready(function() {
 
   // Date Function
   const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+    "July", "August", "September", "October", "November", "December"
   ];
 
   var d = new Date();
@@ -95,21 +95,21 @@ $(document).ready(function() {
         if (rateNow > rateBefore) {
           changer.addClass('rate-down');
           var rateChange = (rateNow - rateBefore).toFixed(2);
-            rateChange = 'UP BY ' +  rateChange + symbol + " ▲";
+          rateChange = 'UP BY ' + rateChange + symbol + " ▲";
         } else if (rateNow < rateBefore) {
           changer.addClass('rate-up');
           var rateChange = (rateBefore - rateNow).toFixed(2);
-            rateChange = 'DOWN BY ' + rateChange + symbol + " ▼";
+          rateChange = 'DOWN BY ' + rateChange + symbol + " ▼";
         }
       } else {
         if (rateNow < rateBefore) {
-        changer.addClass('rate-down');
-        var rateChange = (rateBefore - rateNow).toFixed(2);
-        if (symbol == '% ') {
-          rateChange = 'UP BY ' +  rateChange + symbol + " ▲";
-        } else {
-          rateChange = 'DOWN BY' + symbol + rateChange + " ▼";
-        }
+          changer.addClass('rate-down');
+          var rateChange = (rateBefore - rateNow).toFixed(2);
+          if (symbol == '% ') {
+            rateChange = 'UP BY ' + rateChange + symbol + " ▲";
+          } else {
+            rateChange = 'DOWN BY' + symbol + rateChange + " ▼";
+          }
         } else if (rateNow > rateBefore) {
           changer.addClass('rate-up');
           var rateChange = (rateNow - rateBefore).toFixed(2);
@@ -143,7 +143,7 @@ $(document).ready(function() {
     var startMonth = parseInt(startFullDate.substring(5, 7), 10)
 
     // Creates the dates used for url and chart labels
-    for (var i = startMonth; i > startMonth-24; i--) {
+    for (var i = startMonth; i > startMonth - 24; i--) {
       if (i < 1) {
         if (i <= -12) {
           month = 24 + i;
@@ -167,95 +167,107 @@ $(document).ready(function() {
   });
 
   function getUrl() {
+    var getPromises = [];
+    var url;
     var i = 23;
-    while(i >= 0) {
+
+    while (i >= 0) {
       url = 'https://exchangeratesapi.io/api/' + graphData.labels.EUR[i] + '?base=GBP';
-      getRate(url).then(function(data) {
-        graphData.plots.EUR.unshift(data.rates.EUR);
+
+      var getPromise = $.get({
+        url: url
+      }).then(function(data) {
+        graphData.plots.EUR.unshift(data.rates.EUR); // is this right?? Looks like it's changing the same thing for every iteration?
+        // maybe it should be graphData.plots[i].EUR.unshift(data.rates.EUR); ? Just a guess
       });
+
+      getPromises.push(getPromise);
+
       i--;
     }
 
-    updateChart(graphData.labels.EUR, graphData.plots.EUR);
+    Promise.all(getPromises).then(function() {
 
-  }
+      // do this once ALL the $.get requests have finished
 
-  function getRate(url) {
-    return new Promise(function(resolve, reject) {
-      resolve($.get(url, function(){}));
+      updateChart(graphData.labels.EUR, graphData.plots.EUR);
     });
   }
+//
+//   function getRate(url) {
+//     return new Promise(function(resolve, reject) {
+//         $.get(url, function() {}));
+//     });
+// }
 
-  function updateChart(labels = null, data = null) {
-    if (labels == null) {
-      if (data == null) {
-        return;
-      } else {
-        console.log('Chart data :', data)
-        chart.data.datasets = [{
-          label: "GBP vs EUR",
-          pointRadius: 0,
-          pointHitRadius: 12,
-          backgroundColor: gradient,
-          borderColor: "#28AFFA",
-          data: data,
-        }]
-      }
-    } else if (data == null) {
-      console.log('Chart labels :', labels)
-      chart.data.labels = labels;
+function updateChart(labels = null, data = null) {
+  if (labels == null) {
+    if (data == null) {
+      return;
     } else {
       console.log('Chart data :', data)
-      console.log('Chart labels :', labels)
-      chart.data = {
-        labels: labels,
-        datasets: [{
-          label: "GBP vs EUR",
-          pointRadius: 0,
-          pointHitRadius: 12,
-          backgroundColor: gradient,
-          borderColor: "#28AFFA",
-          data: data,
-        }]
-      }
+      chart.data.datasets = [{
+        label: "GBP vs EUR",
+        pointRadius: 0,
+        pointHitRadius: 12,
+        backgroundColor: gradient,
+        borderColor: "#28AFFA",
+        data: data,
+      }]
     }
-    chart.update();
-    console.log('Chart updated.')
+  } else if (data == null) {
+    //console.log('Chart labels :', labels)
+    chart.data.labels = labels;
+  } else {
+    console.log('Chart data :', data)
+    //console.log('Chart labels :', labels)
+    chart.data = {
+      labels: labels,
+      datasets: [{
+        label: "GBP vs EUR",
+        pointRadius: 0,
+        pointHitRadius: 12,
+        backgroundColor: gradient,
+        borderColor: "#28AFFA",
+        data: data,
+      }]
+    }
   }
+  chart.update();
+  console.log('Chart updated.')
+}
 
-  // Charts
-  var ctx = document.getElementById('myChart').getContext('2d');
-  var gradient = ctx.createLinearGradient(0, 0, 0, 400);
-  gradient.addColorStop(0, 'rgba(40,175,250,.25)');
-  gradient.addColorStop(1, 'rgba(40,175,250,0)');
-  //console.log(graphPlots)
+// Charts
+var ctx = document.getElementById('myChart').getContext('2d');
+var gradient = ctx.createLinearGradient(0, 0, 0, 400); gradient.addColorStop(0, 'rgba(40,175,250,.25)'); gradient.addColorStop(1, 'rgba(40,175,250,0)');
+//console.log(graphPlots)
 
-  var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
+var chart = new Chart(ctx, {
+  // The type of chart we want to create
+  type: 'line',
 
-    // The data for our dataset
-    data: {
-        labels: [],
-        datasets: [{
-            label: "GBP vs EUR",
-            pointRadius: 0,
-            pointHitRadius: 12,
-            backgroundColor: gradient,
-            borderColor: "#28AFFA",
-            data: [],
-        }]
-    },
+  // The data for our dataset
+  data: {
+    labels: [],
+    datasets: [{
+      label: "GBP vs EUR",
+      pointRadius: 0,
+      pointHitRadius: 12,
+      backgroundColor: gradient,
+      borderColor: "#28AFFA",
+      data: [],
+    }]
+  },
 
-    // Configuration options go here
-    options: {
-      elements: {
-        line: {
-            tension: .2, // disables bezier curves
-        }
+  // Configuration options go here
+  options: {
+    elements: {
+      line: {
+        tension: .2, // disables bezier curves
       }
     }
-  });
+  }
+});
 
 
 });
