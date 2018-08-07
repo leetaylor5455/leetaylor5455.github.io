@@ -6,6 +6,7 @@ let data = {
 }
 
 var todayDate = new Date().toISOString().slice(0, 10);
+
 const latestRatesURL = 'https://exchangeratesapi.io/api/latest?base=GBP';
 const latestUnemployURL = 'https://api.ons.gov.uk/dataset/BB/timeseries/MGSC/data';
 
@@ -53,9 +54,9 @@ function getData(url, type) {
           data.rates.USD = parsedData.rates.USD;
           data.rates.CHF = parsedData.rates.CHF;
         } else if (type == 'gdp') {
-          data.rates.GDP = parsedData.dataset.data[0][1];
+          data.rates.GDP = (parsedData.dataset.data[0][1])/1000;
         } else if (type == 'unemployment') {
-          data.rates.Unemployment = parseInt((parsedData.years[parsedData.years.length-1].value), 10);
+          data.rates.Unemploy = (((parseInt((parsedData.years[parsedData.years.length-1].value), 10)/1000)/35)*100);
         }
         writeToFile(data);
       } catch (e) {
@@ -70,7 +71,7 @@ function getData(url, type) {
 // writes currency rates to a file
 function writeToFile(dataObj) {
   let dataJSON = JSON.stringify(dataObj, null, 2);
-  fs.writeFile('rates.json', dataJSON, (err) => {
+  fs.writeFile('json\\rates.json', dataJSON, (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
 

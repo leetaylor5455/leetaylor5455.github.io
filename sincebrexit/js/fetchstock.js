@@ -1,8 +1,9 @@
 const https = require('https');
 const fs = require('fs');
 
-let data = {
-  rates: {}
+var data = {
+  rates: {
+  }
 }
 
 const urlp1 = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='
@@ -15,8 +16,10 @@ function urlBuilder(symbol) {
 const ftse100Sym = 'UKX'
 const ftse250Sym = 'MCX'
 
-getStockRate(urlBuilder(ftse100Sym));
+//getStockRate(urlBuilder(ftse100Sym));
 //getStockRate(urlBuilder(ftse250Sym));
+
+getStockRate(urlBuilder('UKX'));
 
 function getStockRate(url) {
   https.get(url, (res) => {
@@ -61,11 +64,18 @@ function getStockRate(url) {
   });
 }
 
+//writeToFile(data)
+
 
 // writes currency rates to a file
 function writeToFile(dataObj) {
-  let dataJSON = JSON.stringify(dataObj, null, 2);
-  fs.writeFile('stockrates.json', dataJSON, (err) => {
+  ratesJSON = fs.readFileSync("json\\rates.json");
+  ratesJSON = JSON.parse(ratesJSON)
+  //console.log(ratesJSON)
+  //console.log(dataObj)
+  ratesJSON.rates.FTSE100 = dataObj.rates.FTSE100;
+  ratesJSON = JSON.stringify(ratesJSON, null, 2)
+  fs.writeFile('json\\rates.json', ratesJSON, (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
 
