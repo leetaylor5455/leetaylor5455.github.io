@@ -135,52 +135,97 @@ $(document).ready(function() {
 
 
   $('#EUR').click(function() {
-    if (graphData.labels.EUR.length < 1) {
-      var startFullDate = new Date().toISOString().slice(0, 10);
-      var day = startFullDate.substring(8, 10)
-      var year = parseInt(startFullDate.substring(0, 4), 10)
-      var startMonth = parseInt(startFullDate.substring(5, 7), 10)
+    graphData.plots.EUR = [];
+    graphData.labels.EUR = [];
+    var startFullDate = new Date().toISOString().slice(0, 10);
+    var day = startFullDate.substring(8, 10)
+    var year = parseInt(startFullDate.substring(0, 4), 10)
+    var startMonth = parseInt(startFullDate.substring(5, 7), 10)
 
-      // Creates the dates used for url and chart labels
-      for (var i = startMonth; i > startMonth-12; i--) {
-        if (i < 1) {
-          month = 12 + i;
-          if (month === 12) {
-            year -= 1;
-          }
+    // Creates the dates used for url and chart labels
+    for (var i = startMonth; i > startMonth-24; i--) {
+      if (i < 1) {
+        if (i <= -12) {
+          month = 24 + i;
         } else {
-          month = i;
+          month = 12 + i;
         }
-        fullDate = year + '-' + month + '-' + day;
-        graphData.labels.EUR.unshift(fullDate);
+        if (month === 0) {
+          month = 12;
+        }
+        if (month === 12) {
+          year -= 1;
+        }
+      } else {
+        month = i;
       }
-      getUrl();
+      fullDate = year + '-' + month + '-' + day;
+      //console.log(month, i)
 
+      graphData.labels.EUR.unshift(fullDate);
     }
+    getUrl();
   });
 
-  function getUrl() {
-    for (var i=11; i >= 0; i--) {
+  function getUrl(i = 23) {
+    if (i >= 0) {
       url = 'https://exchangeratesapi.io/api/' + graphData.labels.EUR[i] + '?base=GBP';
-      getRate(url).done(function(data) {
-        console.log(data.rates.EUR)
-        graphData.plots.EUR.push(data.rates.EUR);
+      $.when(getRate(url)).then(function(data) {
+        graphData.plots.EUR.unshift(data.rates.EUR);
+        getUrl(i-1)
       });
+    } else {
+      updateChart(graphData.labels.EUR, graphData.plots.EUR);
     }
-    chart.update();
-    console.log('chart updated');
   }
 
   function getRate(url) {
-    return $.get(url, function(data) {});
+    var data = $.get(url, function(){})
+    return data;
   }
 
+  function updateChart(labels = null, data = null) {
+    if (labels == null) {
+      if (data == null) {
+        return;
+      } else {
+        console.log('Chart data :', data)
+        chart.data.datasets = [{
+          label: "GBP vs EUR",
+          pointRadius: 0,
+          pointHitRadius: 12,
+          backgroundColor: gradient,
+          borderColor: "#28AFFA",
+          data: data,
+        }]
+      }
+    } else if (data == null) {
+      console.log('Chart labels :', labels)
+      chart.data.labels = labels;
+    } else {
+      console.log('Chart data :', data)
+      console.log('Chart labels :', labels)
+      chart.data = {
+        labels: labels,
+        datasets: [{
+          label: "GBP vs EUR",
+          pointRadius: 0,
+          pointHitRadius: 12,
+          backgroundColor: gradient,
+          borderColor: "#28AFFA",
+          data: data,
+        }]
+      }
+    }
+    chart.update();
+    console.log('Chart updated.')
+  }
 
   // Charts
   var ctx = document.getElementById('myChart').getContext('2d');
   var gradient = ctx.createLinearGradient(0, 0, 0, 400);
-  gradient.addColorStop(0, 'rgba(74, 224, 100,.5)');
-  gradient.addColorStop(1, 'rgba(74, 224, 100,0)');
+  gradient.addColorStop(0, 'rgba(40,175,250,.25)');
+  gradient.addColorStop(1, 'rgba(40,175,250,0)');
   //console.log(graphPlots)
 
   var chart = new Chart(ctx, {
@@ -189,12 +234,14 @@ $(document).ready(function() {
 
     // The data for our dataset
     data: {
-        labels: graphData.labels.EUR,
+        labels: [],
         datasets: [{
             label: "GBP vs EUR",
+            pointRadius: 0,
+            pointHitRadius: 12,
             backgroundColor: gradient,
-            borderColor: "#42f462",
-            data: graphData.plots.EUR,
+            borderColor: "#28AFFA",
+            data: [],
         }]
     },
 
