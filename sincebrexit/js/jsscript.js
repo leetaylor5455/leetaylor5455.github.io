@@ -160,28 +160,30 @@ $(document).ready(function() {
         month = i;
       }
       fullDate = year + '-' + month + '-' + day;
-      //console.log(month, i)
 
       graphData.labels.EUR.unshift(fullDate);
     }
     getUrl();
   });
 
-  function getUrl(i = 23) {
-    if (i >= 0) {
+  function getUrl() {
+    var i = 23;
+    while(i >= 0) {
       url = 'https://exchangeratesapi.io/api/' + graphData.labels.EUR[i] + '?base=GBP';
-      $.when(getRate(url)).then(function(data) {
+      getRate(url).then(function(data) {
         graphData.plots.EUR.unshift(data.rates.EUR);
-        getUrl(i-1)
       });
-    } else {
-      updateChart(graphData.labels.EUR, graphData.plots.EUR);
+      i--;
     }
+
+    updateChart(graphData.labels.EUR, graphData.plots.EUR);
+
   }
 
   function getRate(url) {
-    var data = $.get(url, function(){})
-    return data;
+    return new Promise(function(resolve, reject) {
+      resolve($.get(url, function(){}));
+    });
   }
 
   function updateChart(labels = null, data = null) {
