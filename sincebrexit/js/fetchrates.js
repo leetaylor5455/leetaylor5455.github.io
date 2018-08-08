@@ -17,6 +17,7 @@ function gdpURLBuilder(date) {
   return String(url);
 }
 
+'https://www.quandl.com/api/v3/datasets/ODA/GBR_NGDPD.json?end_date=2018-08-08?api_key=B8xkkrnAcricJ1NZGbAw?'
 
 function getData(url, type) {
   https.get(url, (res) => {

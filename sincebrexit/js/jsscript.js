@@ -4,11 +4,9 @@ $(document).ready(function() {
   var rates = {};
   var graphData = {
     plots: {
-
+      GDP: [[], []]
     },
-    labels: {
-
-    }
+    labels: {}
   };
 
   // Date Function
@@ -87,8 +85,12 @@ $(document).ready(function() {
     var nowAccessor = id + 'Now';
 
     var jqueryID = '#' + id + 'Change';
+    var indicator = '#' + id + 'Ind'
+    console.log(indicator)
+    var returnedCalc = changeCalc(rates[beforeAccessor], rates[nowAccessor], $('#' + id), symbol)
+    $(jqueryID).text(returnedCalc[0]);
+    $(indicator).text(returnedCalc[1]);
 
-    $(jqueryID).text(changeCalc(rates[beforeAccessor], rates[nowAccessor], $('#' + id), symbol));
 
     function changeCalc(rateBefore, rateNow, changer, symbol) {
       if (id == 'Unemploy') {
@@ -96,32 +98,30 @@ $(document).ready(function() {
           changer.addClass('rate-down');
           var rateChange = (rateNow - rateBefore).toFixed(2);
           rateChange = 'UP BY ' + rateChange + symbol + " ▲";
+          var change = ' ▲'
         } else if (rateNow < rateBefore) {
           changer.addClass('rate-up');
           var rateChange = (rateBefore - rateNow).toFixed(2);
           rateChange = 'DOWN BY ' + rateChange + symbol + " ▼";
+          var change = ' ▼'
         }
       } else {
         if (rateNow < rateBefore) {
           changer.addClass('rate-down');
           var rateChange = (rateBefore - rateNow).toFixed(2);
-          if (symbol == '% ') {
-            rateChange = 'UP BY ' + rateChange + symbol + " ▲";
-          } else {
-            rateChange = 'DOWN BY' + symbol + rateChange + " ▼";
-          }
+          var change = ' ▼'
+          rateChange = 'DOWN BY' + symbol + rateChange + " ▼";
+
         } else if (rateNow > rateBefore) {
           changer.addClass('rate-up');
           var rateChange = (rateNow - rateBefore).toFixed(2);
-          if (symbol == '% ') {
-            rateChange = 'DOWN BY ' + rateChange + symbol + " ▼";
-          } else {
-            rateChange = 'UP BY' + symbol + rateChange + " ▲";
-          }
+          var change = ' ▲'
+          rateChange = 'UP BY' + symbol + rateChange + " ▲";
+
         }
       }
 
-      return rateChange;
+      return [rateChange, change];
     }
   }
 
@@ -132,7 +132,65 @@ $(document).ready(function() {
   updateRatesNow('Unemploy', '% ');
   updateRatesNow('FTSE100', ' $')
 
+  $('#GDP').click(function() {
+    graphData.labels.GDP = [];
 
+    for (var i = 0; i < 20; i++) {
+      graphData.plots.GDP[0][i] = null;
+      graphData.plots.GDP[1][i] = null;
+    }
+    console.log(graphData.plots.GDP[0])
+    console.log(graphData.plots.GDP[1])
+
+
+    $.get('js\\json\\gdphistoric.json', function(data) {
+      for (var i = data.length-20; i < data.length; i++) {
+        graphData.labels.GDP.push(data[i][0]);
+      }
+
+      var yearsSinceBrexit = parseInt(year, 10) - 2016
+
+      var sinceBrexitArray = graphData.plots.GDP[1];
+      for (var i = data.length - yearsSinceBrexit; i < data.length; i++) {
+        sinceBrexitArray[i] = data[i][1];
+      }
+      var beforeBrexitArray = graphData.plots.GDP[0];
+      for (var i = data.length-20; i < data.length - yearsSinceBrexit; i++) {
+        beforeBrexitArray[i] = data[i][1];
+      }
+
+      chart.data.datasets.pop();
+      chart.data.labels = graphData.labels.GDP
+
+      updateGDP(beforeBrexitArray, graphData.labels.GDP, 'Before Brexit')
+      updateGDP(sinceBrexitArray, graphData.labels.GDP, 'Since Brexit')
+
+      function updateGDP(plotArray, labelArray, label) {
+        if (plotArray[0] < plotArray[plotArray.length-1]) {
+          var lineColor = '#f73b3b';
+          var gradient = ctx.createLinearGradient(0, 600, 0, 0);
+          gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
+          gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
+        } else if (plotArray[0] > plotArray[plotArray.length-1]) {
+          var lineColor = '#4fc64f';
+          var gradient = ctx.createLinearGradient(0, 0, 0, 600);
+          gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
+          gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
+        }
+
+        chart.data.datasets.push({
+          label: label,
+          pointRadius: 0,
+          pointHitRadius: 12,
+          backgroundColor: gradient,
+          borderColor: lineColor,
+          data: plotArray,
+        });
+        chart.update();
+      }
+      console.log(chart.data.datasets)
+    });
+  });
 
   $('#EUR, #USD, #CHF').click(function() {
     var currencyID = String($(this)[0].id)
@@ -165,10 +223,10 @@ $(document).ready(function() {
 
       graphData.labels[currencyID].unshift(fullDate);
     }
-    getUrl(currencyID);
+    getRates(currencyID);
   });
 
-  function getUrl(currencyID) {
+  function getRates(currencyID) {
 
     var getPromises = [];
 
@@ -205,15 +263,15 @@ $(document).ready(function() {
 
       // do this once ALL the $.get requests have finished
       if (graphData.plots[currencyID][0] > graphData.plots[currencyID][23]) {
-        lineColor = '#f73b3b';
-        var gradient = ctx.createLinearGradient(0, 550, 0, 0);
-        gradient.addColorStop(0, 'rgba(226, 77, 77,.7)');
-        gradient.addColorStop(.8, 'rgba(226, 77, 77,0)');
+        var lineColor = '#f73b3b';
+        var gradient = ctx.createLinearGradient(0, 600, 0, 0);
+        gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
+        gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
       } else if (graphData.plots[currencyID][0] < graphData.plots[currencyID][23]) {
-        lineColor = '#5ce05c';
-        var gradient = ctx.createLinearGradient(0, 550, 0, 0);
-        gradient.addColorStop(0, 'rgba(110, 216, 110,.7)');
-        gradient.addColorStop(.8, 'rgba(110, 216, 110,0)');
+        var lineColor = '#4fc64f';
+        var gradient = ctx.createLinearGradient(0, 0, 0, 600);
+        gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
+        gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
       }
 
       updateChart(graphData.labels[currencyID], graphData.plots[currencyID], gradient, lineColor, currencyID);
@@ -237,6 +295,14 @@ function updateChart(labels, data, gradient, lineColor, currencyID) {
   console.log('Chart updated.')
 }
 
+
+
+// $.get('https://api.ons.gov.uk/dataset/BB/timeseries/MGSC/data', function(data) {
+//   for (var i = data.years.length-1; i > data.years.length - 21; i--) {
+//     //console.log(data.years[i].date)
+//   }
+// })
+
 // Charts
 var ctx = document.getElementById('myChart').getContext('2d');
 var gradient = ctx.createLinearGradient(0, 0, 0, 400);
@@ -252,7 +318,7 @@ var chart = new Chart(ctx, {
   data: {
     labels: [],
     datasets: [{
-      label: "GBP vs EUR",
+      label: "None",
       pointRadius: 0,
       pointHitRadius: 12,
       backgroundColor: gradient,
@@ -265,7 +331,7 @@ var chart = new Chart(ctx, {
   options: {
     elements: {
       line: {
-        tension: .2, // disables bezier curves
+        tension: .2,
       }
     }
   }
