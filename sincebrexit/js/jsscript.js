@@ -1,11 +1,8 @@
 $(document).ready(function() {
 
-  //[1.0940559938, 1.1168816664, 1.1358731457, 1.1354862152, 1.1250745362, 1.1277135608, 1.1171561673, 1.1455409817, 1.1362345188, 1.1347775269, 1.1287318697, 1.1200716846]
   var rates = {};
   var graphData = {
-    plots: {
-      GDP: [[], []]
-    },
+    plots: {},
     labels: {}
   };
 
@@ -134,13 +131,12 @@ $(document).ready(function() {
 
   $('#GDP').click(function() {
     graphData.labels.GDP = [];
+    graphData.plots.GDP = [[],[]]
 
     for (var i = 0; i < 20; i++) {
       graphData.plots.GDP[0][i] = null;
       graphData.plots.GDP[1][i] = null;
     }
-    console.log(graphData.plots.GDP[0])
-    console.log(graphData.plots.GDP[1])
 
 
     $.get('js\\json\\gdphistoric.json', function(data) {
@@ -148,53 +144,63 @@ $(document).ready(function() {
         graphData.labels.GDP.push(data[i][0]);
       }
 
+      // So it still works when its 2019, 2020 etc
       var yearsSinceBrexit = parseInt(year, 10) - 2016
 
-      var sinceBrexitArray = graphData.plots.GDP[1];
-      for (var i = data.length - yearsSinceBrexit; i < data.length; i++) {
-        sinceBrexitArray[i] = data[i][1];
-      }
       var beforeBrexitArray = graphData.plots.GDP[0];
       for (var i = data.length-20; i < data.length - yearsSinceBrexit; i++) {
-        beforeBrexitArray[i] = data[i][1];
+        // Not sure why it's i-18 but that's what works
+        beforeBrexitArray[i-18] = data[i][1];
       }
 
-      chart.data.datasets.pop();
+      var sinceBrexitArray = graphData.plots.GDP[1];
+      for (var i = data.length - yearsSinceBrexit-1; i < data.length; i++) {
+        sinceBrexitArray[i-18] = data[i][1];
+      }
+
+      // Clears datasets so that they don't build up for each click
+      chart.data.datasets = []
       chart.data.labels = graphData.labels.GDP
 
-      updateGDP(beforeBrexitArray, graphData.labels.GDP, 'Before Brexit')
-      updateGDP(sinceBrexitArray, graphData.labels.GDP, 'Since Brexit')
+      updateGDP(beforeBrexitArray, graphData.labels.GDP, 'GDP Before Referendum')
+      updateGDP(sinceBrexitArray, graphData.labels.GDP, 'GDP Since Referendum')
 
       function updateGDP(plotArray, labelArray, label) {
-        if (plotArray[0] < plotArray[plotArray.length-1]) {
-          var lineColor = '#f73b3b';
-          var gradient = ctx.createLinearGradient(0, 600, 0, 0);
-          gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
-          gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
-        } else if (plotArray[0] > plotArray[plotArray.length-1]) {
-          var lineColor = '#4fc64f';
-          var gradient = ctx.createLinearGradient(0, 0, 0, 600);
-          gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
-          gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
-        }
+        //if (chart.data.datasets.length <= 1) {
+          if (plotArray[0] < plotArray[plotArray.length-1]) {
+            var lineColor = '#f73b3b';
+            var gradient = ctx.createLinearGradient(0, 0, 0, 600);
+            gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
+            gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
+          } else if (plotArray[0] > plotArray[plotArray.length-1]) {
+            var lineColor = '#4fc64f';
+            var gradient = ctx.createLinearGradient(0, 0, 0, 600);
+            gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
+            gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
+          }
 
-        chart.data.datasets.push({
-          label: label,
-          pointRadius: 0,
-          pointHitRadius: 12,
-          backgroundColor: gradient,
-          borderColor: lineColor,
-          data: plotArray,
-        });
-        chart.update();
+          chart.data.datasets.push({
+            label: label,
+            pointRadius: 0,
+            pointHitRadius: 12,
+            backgroundColor: gradient,
+            borderColor: lineColor,
+            data: plotArray,
+          });
+
+          // No need to update twice
+          if (chart.data.datasets.length === 2) {
+            chart.update();
+            console.log('Chart updated.')
+          }
+
+
       }
-      console.log(chart.data.datasets)
     });
   });
 
   $('#EUR, #USD, #CHF').click(function() {
     var currencyID = String($(this)[0].id)
-    console.log(currencyID)
     graphData.plots[currencyID] = Array(23);
     graphData.labels[currencyID] = [];
     var startFullDate = new Date().toISOString().slice(0, 10);
