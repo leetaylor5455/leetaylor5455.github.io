@@ -337,10 +337,8 @@ var chart = new Chart(ctx, {
   }
 });
 
-$('.card').hover(function(){
-  $(this).addClass('flip');
-},function(){
-  $(this).removeClass('flip');
+$('.card').click(function(){
+  $(this).toggleClass('flip');
 });
 
 });
