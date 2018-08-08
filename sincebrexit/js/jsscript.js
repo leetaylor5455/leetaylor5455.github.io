@@ -134,8 +134,10 @@ $(document).ready(function() {
 
 
 
-  $('#EUR').click(function() {
-    graphData.plots.EUR = [];
+  $('#EUR, #USD, #CHF').click(function() {
+    var currencyID = $(this)[0].id
+    console.log(currencyID)
+    graphData.plots.EUR = Array(23);
     graphData.labels.EUR = [];
     var startFullDate = new Date().toISOString().slice(0, 10);
     var day = startFullDate.substring(8, 10)
@@ -167,23 +169,36 @@ $(document).ready(function() {
   });
 
   function getUrl() {
+
     var getPromises = [];
-    var url;
-    var i = 23;
 
-    while (i >= 0) {
-      url = 'https://exchangeratesapi.io/api/' + graphData.labels.EUR[i] + '?base=GBP';
+    for (var i = 0; i <= 23; i++) {
+      var url = 'https://exchangeratesapi.io/api/' + graphData.labels.EUR[i] + '?base=GBP';
 
-      var getPromise = $.get({
-        url: url
-      }).then(function(data) {
-        graphData.plots.EUR.unshift(data.rates.EUR); // is this right?? Looks like it's changing the same thing for every iteration?
-        // maybe it should be graphData.plots[i].EUR.unshift(data.rates.EUR); ? Just a guess
-      });
+      //console.log('i: ' + i);
 
-      getPromises.push(getPromise);
+      // need to use an immediately invoked function expression (IIFE) so the value of i is
+      //  copied into the promise.then callback - otherwise the value of i is always the
+      //  last value in the loop
+      (function(dataPlotIndex) {
+        //console.log('dataPlotIndex: ' + dataPlotIndex);
 
-      i--;
+        var getPromise = $.get({
+          url: url
+        }).then(function(data) {
+
+          // place the data in the exact index in the plots array so it marries up with the label
+          //graphData.plots.EUR.splice(i, 0, data.rates.EUR);
+          graphData.plots.EUR[dataPlotIndex] = data.rates.EUR;
+
+          // update the label if the API has picked a different date?
+          graphData.labels.EUR[dataPlotIndex] = data.date;
+
+        });
+
+        getPromises.push(getPromise);
+      })(i);
+
     }
 
     Promise.all(getPromises).then(function() {
@@ -192,6 +207,35 @@ $(document).ready(function() {
 
       updateChart(graphData.labels.EUR, graphData.plots.EUR);
     });
+
+
+
+
+    // var getPromises = [];
+    // var url;
+    // var i = 23;
+
+    // while (i >= 0) {
+    //   url = 'https://exchangeratesapi.io/api/' + graphData.labels.EUR[i] + '?base=GBP';
+
+    //   var getPromise = $.get({
+    //     url: url
+    //   }).then(function(data) {
+    //     graphData.plots.EUR.unshift(data.rates.EUR); // is this right?? Looks like it's changing the same thing for every iteration?
+    //     // maybe it should be graphData.plots[i].EUR.unshift(data.rates.EUR); ? Just a guess
+    //   });
+
+    //   getPromises.push(getPromise);
+
+    //   i--;
+    // }
+
+    // Promise.all(getPromises).then(function() {
+
+    //   // do this once ALL the $.get requests have finished
+
+    //   updateChart(graphData.labels.EUR, graphData.plots.EUR);
+    // });
   }
 //
 //   function getRate(url) {
