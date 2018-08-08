@@ -4,10 +4,10 @@ $(document).ready(function() {
   var rates = {};
   var graphData = {
     plots: {
-      EUR: []
+
     },
     labels: {
-      EUR: []
+
     }
   };
 
@@ -135,10 +135,10 @@ $(document).ready(function() {
 
 
   $('#EUR, #USD, #CHF').click(function() {
-    var currencyID = $(this)[0].id
+    var currencyID = String($(this)[0].id)
     console.log(currencyID)
-    graphData.plots.EUR = Array(23);
-    graphData.labels.EUR = [];
+    graphData.plots[currencyID] = Array(23);
+    graphData.labels[currencyID] = [];
     var startFullDate = new Date().toISOString().slice(0, 10);
     var day = startFullDate.substring(8, 10)
     var year = parseInt(startFullDate.substring(0, 4), 10)
@@ -163,17 +163,17 @@ $(document).ready(function() {
       }
       fullDate = year + '-' + month + '-' + day;
 
-      graphData.labels.EUR.unshift(fullDate);
+      graphData.labels[currencyID].unshift(fullDate);
     }
-    getUrl();
+    getUrl(currencyID);
   });
 
-  function getUrl() {
+  function getUrl(currencyID) {
 
     var getPromises = [];
 
     for (var i = 0; i <= 23; i++) {
-      var url = 'https://exchangeratesapi.io/api/' + graphData.labels.EUR[i] + '?base=GBP';
+      var url = 'https://exchangeratesapi.io/api/' + graphData.labels[currencyID][i] + '?base=GBP';
 
       //console.log('i: ' + i);
 
@@ -189,10 +189,10 @@ $(document).ready(function() {
 
           // place the data in the exact index in the plots array so it marries up with the label
           //graphData.plots.EUR.splice(i, 0, data.rates.EUR);
-          graphData.plots.EUR[dataPlotIndex] = data.rates.EUR;
+          graphData.plots[currencyID][dataPlotIndex] = data.rates[currencyID];
 
           // update the label if the API has picked a different date?
-          graphData.labels.EUR[dataPlotIndex] = data.date;
+          graphData.labels[currencyID][dataPlotIndex] = data.date;
 
         });
 
@@ -204,78 +204,34 @@ $(document).ready(function() {
     Promise.all(getPromises).then(function() {
 
       // do this once ALL the $.get requests have finished
+      if (graphData.plots[currencyID][0] > graphData.plots[currencyID][23]) {
+        lineColor = '#f73b3b';
+        var gradient = ctx.createLinearGradient(0, 550, 0, 0);
+        gradient.addColorStop(0, 'rgba(226, 77, 77,.7)');
+        gradient.addColorStop(.8, 'rgba(226, 77, 77,0)');
+      } else if (graphData.plots[currencyID][0] < graphData.plots[currencyID][23]) {
+        lineColor = '#5ce05c';
+        var gradient = ctx.createLinearGradient(0, 550, 0, 0);
+        gradient.addColorStop(0, 'rgba(110, 216, 110,.7)');
+        gradient.addColorStop(.8, 'rgba(110, 216, 110,0)');
+      }
 
-      updateChart(graphData.labels.EUR, graphData.plots.EUR);
+      updateChart(graphData.labels[currencyID], graphData.plots[currencyID], gradient, lineColor, currencyID);
     });
-
-
-
-
-    // var getPromises = [];
-    // var url;
-    // var i = 23;
-
-    // while (i >= 0) {
-    //   url = 'https://exchangeratesapi.io/api/' + graphData.labels.EUR[i] + '?base=GBP';
-
-    //   var getPromise = $.get({
-    //     url: url
-    //   }).then(function(data) {
-    //     graphData.plots.EUR.unshift(data.rates.EUR); // is this right?? Looks like it's changing the same thing for every iteration?
-    //     // maybe it should be graphData.plots[i].EUR.unshift(data.rates.EUR); ? Just a guess
-    //   });
-
-    //   getPromises.push(getPromise);
-
-    //   i--;
-    // }
-
-    // Promise.all(getPromises).then(function() {
-
-    //   // do this once ALL the $.get requests have finished
-
-    //   updateChart(graphData.labels.EUR, graphData.plots.EUR);
-    // });
   }
-//
-//   function getRate(url) {
-//     return new Promise(function(resolve, reject) {
-//         $.get(url, function() {}));
-//     });
-// }
 
-function updateChart(labels = null, data = null) {
-  if (labels == null) {
-    if (data == null) {
-      return;
-    } else {
-      console.log('Chart data :', data)
-      chart.data.datasets = [{
-        label: "GBP vs EUR",
-        pointRadius: 0,
-        pointHitRadius: 12,
-        backgroundColor: gradient,
-        borderColor: "#28AFFA",
-        data: data,
-      }]
-    }
-  } else if (data == null) {
-    //console.log('Chart labels :', labels)
-    chart.data.labels = labels;
-  } else {
-    console.log('Chart data :', data)
-    //console.log('Chart labels :', labels)
-    chart.data = {
-      labels: labels,
-      datasets: [{
-        label: "GBP vs EUR",
-        pointRadius: 0,
-        pointHitRadius: 12,
-        backgroundColor: gradient,
-        borderColor: "#28AFFA",
-        data: data,
-      }]
-    }
+
+function updateChart(labels, data, gradient, lineColor, currencyID) {
+  chart.data = {
+    labels: labels,
+    datasets: [{
+      label: currencyID,
+      pointRadius: 0,
+      pointHitRadius: 12,
+      backgroundColor: gradient,
+      borderColor: lineColor,
+      data: data,
+    }]
   }
   chart.update();
   console.log('Chart updated.')
@@ -283,7 +239,9 @@ function updateChart(labels = null, data = null) {
 
 // Charts
 var ctx = document.getElementById('myChart').getContext('2d');
-var gradient = ctx.createLinearGradient(0, 0, 0, 400); gradient.addColorStop(0, 'rgba(40,175,250,.25)'); gradient.addColorStop(1, 'rgba(40,175,250,0)');
+var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+gradient.addColorStop(0, 'rgba(40,175,250,.25)');
+gradient.addColorStop(1, 'rgba(40,175,250,0)');
 //console.log(graphPlots)
 
 var chart = new Chart(ctx, {
