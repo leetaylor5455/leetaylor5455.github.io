@@ -3,7 +3,8 @@ $(document).ready(function() {
   var rates = {};
   var graphData = {
     plots: {},
-    labels: {}
+    labels: {},
+    condensedLabels: {}
   };
 
   // Date Function
@@ -131,7 +132,10 @@ $(document).ready(function() {
 
   $('#GDP').click(function() {
     graphData.labels.GDP = [];
-    graphData.plots.GDP = [[],[]]
+    graphData.plots.GDP = [
+      [],
+      []
+    ]
 
     for (var i = 0; i < 20; i++) {
       graphData.plots.GDP[0][i] = null;
@@ -140,7 +144,7 @@ $(document).ready(function() {
 
 
     $.get('js\\json\\gdphistoric.json', function(data) {
-      for (var i = data.length-20; i < data.length; i++) {
+      for (var i = data.length - 20; i < data.length; i++) {
         graphData.labels.GDP.push(data[i][0]);
       }
 
@@ -148,14 +152,14 @@ $(document).ready(function() {
       var yearsSinceBrexit = parseInt(year, 10) - 2016
 
       var beforeBrexitArray = graphData.plots.GDP[0];
-      for (var i = data.length-20; i < data.length - yearsSinceBrexit; i++) {
+      for (var i = data.length - 20; i < data.length - yearsSinceBrexit; i++) {
         // Not sure why it's i-18 but that's what works
-        beforeBrexitArray[i-18] = data[i][1];
+        beforeBrexitArray[i - 18] = data[i][1];
       }
 
       var sinceBrexitArray = graphData.plots.GDP[1];
-      for (var i = data.length - yearsSinceBrexit-1; i < data.length; i++) {
-        sinceBrexitArray[i-18] = data[i][1];
+      for (var i = data.length - yearsSinceBrexit - 1; i < data.length; i++) {
+        sinceBrexitArray[i - 18] = data[i][1];
       }
 
       // Clears datasets so that they don't build up for each click
@@ -167,42 +171,54 @@ $(document).ready(function() {
 
       function updateGDP(plotArray, labelArray, label) {
         //if (chart.data.datasets.length <= 1) {
-          if (plotArray[0] < plotArray[plotArray.length-1]) {
-            var lineColor = '#f73b3b';
-            var gradient = ctx.createLinearGradient(0, 0, 0, 600);
-            gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
-            gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
-          } else if (plotArray[0] > plotArray[plotArray.length-1]) {
-            var lineColor = '#4fc64f';
-            var gradient = ctx.createLinearGradient(0, 0, 0, 600);
-            gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
-            gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
-          }
+        if (plotArray[0] < plotArray[plotArray.length - 1]) {
+          var lineColor = '#f73b3b';
+          var gradient = ctx.createLinearGradient(0, 0, 0, 600);
+          gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
+          gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
+        } else if (plotArray[0] > plotArray[plotArray.length - 1]) {
+          var lineColor = '#4fc64f';
+          var gradient = ctx.createLinearGradient(0, 0, 0, 600);
+          gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
+          gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
+        }
 
-          chart.data.datasets.push({
-            label: label,
-            pointRadius: 0,
-            pointHitRadius: 12,
-            backgroundColor: gradient,
-            borderColor: lineColor,
-            data: plotArray,
-          });
+        chart.data.datasets.push({
+          label: label,
+          pointRadius: 0,
+          pointHitRadius: 8,
+          backgroundColor: gradient,
+          borderColor: lineColor,
+          data: plotArray,
+        });
 
-          // Updates after both datasets pushed
-          if (chart.data.datasets.length === 2) {
-            chart.update();
-            console.log('Chart updated.')
-          }
+        // Updates after both datasets pushed
+        if (chart.data.datasets.length === 2) {
+          chart.update();
+          console.log('Chart updated.')
+        }
 
 
       }
     });
   });
 
-  $('#EUR, #USD, #CHF').click(function() {
-    var currencyID = String($(this)[0].id)
+  $('#EUR').ready(function() {
+    calculateChart('EUR');
+  });
+
+  $('#USD').ready(function() {
+    calculateChart('USD');
+  });
+
+  $('#CHF').ready(function() {
+    calculateChart('CHF');
+  });
+
+  function calculateChart(currencyID) {
     graphData.plots[currencyID] = Array(23);
     graphData.labels[currencyID] = [];
+    graphData.condensedLabels[currencyID] = [];
     var startFullDate = new Date().toISOString().slice(0, 10);
     var day = startFullDate.substring(8, 10)
     var year = parseInt(startFullDate.substring(0, 4), 10)
@@ -226,11 +242,13 @@ $(document).ready(function() {
         month = i;
       }
       fullDate = year + '-' + month + '-' + day;
+      condensedDate = month + '-' + String(year).substring(2, 4);
 
+      graphData.condensedLabels[currencyID].unshift(condensedDate);
       graphData.labels[currencyID].unshift(fullDate);
     }
     getRates(currencyID);
-  });
+  };
 
   function getRates(currencyID) {
 
@@ -267,68 +285,164 @@ $(document).ready(function() {
 
       // do this once ALL the $.get requests have finished
       if (graphData.plots[currencyID][0] > graphData.plots[currencyID][23]) {
-        var lineColor = '#f73b3b';
-        var gradient = ctx.createLinearGradient(0, 600, 0, 0);
-        gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
-        gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
+        //var lineColor = '#f73b3b';
+        var lineColor = '#8d0011'
+        // var gradient = ctx.createLinearGradient(0, 600, 0, 0);
+        // gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
+        // gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
       } else if (graphData.plots[currencyID][0] < graphData.plots[currencyID][23]) {
         var lineColor = '#4fc64f';
-        var gradient = ctx.createLinearGradient(0, 0, 0, 600);
-        gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
-        gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
+        // var gradient = ctx.createLinearGradient(0, 0, 0, 600);
+        // gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
+        // gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
       }
 
-      updateChart(graphData.labels[currencyID], graphData.plots[currencyID], gradient, lineColor, currencyID);
+      updateChart(currencyID, graphData.condensedLabels[currencyID], graphData.plots[currencyID], 'rgba(0, 0, 0, 0)', lineColor, currencyID);
     });
   }
 
 
-function updateChart(labels, data, gradient, lineColor, currencyID) {
-  chart.data = {
-    labels: labels,
-    datasets: [{
-      label: currencyID,
-      pointRadius: 0,
-      pointHitRadius: 12,
-      backgroundColor: gradient,
-      borderColor: lineColor,
-      data: data,
-    }]
-  }
-  chart.update();
-  console.log('Chart updated.')
-}
-
-// Charts
-var ctx = $('.myChart')[0].getContext('2d');
-var chart = new Chart(ctx, {
-
-  type: 'line',
-
-  // data: {
-  //   labels: [],
-  //   datasets: [{
-  //     label: "None",
-  //     pointRadius: 0,
-  //     pointHitRadius: 12,
-  //     backgroundColor: '#fff',
-  //     borderColor: "#28AFFA",
-  //     data: [],
-  //   }]
-  // },
-
-  options: {
-    elements: {
-      line: {
-        tension: .2,
-      }
+  function updateChart(currencyID, labels, data, gradient, lineColor, currencyID) {
+    chart = currencyID + 'Chart';
+    eval(chart).data = {
+      labels: labels,
+      datasets: [{
+        label: currencyID,
+        pointRadius: 0,
+        pointHitRadius: 8,
+        backgroundColor: 'rgba(110, 216, 110, 0)',
+        borderColor: lineColor,
+        data: data,
+      }]
     }
+    eval(chart).update();
+    console.log('Chart updated.')
   }
+
+  // Charts
+  var EURCtx = $('#EURChart')[0].getContext('2d');
+  var EURChart = new Chart(EURCtx, {
+
+    type: 'line',
+
+    options: {
+      elements: {
+        line: {
+          tension: .2,
+        }
+      },
+      // scales: {
+      //   xAxes: [{
+      //     display: false
+      //   }],
+      //   yAxes: [{
+      //     display: false
+      //   }]
+      // },
+      legend: {
+        display: false
+      },
+    }
+  });
+
+  // Charts
+  var USDCtx = $('#USDChart')[0].getContext('2d');
+  var USDChart = new Chart(USDCtx, {
+
+    type: 'line',
+
+    options: {
+      elements: {
+        line: {
+          tension: .2,
+        }
+      },
+      // scales: {
+      //   xAxes: [{
+      //     display: false
+      //   }],
+      //   yAxes: [{
+      //     display: false
+      //   }]
+      // },
+      legend: {
+        display: false
+      },
+    }
+  });
+
+  // Charts
+  var CHFCtx = $('#CHFChart')[0].getContext('2d');
+  var CHFChart = new Chart(CHFCtx, {
+
+    type: 'line',
+
+    options: {
+      elements: {
+        line: {
+          tension: .2,
+        }
+      },
+      // scales: {
+      //   xAxes: [{
+      //     display: false
+      //   }],
+      //   yAxes: [{
+      //     display: false
+      //   }]
+      // },
+      legend: {
+        display: false
+      },
+    }
+  });
+
+
+  var cardHeight;
+  // Sets the height of the back of the card to match the image in front
+  function setBackHeight() {
+    cardHeight = $('.front').css('height');
+    console.log(cardHeight)
+    $('.back .card').css('height', cardHeight);
+    console.log($('.back .card').css('height'))
+  }
+
+  setBackHeight();
+
+  $('.card-parent').addClass('not-flipped');
+  //Swap behavior of hover with click on touch devices
+  $('.card-parent.not-flipped').click(function() {
+    $('.card-parent').addClass('flipped');
+    $(this).removeClass('not-flipped');
+  });
+
+  $('.back').click(function() {
+    console.log('back clicked');
+    $('.card-parent').removeClass('flipped');
+    $('.card-parent').addClass('not-flipped');
+  });
+  // if (Modernizr.touch) {
+  //   $('.card-parent .back').prepend('<div class="cancel-card">\X</div>');
+  //   $('.card.not-flipped').click(function() {
+  //     $('.card-parent').addClass('not-flipped');
+  //     $(this).removeClass('not-flipped');
+  //   });
+  //   $('.cancel-card').click(function(ev) {
+  //     ev.stopPropagation();
+  //     $('.card-parent').addClass('not-flipped');
+  //   });
+  // } else {
+  //   $('.card-parent').hover(function() {
+  //     $(this).toggleClass('not-flipped');
+  //   });
+  // }
+
 });
 
-
-$('.card').click(function(){
-  $(this).toggleClass('flip');
-});
-
+$(window).load(function() {
+  // On window change, recalculate the size of the box
+  window.onresize = function() {
+    setBackHeight();
+  }
+  setBackHeight();
 });

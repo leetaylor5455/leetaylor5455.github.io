@@ -26,12 +26,6 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
     <div class="container">
       <a class="navbar-brand" href="index.html"><h2 style="font-weight: bold; color: #4a4a4a; margin: 0;">Since Brexit...</h2></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
       </div>
     </div>
   </nav>
@@ -39,43 +33,54 @@
     <h4>How are things looking since the referendum?</h4>
     <div class="row">
       <div class="col" style="min-width: 250px;">
-        <div class="card mx-auto" id="EUR" style="min-width: 250px;">
-          <div class="card-body front">
-            <div class="row">
-              <div class="col"><h3 class="card-title" style="font-weight: bold; margin: 0;">GBP vs EUR</h3></div>
-              <div class="col"><h3 id="EURInd" style="text-align: right;"></h3></div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="">
-                  <div class="card-body nested-card">
-                    <p class="card-title text-muted date-title">SINCE</p>
-                    <p style="font-weight: bold;" class="dateBefore">22nd June 2016</p>
-                    <h1 class="card-text" id="EURBefore" style="font-weight: 300"></h1>
+        <div class="card-parent">
+          <div class="card-container">
+            <div class="front">
+              <div class="card mx-auto" id="EUR" style="min-width: 250px;">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col"><h3 class="card-title" style="font-weight: bold; margin: 0;">GBP vs EUR</h3></div>
+                    <div class="col"><h3 id="EURInd" style="text-align: right;"></h3></div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="">
+                        <div class="card-body nested-card">
+                          <p class="card-title text-muted date-title">SINCE</p>
+                          <p style="font-weight: bold;" class="dateBefore">22nd June 2016</p>
+                          <h1 class="card-text" id="EURBefore" style="font-weight: 300"></h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="">
+                        <div class="card-body nested-card">
+                          <p class="card-title text-muted date-title">TODAY</p>
+                          <p style="font-weight: bold;" class="dateNow"></p>
+                          <h1 class="card-text" id="EURNow" style="font-weight: 300;"></h1>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <p class="card-bottom-text">Source ⟲</p>
+                    </div>
+                    <div class="col align-self-end">
+                      <p class="card-bottom-text" id="EURChange"></p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col">
-                <div class="">
-                  <div class="card-body nested-card">
-                    <p class="card-title text-muted date-title">TODAY</p>
-                    <p style="font-weight: bold;" class="dateNow"></p>
-                    <h1 class="card-text" id="EURNow" style="font-weight: 300;"></h1>
-                  </div>
+                <div class="card-body no-side-padding">
+                  <canvas id="EURChart" width=window.innerWidth height="90"></canvas>
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <p class="card-bottom-text">Source ⟲</p>
-              </div>
-              <div class="col align-self-end">
-                <p class="card-bottom-text" id="EURChange"></p>
+            <div class="back">
+              <div class="card">
+                some stuff
               </div>
             </div>
-          </div>
-          <div class="card-body back">
-            <canvas class="myChart"></canvas>
           </div>
         </div>
       </div>
@@ -115,6 +120,9 @@
               </div>
             </div>
           </div>
+          <div class="card-body no-side-padding">
+            <canvas id="USDChart" width=window.innerWidth height="90"></canvas>
+          </div>
         </div>
       </div>
       <div class="col" style="min-width: 250px;">
@@ -152,6 +160,9 @@
                 <p class="card-bottom-text" id="CHFChange"></p>
               </div>
             </div>
+          </div>
+          <div class="card-body no-side-padding">
+            <canvas id="CHFChart" width=window.innerWidth height="90"></canvas>
           </div>
         </div>
       </div>
