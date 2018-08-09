@@ -49,7 +49,7 @@ $(document).ready(function() {
 
     $.get("js\\json\\rates.json", function(returnedVals) {
       rates[accessor] = returnedVals.rates[id].toFixed(2);
-      console.log(id + " Rate: ", rates[accessor]);
+      //console.log(id + " Rate: ", rates[accessor]);
       var jqueryID = '#' + id + 'Now';
       if (id == 'Unemploy') {
         $(jqueryID).text(rates[accessor] + symbol);
@@ -83,7 +83,7 @@ $(document).ready(function() {
 
     var jqueryID = '#' + id + 'Change';
     var indicator = '#' + id + 'Ind'
-    console.log(indicator)
+
     var returnedCalc = changeCalc(rates[beforeAccessor], rates[nowAccessor], $('#' + id), symbol)
     $(jqueryID).text(returnedCalc[0]);
     $(indicator).text(returnedCalc[1]);
@@ -188,7 +188,7 @@ $(document).ready(function() {
             data: plotArray,
           });
 
-          // No need to update twice
+          // Updates after both datasets pushed
           if (chart.data.datasets.length === 2) {
             chart.update();
             console.log('Chart updated.')
@@ -242,20 +242,18 @@ $(document).ready(function() {
       //console.log('i: ' + i);
 
       // need to use an immediately invoked function expression (IIFE) so the value of i is
-      //  copied into the promise.then callback - otherwise the value of i is always the
-      //  last value in the loop
+      // copied into the promise.then callback - otherwise the value of i is always the
+      // last value in the loop
       (function(dataPlotIndex) {
-        //console.log('dataPlotIndex: ' + dataPlotIndex);
 
         var getPromise = $.get({
           url: url
         }).then(function(data) {
 
           // place the data in the exact index in the plots array so it marries up with the label
-          //graphData.plots.EUR.splice(i, 0, data.rates.EUR);
           graphData.plots[currencyID][dataPlotIndex] = data.rates[currencyID];
 
-          // update the label if the API has picked a different date?
+          // update the label if the API has picked a different date
           graphData.labels[currencyID][dataPlotIndex] = data.date;
 
         });
@@ -301,39 +299,24 @@ function updateChart(labels, data, gradient, lineColor, currencyID) {
   console.log('Chart updated.')
 }
 
-
-
-// $.get('https://api.ons.gov.uk/dataset/BB/timeseries/MGSC/data', function(data) {
-//   for (var i = data.years.length-1; i > data.years.length - 21; i--) {
-//     //console.log(data.years[i].date)
-//   }
-// })
-
 // Charts
-var ctx = document.getElementById('myChart').getContext('2d');
-var gradient = ctx.createLinearGradient(0, 0, 0, 400);
-gradient.addColorStop(0, 'rgba(40,175,250,.25)');
-gradient.addColorStop(1, 'rgba(40,175,250,0)');
-//console.log(graphPlots)
-
+var ctx = $('.myChart')[0].getContext('2d');
 var chart = new Chart(ctx, {
-  // The type of chart we want to create
+
   type: 'line',
 
-  // The data for our dataset
-  data: {
-    labels: [],
-    datasets: [{
-      label: "None",
-      pointRadius: 0,
-      pointHitRadius: 12,
-      backgroundColor: gradient,
-      borderColor: "#28AFFA",
-      data: [],
-    }]
-  },
+  // data: {
+  //   labels: [],
+  //   datasets: [{
+  //     label: "None",
+  //     pointRadius: 0,
+  //     pointHitRadius: 12,
+  //     backgroundColor: '#fff',
+  //     borderColor: "#28AFFA",
+  //     data: [],
+  //   }]
+  // },
 
-  // Configuration options go here
   options: {
     elements: {
       line: {
@@ -342,6 +325,7 @@ var chart = new Chart(ctx, {
     }
   }
 });
+
 
 $('.card').click(function(){
   $(this).toggleClass('flip');

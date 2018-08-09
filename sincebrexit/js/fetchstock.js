@@ -6,20 +6,24 @@ var data = {
   }
 }
 
-const urlp1 = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='
-const urlp2 = '&interval=1min&apikey=4UNX47U1RYIW8QVQ'
+const companiesArray = ['AAL', 'ABF', 'ADM', 'AHT', 'ANTO', 'AV', 'AZN', 'BA', 'BARC', 'BATS', 'BDEV', 'BKG', 'BLND', 'BLT', 'BNZL', 'BP', 'BRBY', 'BT', 'CCH', 'CCL', 'CNA', 'CPG', 'CRDA', 'CRH', 'DCC', 'DGE', 'DLG', 'EVR', 'EXPN', 'EZJ', 'FERG', 'FRES', 'GLEN', 'GSK', 'GVC', 'HL', 'HLMA', 'HSBA', 'IAG', 'IHG', 'III', 'IMB', 'INF', 'ITRK', 'ITV', 'JE', 'JMAT', 'KGF', 'LAND', 'LGEN', 'LLOY', 'LSE', 'MCRO', 'MKS', 'MNDI', 'MRO', 'MRW', 'NG', 'NMC', 'NXT', 'OCDO', 'PPB', 'PRU', 'PSN', 'PSON', 'RB', 'RBS', 'RDSA', 'REL', 'RIO', 'RMG', 'RMV', 'RR', 'RSA', 'RTO', 'SBRY', 'SDR', 'SGE', 'SGRO', 'SHP', 'SKG', 'SKY', 'SLA', 'SMDS', 'SMIN', 'SMT', 'SN', 'SSE', 'STAN', 'STJ', 'SVT', 'TSCO', 'TUI', 'TW', 'ULVR', 'UU', 'VOD', 'WPP', 'WTB'];
 
-function urlBuilder(symbol) {
-  return urlp1 + symbol + urlp2;
-}
+var ftse100total = 0;
+let url;
+const urlp1 = 'https://api.iextrading.com/1.0/stock/'
+const urlp2 = '/price'
 
-const ftse100Sym = 'UKX'
-const ftse250Sym = 'MCX'
 
 //getStockRate(urlBuilder(ftse100Sym));
 //getStockRate(urlBuilder(ftse250Sym));
 
-getStockRate(urlBuilder('UKX'));
+for (var i = 0; i < companiesArray.length-1; i++) {
+  url = urlp1 + companiesArray[i] + urlp2;
+  getStockRate(url);
+}
+
+
+
 
 function getStockRate(url) {
   https.get(url, (res) => {
@@ -50,11 +54,11 @@ function getStockRate(url) {
     });
     res.on('end', () => {
       try {
-        const parsedData = JSON.parse(rawData);
-        var timeIndex = parsedData["Meta Data"]['3. Last Refreshed'];
-        var stockVal = parsedData["Time Series (1min)"][timeIndex]['4. close'];
-        data.rates.FSTE100 = parseFloat(stockVal)
-        writeToFile(data);
+        const parsedData = JSON.parse(rawData)
+        // Key code here
+        console.log(parsedData)
+        ftse100total += parsedData;
+
       } catch (e) {
         console.error(e.message);
       }
