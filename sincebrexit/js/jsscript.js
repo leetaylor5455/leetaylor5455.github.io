@@ -3,14 +3,16 @@ $(document).ready(function() {
   var rates = {};
   var graphData = {
     plots: {},
+    urlDates: {},
     labels: {},
-    condensedLabels: {}
+    testLabels: {}
   };
 
   // Date Function
   const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
+
 
   var d = new Date();
 
@@ -128,14 +130,12 @@ $(document).ready(function() {
   updateRatesNow('CHF', ' ₣');
   updateRatesNow('GDP', ' $');
   updateRatesNow('Unemploy', '% ');
-  updateRatesNow('FTSE100', ' $')
+  updateRatesNow('FTSE100', ' $');
 
-  $('#GDP').click(function() {
-    graphData.labels.GDP = [];
-    graphData.plots.GDP = [
-      [],
-      []
-    ]
+
+  $('#GDP').ready(function() {
+    graphData.urlDates.GDP = [];
+    graphData.plots.GDP = [[],[]];
 
     for (var i = 0; i < 20; i++) {
       graphData.plots.GDP[0][i] = null;
@@ -145,7 +145,7 @@ $(document).ready(function() {
 
     $.get('js\\json\\gdphistoric.json', function(data) {
       for (var i = data.length - 20; i < data.length; i++) {
-        graphData.labels.GDP.push(data[i][0]);
+        graphData.urlDates.GDP.push(data[i][0]);
       }
 
       // So it still works when its 2019, 2020 etc
@@ -154,47 +154,50 @@ $(document).ready(function() {
       var beforeBrexitArray = graphData.plots.GDP[0];
       for (var i = data.length - 20; i < data.length - yearsSinceBrexit; i++) {
         // Not sure why it's i-18 but that's what works
-        beforeBrexitArray[i - 18] = data[i][1];
+        beforeBrexitArray[i - 18] = ((data[i][1])/1000).toFixed(2);
       }
 
       var sinceBrexitArray = graphData.plots.GDP[1];
       for (var i = data.length - yearsSinceBrexit - 1; i < data.length; i++) {
-        sinceBrexitArray[i - 18] = data[i][1];
+        sinceBrexitArray[i - 18] = ((data[i][1])/1000).toFixed(2);
       }
 
       // Clears datasets so that they don't build up for each click
-      chart.data.datasets = []
-      chart.data.labels = graphData.labels.GDP
+      GDPChart.data.datasets = []
+      for (var i = 0; i < graphData.urlDates.GDP.length; i++) {
+        GDPChart.data.labels.push(parseInt(graphData.urlDates.GDP[i].substring(0, 4), 10) + 1)
+      }
+      //GDPChart.data.labels = graphData.urlDates.GDP
 
-      updateGDP(beforeBrexitArray, graphData.labels.GDP, 'GDP Before Referendum')
-      updateGDP(sinceBrexitArray, graphData.labels.GDP, 'GDP Since Referendum')
+      updateGDP(beforeBrexitArray, graphData.urlDates.GDP, 'GDP Before Referendum')
+      updateGDP(sinceBrexitArray, graphData.urlDates.GDP, 'GDP Since Referendum')
 
       function updateGDP(plotArray, labelArray, label) {
         //if (chart.data.datasets.length <= 1) {
         if (plotArray[0] < plotArray[plotArray.length - 1]) {
-          var lineColor = '#f73b3b';
-          var gradient = ctx.createLinearGradient(0, 0, 0, 600);
-          gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
-          gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
+          var lineColor = '#8d0011'
+          // var gradient = ctx.createLinearGradient(0, 0, 0, 600);
+          // gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
+          // gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
         } else if (plotArray[0] > plotArray[plotArray.length - 1]) {
-          var lineColor = '#4fc64f';
-          var gradient = ctx.createLinearGradient(0, 0, 0, 600);
-          gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
-          gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
+          var lineColor = '#0caf19';
+          // var gradient = ctx.createLinearGradient(0, 0, 0, 600);
+          // gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
+          // gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
         }
 
-        chart.data.datasets.push({
+        GDPChart.data.datasets.push({
           label: label,
           pointRadius: 0,
           pointHitRadius: 8,
-          backgroundColor: gradient,
+          backgroundColor: 'rgba(0, 0, 0, 0)',
           borderColor: lineColor,
           data: plotArray,
         });
 
         // Updates after both datasets pushed
-        if (chart.data.datasets.length === 2) {
-          chart.update();
+        if (GDPChart.data.datasets.length === 2) {
+          GDPChart.update();
           console.log('Chart updated.')
         }
 
@@ -217,36 +220,35 @@ $(document).ready(function() {
 
   function calculateChart(currencyID) {
     graphData.plots[currencyID] = Array(23);
+    graphData.urlDates[currencyID] = [];
     graphData.labels[currencyID] = [];
-    graphData.condensedLabels[currencyID] = [];
     var startFullDate = new Date().toISOString().slice(0, 10);
     var day = startFullDate.substring(8, 10)
     var year = parseInt(startFullDate.substring(0, 4), 10)
     var startMonth = parseInt(startFullDate.substring(5, 7), 10)
 
-    // Creates the dates used for url and chart labels
-    for (var i = startMonth; i > startMonth - 24; i--) {
-      if (i < 1) {
-        if (i <= -12) {
-          month = 24 + i;
-        } else {
-          month = 12 + i;
-        }
-        if (month === 0) {
-          month = 12;
-        }
-        if (month === 12) {
-          year -= 1;
-        }
-      } else {
-        month = i;
-      }
-      fullDate = year + '-' + month + '-' + day;
-      condensedDate = month + '-' + String(year).substring(2, 4);
 
-      graphData.condensedLabels[currencyID].unshift(condensedDate);
-      graphData.labels[currencyID].unshift(fullDate);
+    var todayDate = new Date();
+    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    var firstDate = new Date('2016-06-22');
+
+    // Difference between today and referendum in days
+    var diffDays = Math.round(Math.abs((firstDate.getTime() - todayDate.getTime())/(oneDay)));
+    // Works out even day interval for 20 rates since referendum
+    var dayInterval = Math.round(diffDays/19);
+
+    // Makes todayDate one interval ahead so it returns today's date in the first loop iteration
+    todayDate = new Date(todayDate.setDate(todayDate.getDate() + dayInterval))
+    graphData.testLabels.test = [];
+
+    for (var i = 0; i < 20; i++) {
+      graphData.urlDates[currencyID].unshift(new Date(todayDate.setDate(todayDate.getDate() - dayInterval)).toISOString().slice(0, 10));
     }
+
+    for (var i = 0; i < 20; i++) {
+      graphData.labels[currencyID].push(graphData.urlDates[currencyID][i].substring(5, 7) + '-' + graphData.urlDates[currencyID][i].substring(2, 4));
+    }
+
     getRates(currencyID);
   };
 
@@ -254,8 +256,8 @@ $(document).ready(function() {
 
     var getPromises = [];
 
-    for (var i = 0; i <= 23; i++) {
-      var url = 'https://exchangeratesapi.io/api/' + graphData.labels[currencyID][i] + '?base=GBP';
+    for (var i = 0; i < 20; i++) {
+      var url = 'https://exchangeratesapi.io/api/' + graphData.urlDates[currencyID][i] + '?base=GBP';
 
       //console.log('i: ' + i);
 
@@ -272,7 +274,7 @@ $(document).ready(function() {
           graphData.plots[currencyID][dataPlotIndex] = data.rates[currencyID];
 
           // update the label if the API has picked a different date
-          graphData.labels[currencyID][dataPlotIndex] = data.date;
+          graphData.urlDates[currencyID][dataPlotIndex] = data.date;
 
         });
 
@@ -284,20 +286,20 @@ $(document).ready(function() {
     Promise.all(getPromises).then(function() {
 
       // do this once ALL the $.get requests have finished
-      if (graphData.plots[currencyID][0] > graphData.plots[currencyID][23]) {
+      if (graphData.plots[currencyID][0] > graphData.plots[currencyID][19]) {
         //var lineColor = '#f73b3b';
         var lineColor = '#8d0011'
         // var gradient = ctx.createLinearGradient(0, 600, 0, 0);
         // gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
         // gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
-      } else if (graphData.plots[currencyID][0] < graphData.plots[currencyID][23]) {
+      } else if (graphData.plots[currencyID][0] < graphData.plots[currencyID][19]) {
         var lineColor = '#4fc64f';
         // var gradient = ctx.createLinearGradient(0, 0, 0, 600);
         // gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
         // gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
       }
 
-      updateChart(currencyID, graphData.condensedLabels[currencyID], graphData.plots[currencyID], 'rgba(0, 0, 0, 0)', lineColor, currencyID);
+      updateChart(currencyID, graphData.labels[currencyID], graphData.plots[currencyID], 'rgba(0, 0, 0, 0)', lineColor, currencyID);
     });
   }
 
@@ -319,6 +321,29 @@ $(document).ready(function() {
     console.log('Chart updated.')
   }
 
+  var showScales = true;
+  var scalesObj = {};
+
+  if (showScales === true) {
+    scalesObj = {
+      yAxes: [{
+        ticks: {
+          autoSkip: true,
+          maxTicksLimit: 3
+        }
+      }]
+    }
+  } else {
+    scalesObj = {
+      xAxes: [{
+        display: false
+      }],
+      yAxes: [{
+        display: false
+      }]
+    }
+  }
+
   // Charts
   var EURCtx = $('#EURChart')[0].getContext('2d');
   var EURChart = new Chart(EURCtx, {
@@ -331,14 +356,7 @@ $(document).ready(function() {
           tension: .2,
         }
       },
-      // scales: {
-      //   xAxes: [{
-      //     display: false
-      //   }],
-      //   yAxes: [{
-      //     display: false
-      //   }]
-      // },
+      scales: scalesObj,
       legend: {
         display: false
       },
@@ -357,14 +375,7 @@ $(document).ready(function() {
           tension: .2,
         }
       },
-      // scales: {
-      //   xAxes: [{
-      //     display: false
-      //   }],
-      //   yAxes: [{
-      //     display: false
-      //   }]
-      // },
+      scales: scalesObj,
       legend: {
         display: false
       },
@@ -383,14 +394,26 @@ $(document).ready(function() {
           tension: .2,
         }
       },
-      // scales: {
-      //   xAxes: [{
-      //     display: false
-      //   }],
-      //   yAxes: [{
-      //     display: false
-      //   }]
-      // },
+      scales: scalesObj,
+      legend: {
+        display: false
+      },
+    }
+  });
+
+  // Charts
+  var GDPCtx = $('#GDPChart')[0].getContext('2d');
+  var GDPChart = new Chart(GDPCtx, {
+
+    type: 'line',
+
+    options: {
+      elements: {
+        line: {
+          tension: .2,
+        }
+      },
+      scales: scalesObj,
       legend: {
         display: false
       },
@@ -398,51 +421,51 @@ $(document).ready(function() {
   });
 
 
-  var cardHeight;
-  // Sets the height of the back of the card to match the image in front
-  function setBackHeight() {
-    cardHeight = $('.front').css('height');
-    console.log(cardHeight)
-    $('.back .card').css('height', cardHeight);
-    console.log($('.back .card').css('height'))
-  }
-
-  setBackHeight();
-
-  $('.card-parent').addClass('not-flipped');
-  //Swap behavior of hover with click on touch devices
-  $('.card-parent.not-flipped').click(function() {
-    $('.card-parent').addClass('flipped');
-    $(this).removeClass('not-flipped');
-  });
-
-  $('.back').click(function() {
-    console.log('back clicked');
-    $('.card-parent').removeClass('flipped');
-    $('.card-parent').addClass('not-flipped');
-  });
-  // if (Modernizr.touch) {
-  //   $('.card-parent .back').prepend('<div class="cancel-card">\X</div>');
-  //   $('.card.not-flipped').click(function() {
-  //     $('.card-parent').addClass('not-flipped');
-  //     $(this).removeClass('not-flipped');
-  //   });
-  //   $('.cancel-card').click(function(ev) {
-  //     ev.stopPropagation();
-  //     $('.card-parent').addClass('not-flipped');
-  //   });
-  // } else {
-  //   $('.card-parent').hover(function() {
-  //     $(this).toggleClass('not-flipped');
-  //   });
-  // }
-
-});
-
-$(window).load(function() {
-  // On window change, recalculate the size of the box
-  window.onresize = function() {
-    setBackHeight();
-  }
-  setBackHeight();
+//   var cardHeight;
+//   // Sets the height of the back of the card to match the image in front
+//   function setBackHeight() {
+//     cardHeight = $('.front').css('height');
+//     console.log(cardHeight)
+//     $('.back .card').css('height', cardHeight);
+//     console.log($('.back .card').css('height'))
+//   }
+//
+//   setBackHeight();
+//
+//   $('.card-parent').addClass('not-flipped');
+//   //Swap behavior of hover with click on touch devices
+//   $('.card-parent.not-flipped').click(function() {
+//     $('.card-parent').addClass('flipped');
+//     $(this).removeClass('not-flipped');
+//   });
+//
+//   $('.back').click(function() {
+//     console.log('back clicked');
+//     $('.card-parent').removeClass('flipped');
+//     $('.card-parent').addClass('not-flipped');
+//   });
+//   if (Modernizr.touch) {
+//     $('.card-parent .back').prepend('<div class="cancel-card">\X</div>');
+//     $('.card.not-flipped').click(function() {
+//       $('.card-parent').addClass('not-flipped');
+//       $(this).removeClass('not-flipped');
+//     });
+//     $('.cancel-card').click(function(ev) {
+//       ev.stopPropagation();
+//       $('.card-parent').addClass('not-flipped');
+//     });
+//   } else {
+//     $('.card-parent').hover(function() {
+//       $(this).toggleClass('not-flipped');
+//     });
+//   }
+//
+// });
+//
+// $(window).load(function() {
+//   // On window change, recalculate the size of the box
+//   window.onresize = function() {
+//     setBackHeight();
+//   }
+//   setBackHeight();
 });
