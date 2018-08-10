@@ -12,9 +12,14 @@ h2 {
 }
 
 .content {
-  padding-top: 2em;
+  padding-top: 1em;
+  padding-bottom: 50px;
   background-color: #F8F8F8 !important;
   /* padding-bottom: 4em; */
+}
+
+.title-text {
+  padding-top: 1em;
 }
 
 .card:not(.nested-card) {
@@ -79,9 +84,24 @@ footer {
   font-size: 14px;
 }
 
-footer a:link {
+footer a:link, footer a:visited {
+  float: right;
   color: inherit;
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 500px) {
+  /* .title-text {
+    display: none;
+  } */
+  .content {
+    padding-top: 0;
+  }
+  footer a:link, footer a:visited {
+    float: left;
+    color: inherit;
+    text-decoration: underline;
+  }
 }
 
 .card-container {

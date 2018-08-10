@@ -87,9 +87,12 @@ $(document).ready(function() {
     var jqueryID = '#' + id + 'Change';
     var indicator = '#' + id + 'Ind'
 
-    var returnedCalc = changeCalc(rates[beforeAccessor], rates[nowAccessor], $('#' + id), symbol)
+    var returnedCalc = changeCalc(rates[beforeAccessor], rates[nowAccessor], $('#' + id), symbol);
+
     $(jqueryID).text(returnedCalc[0]);
     $(indicator).text(returnedCalc[1]);
+
+
 
 
     function changeCalc(rateBefore, rateNow, changer, symbol) {
@@ -383,7 +386,7 @@ $(document).ready(function() {
   });
 
   // Charts
-  var CHFCtx = $('#CHFChart')[0].getContext('2d');
+  /*var CHFCtx = $('#CHFChart')[0].getContext('2d');
   var CHFChart = new Chart(CHFCtx, {
 
     type: 'line',
@@ -399,7 +402,7 @@ $(document).ready(function() {
         display: false
       },
     }
-  });
+  });*/
 
   // Charts
   var GDPCtx = $('#GDPChart')[0].getContext('2d');
