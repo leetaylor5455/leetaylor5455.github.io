@@ -156,7 +156,7 @@ $(document).ready(function() {
   updateRatesNow('CHF', ' ₣');
   updateRatesNow('GDP', ' $');
   updateRatesNow('Unemploy', '% ');
-  updateRatesNow('FTSE100', ' $');
+  updateRatesNow('FTSE100', ' ');
 
 
   $('#GDP').ready(function() {
