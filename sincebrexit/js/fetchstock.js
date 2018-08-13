@@ -3,6 +3,7 @@ const fs = require('fs');
 
 var data = {
   rates: {
+    FTSE100: 7625.60
   }
 }
 
@@ -17,13 +18,10 @@ const urlp2 = '/price'
 //getStockRate(urlBuilder(ftse100Sym));
 //getStockRate(urlBuilder(ftse250Sym));
 
-for (var i = 0; i < companiesArray.length-1; i++) {
-  url = urlp1 + companiesArray[i] + urlp2;
-  getStockRate(url);
-}
-
-
-
+// for (var i = 0; i < companiesArray.length-1; i++) {
+//   url = urlp1 + companiesArray[i] + urlp2;
+//   getStockRate(url);
+// }
 
 function getStockRate(url) {
   https.get(url, (res) => {
@@ -68,7 +66,7 @@ function getStockRate(url) {
   });
 }
 
-//writeToFile(data)
+writeToFile(data)
 
 
 // writes currency rates to a file

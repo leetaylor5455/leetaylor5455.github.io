@@ -1,11 +1,17 @@
 $(document).ready(function() {
 
+  // $('.grid').masonry({
+  //   // options
+  //   itemSelector: '.grid-item',
+  //   columnWidth: '.grid-sizer',
+  //   percentPosition: true
+  // });
+
   var rates = {};
   var graphData = {
     plots: {},
     urlDates: {},
     labels: {},
-    testLabels: {}
   };
 
   // Date Function
@@ -30,8 +36,9 @@ $(document).ready(function() {
     var dateIndex = 1;
   }
 
-
-  if (day.charAt(dateIndex) == 1) {
+  if (parseInt(day, 10) > 10 && parseInt(day, 10) < 20) {
+    day = day + "th ";
+  } else if (day.charAt(dateIndex) == 1) {
     day = day + "st ";
   } else if (day.charAt(dateIndex) == 2) {
     day = day + "nd ";
@@ -91,6 +98,22 @@ $(document).ready(function() {
 
     $(jqueryID).text(returnedCalc[0]);
     $(indicator).text(returnedCalc[1]);
+
+    if (returnedCalc[1] === ' ▲') {
+      if (id == 'Unemploy') {
+        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
+      } else {
+        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
+      }
+
+    } else {
+      if (id == 'Unemploy') {
+        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
+      } else {
+        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
+      }
+
+    }
 
 
 
@@ -217,9 +240,9 @@ $(document).ready(function() {
     calculateChart('USD');
   });
 
-  $('#CHF').ready(function() {
-    calculateChart('CHF');
-  });
+  // $('#CHF').ready(function() {
+  //   calculateChart('CHF');
+  // });
 
   function calculateChart(currencyID) {
     graphData.plots[currencyID] = Array(23);
@@ -242,7 +265,7 @@ $(document).ready(function() {
 
     // Makes todayDate one interval ahead so it returns today's date in the first loop iteration
     todayDate = new Date(todayDate.setDate(todayDate.getDate() + dayInterval))
-    graphData.testLabels.test = [];
+
 
     for (var i = 0; i < 20; i++) {
       graphData.urlDates[currencyID].unshift(new Date(todayDate.setDate(todayDate.getDate() - dayInterval)).toISOString().slice(0, 10));
@@ -251,6 +274,8 @@ $(document).ready(function() {
     for (var i = 0; i < 20; i++) {
       graphData.labels[currencyID].push(graphData.urlDates[currencyID][i].substring(5, 7) + '-' + graphData.urlDates[currencyID][i].substring(2, 4));
     }
+
+    graphData.urlDates[currencyID][0] = '2016-06-22';
 
     getRates(currencyID);
   };

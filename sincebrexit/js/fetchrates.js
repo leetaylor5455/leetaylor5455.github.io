@@ -71,8 +71,10 @@ function getData(url, type) {
 
 // writes currency rates to a file
 function writeToFile(dataObj) {
+  ratesJSON = fs.readFileSync("json\\rates.json");
   let dataJSON = JSON.stringify(dataObj, null, 2);
-  fs.writeFile('json\\rates.json', dataJSON, (err) => {
+  ratesJSON.rates = dataJSON;
+  fs.writeFile('json\\rates.json', ratesJSON, (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
 
