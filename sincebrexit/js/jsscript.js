@@ -282,38 +282,9 @@ $(document).ready(function() {
 
   function getRates(currencyID) {
 
-    var getPromises = [];
-
-    for (var i = 0; i < 20; i++) {
-      var url = 'https://exchangeratesapi.io/api/' + graphData.urlDates[currencyID][i] + '?base=GBP';
-
-      //console.log('i: ' + i);
-
-      // need to use an immediately invoked function expression (IIFE) so the value of i is
-      // copied into the promise.then callback - otherwise the value of i is always the
-      // last value in the loop
-      (function(dataPlotIndex) {
-
-        var getPromise = $.get({
-          url: url
-        }).then(function(data) {
-
-          // place the data in the exact index in the plots array so it marries up with the label
-          graphData.plots[currencyID][dataPlotIndex] = data.rates[currencyID];
-
-          // update the label if the API has picked a different date
-          graphData.urlDates[currencyID][dataPlotIndex] = data.date;
-
-        });
-
-        getPromises.push(getPromise);
-      })(i);
-
-    }
-
-    Promise.all(getPromises).then(function() {
-
-      // do this once ALL the $.get requests have finished
+    $.get('js\\json\\ratestest.json', function(data) {
+      graphData.plots[currencyID] = data[currencyID];
+    }).then(function() {
       if (graphData.plots[currencyID][0] > graphData.plots[currencyID][19]) {
         //var lineColor = '#f73b3b';
         var lineColor = '#8d0011'
