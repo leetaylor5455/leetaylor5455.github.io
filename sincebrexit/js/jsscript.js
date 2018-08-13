@@ -14,6 +14,8 @@ $(document).ready(function() {
     labels: {},
   };
 
+  var compareIndex = 0;
+
   // Date Function
   const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -317,6 +319,24 @@ $(document).ready(function() {
       }]
     }
     eval(chart).update();
+    if (compareIndex === 0) {
+      lineColor = '#42bcf4';
+      backgroundColor = 'rgba(66, 188, 244, .2)';
+    } else {
+      lineColor = '#f48041';
+      backgroundColor = 'rgba(244, 128, 65, .2)';
+    }
+    compareChart.data.labels = labels;
+    compareChart.data.datasets.push({
+      label: currencyID + ' vs GBP',
+      pointRadius: 0,
+      pointHitRadius: 8,
+      backgroundColor: backgroundColor,
+      borderColor: lineColor,
+      data: data,
+    })
+    compareIndex++;
+    compareChart.update();
     console.log('Chart updated.')
   }
 
@@ -362,7 +382,7 @@ $(document).ready(function() {
     }
   });
 
-  // Charts
+
   var USDCtx = $('#USDChart')[0].getContext('2d');
   var USDChart = new Chart(USDCtx, {
 
@@ -381,7 +401,7 @@ $(document).ready(function() {
     }
   });
 
-  // Charts
+
   /*var CHFCtx = $('#CHFChart')[0].getContext('2d');
   var CHFChart = new Chart(CHFCtx, {
 
@@ -400,7 +420,7 @@ $(document).ready(function() {
     }
   });*/
 
-  // Charts
+
   var GDPCtx = $('#GDPChart')[0].getContext('2d');
   var GDPChart = new Chart(GDPCtx, {
 
@@ -415,6 +435,26 @@ $(document).ready(function() {
       scales: scalesObj,
       legend: {
         display: false
+      },
+    }
+  });
+
+  var compareCtx = $('#compareChart')[0].getContext('2d');
+  var compareChart = new Chart(compareCtx, {
+
+    type: 'line',
+
+    data: {},
+
+    options: {
+      elements: {
+        line: {
+          tension: .2,
+        }
+      },
+      scales: scalesObj,
+      legend: {
+        display: true
       },
     }
   });
