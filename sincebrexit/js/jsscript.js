@@ -282,7 +282,7 @@ $(document).ready(function() {
 
   function getRates(currencyID) {
 
-    $.get('js\\json\\ratestest.json', function(data) {
+    $.get('js\\json\\chartrates.json', function(data) {
       graphData.plots[currencyID] = data[currencyID];
     }).then(function() {
       if (graphData.plots[currencyID][0] > graphData.plots[currencyID][19]) {

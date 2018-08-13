@@ -34,8 +34,8 @@
   </nav>
   <div class="content">
     <div class="container" style="padding-bottom: 1rem;">
-      <h2 class="title-text">How are things looking since the referendum?</h2>
-      <p class="title-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <h1 class="title-text">Effects of Brexit on the UK economy</h1>
+      <p class="title-text">What does the UK economy look like after Brexit? The effect of Brexit on exchange rates and the value of the pound, as well as other economic measures like GDP and unemployment, is all shown in the cards and graphs below.</p>
       <div class="card-columns">
 
         <!-- EUR Rate Card -->
@@ -128,46 +128,6 @@
           </div>
         </div>
 
-        <!-- Unemployment Rate Card -->
-        <div class="card mx-auto" id="Unemploy" style="min-width: 250px;">
-          <div class="card-body">
-            <div class="row">
-              <div class="col">
-                <h3 class="card-title" style="font-weight: bold; margin: 0;">UK Unemployment</h3></div>
-              <div class="col">
-                <h3 id="UnemployInd" style="text-align: right;"></h3></div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="">
-                  <div class="card-body nested-card">
-                    <p class="card-title text-muted date-title">SINCE</p>
-                    <p style="font-weight: bold;" class="dateBefore">22nd June 2016</p>
-                    <h1 class="card-text" id="UnemployBefore" style="font-weight: 300"></h1>
-                  </div>
-                </div>
-              </div>
-              <div class="col">
-                <div class="">
-                  <div class="card-body nested-card">
-                    <p class="card-title text-muted date-title">TODAY</p>
-                    <p style="font-weight: bold;" class="dateNow"></p>
-                    <h1 class="card-text" id="UnemployNow" style="font-weight: 300"></h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <p class="card-bottom-text"><a href="https://exchangeratesapi.io">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
-              </div>
-              <div class="col align-self-end">
-                <p class="card-bottom-text" id="UnemployChange"></p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- UK GDP Card -->
         <div class="card mx-auto" id="GDP" style="min-width: 250px;">
           <div class="card-body">
@@ -253,13 +213,54 @@
             </div>
           </div>
         </div>
+
+        <!-- Unemployment Rate Card -->
+        <div class="card mx-auto" id="Unemploy" style="min-width: 250px;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h3 class="card-title" style="font-weight: bold; margin: 0;">UK Unemployment</h3></div>
+              <div class="col">
+                <h3 id="UnemployInd" style="text-align: right;"></h3></div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="">
+                  <div class="card-body nested-card">
+                    <p class="card-title text-muted date-title">SINCE</p>
+                    <p style="font-weight: bold;" class="dateBefore">22nd June 2016</p>
+                    <h1 class="card-text" id="UnemployBefore" style="font-weight: 300"></h1>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="">
+                  <div class="card-body nested-card">
+                    <p class="card-title text-muted date-title">TODAY</p>
+                    <p style="font-weight: bold;" class="dateNow"></p>
+                    <h1 class="card-text" id="UnemployNow" style="font-weight: 300"></h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p class="card-bottom-text"><a href="https://developer.ons.gov.uk/office-for-national-statistics-api/reference">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
+              </div>
+              <div class="col align-self-end">
+                <p class="card-bottom-text" id="UnemployChange"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
   <footer>
     <div class="container">
       <div class="row">
-        <div class="col" style="min-width: 250px;"><p>Some disclaimer text Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione laboriosam nesciunt aliquid aspernatur voluptate possimus nulla eum cupiditate, veniam porro modi cum harum nam optio, qui a perferendis id hic!</p></div>
+        <div class="col" style="min-width: 250px;"><p>For the most up to date information on the impact of Brexit on the UK, check back here at SinceBrexit – we always have the latest data on Brexit’s economic impact, including GDP after Brexit, Brexit’s effect on employment and the latest on the post-Brexit value of the pound.</p></div>
         <div class="col" style="min-width: 250px;"><a href="#">A link to somewhere</a></div>
       </div>
     </div>
