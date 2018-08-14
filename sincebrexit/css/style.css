@@ -86,6 +86,7 @@ nav {
 
 .date-title {
   font-size: 12px;
+  color: #666;
 }
 
 .rate-down:not(.dateBefore) {
