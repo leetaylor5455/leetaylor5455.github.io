@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <link rel="manifest" href="js/site.webmanifest">
+  <link rel="manifest" href="manifest.json">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="For the most up to date information on the impact of Brexit on the UK, check back here at SinceBrexit – we always have the latest data on Brexit’s economic impact">
@@ -280,5 +280,10 @@
 </body>
 
 <script src="js\jsscript.js"></script>
+<script>
+navigator.serviceWorker && navigator.serviceWorker.register('./sw.js').then(function(registration) {
+  console.log('Excellent, registered with scope: ', registration.scope);
+});
+</script>
 
 </html>

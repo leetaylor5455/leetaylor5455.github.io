@@ -112,8 +112,6 @@ $(document).ready(function() {
         $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04')
       }
 
-
-
     } else {
       if (id == 'Unemploy') {
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
