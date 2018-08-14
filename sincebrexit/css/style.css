@@ -11,12 +11,12 @@ h2 {
   font-size: 1.5rem;
 }
 
-.card-title, .date-before, .date-now {
+.card-title, .dateBefore, .dateNow {
   font-weight: 500;
 }
 
 .card-text {
-  font-weight: 400 !important;
+  font-weight: 400;
 }
 
 a, a:visited, a:active {
@@ -80,12 +80,12 @@ nav {
   font-size: 12px;
 }
 
-.rate-down:not(#dateBefore) {
+.rate-down:not(.dateBefore) {
   background-color: #ffdee2 !important;
   color: #8d0011;
 }
 
-.rate-up:not(#dateBefore) {
+.rate-up:not(.dateBefore) {
   background-color: #e4f3d5 !important;
   color: #2b4d04;
 }
