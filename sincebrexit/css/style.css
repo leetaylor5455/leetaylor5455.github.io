@@ -135,7 +135,7 @@ footer a:link, footer a:visited {
   }
 }
 
-@media (max-width: 999px) {
+@media (max-width: 1199px) {
   .card-columns {
     -webkit-column-count: 2;
     -moz-column-count: 2;
