@@ -19,6 +19,14 @@ h2 {
   font-weight: 400;
 }
 
+.card-title {
+  margin: 0 !important;
+}
+
+.indicator {
+  text-align: right;
+}
+
 a, a:visited, a:active {
   text-decoration: none;
   color: inherit;
