@@ -197,8 +197,8 @@ $(document).ready(function() {
       }
       //GDPChart.data.labels = graphData.urlDates.GDP
 
-      updateGDP(beforeBrexitArray, graphData.urlDates.GDP, 'GDP Before Referendum')
-      updateGDP(sinceBrexitArray, graphData.urlDates.GDP, 'GDP Since Referendum')
+      updateGDP(beforeBrexitArray, graphData.urlDates.GDP, 'Before Ref.')
+      updateGDP(sinceBrexitArray, graphData.urlDates.GDP, 'Since Ref.')
 
       function updateGDP(plotArray, labelArray, label) {
         //if (chart.data.datasets.length <= 1) {
@@ -246,10 +246,10 @@ $(document).ready(function() {
   //   calculateChart('CHF');
   // });
 
-  function calculateChart(currencyID) {
-    graphData.plots[currencyID] = Array(23);
-    graphData.urlDates[currencyID] = [];
-    graphData.labels[currencyID] = [];
+  function calculateChart(currencyId) {
+    graphData.plots[currencyId] = Array(23);
+    graphData.urlDates[currencyId] = [];
+    graphData.labels[currencyId] = [];
     var startFullDate = new Date().toISOString().slice(0, 10);
     var day = startFullDate.substring(8, 10)
     var year = parseInt(startFullDate.substring(0, 4), 10)
@@ -270,47 +270,47 @@ $(document).ready(function() {
 
 
     for (var i = 0; i < 20; i++) {
-      graphData.urlDates[currencyID].unshift(new Date(todayDate.setDate(todayDate.getDate() - dayInterval)).toISOString().slice(0, 10));
+      graphData.urlDates[currencyId].unshift(new Date(todayDate.setDate(todayDate.getDate() - dayInterval)).toISOString().slice(0, 10));
     }
 
     for (var i = 0; i < 20; i++) {
-      graphData.labels[currencyID].push(graphData.urlDates[currencyID][i].substring(5, 7) + '-' + graphData.urlDates[currencyID][i].substring(2, 4));
+      graphData.labels[currencyId].push(graphData.urlDates[currencyId][i].substring(5, 7) + '-' + graphData.urlDates[currencyId][i].substring(2, 4));
     }
 
-    graphData.urlDates[currencyID][0] = '2016-06-22';
+    graphData.urlDates[currencyId][0] = '2016-06-22';
 
-    getRates(currencyID);
+    getRates(currencyId);
   };
 
-  function getRates(currencyID) {
+  function getRates(currencyId) {
 
     $.get('js\\json\\chartrates.json', function(data) {
-      graphData.plots[currencyID] = data[currencyID];
+      graphData.plots[currencyId] = data[currencyId];
     }).then(function() {
-      if (graphData.plots[currencyID][0] > graphData.plots[currencyID][19]) {
+      if (graphData.plots[currencyId][0] > graphData.plots[currencyId][19]) {
         //var lineColor = '#f73b3b';
         var lineColor = '#8d0011'
         // var gradient = ctx.createLinearGradient(0, 600, 0, 0);
         // gradient.addColorStop(0, 'rgba(226, 77, 77, .8)');
         // gradient.addColorStop(.75, 'rgba(226, 77, 77, 0)');
-      } else if (graphData.plots[currencyID][0] < graphData.plots[currencyID][19]) {
+      } else if (graphData.plots[currencyId][0] < graphData.plots[currencyId][19]) {
         var lineColor = '#4fc64f';
         // var gradient = ctx.createLinearGradient(0, 0, 0, 600);
         // gradient.addColorStop(0, 'rgba(110, 216, 110, .8)');
         // gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
       }
 
-      updateChart(currencyID, graphData.labels[currencyID], graphData.plots[currencyID], 'rgba(0, 0, 0, 0)', lineColor, currencyID);
+      updateChart(currencyId, graphData.labels[currencyId], graphData.plots[currencyId], 'rgba(0, 0, 0, 0)', lineColor, currencyId);
     });
   }
 
 
-  function updateChart(currencyID, labels, data, gradient, lineColor, currencyID) {
-    chart = currencyID + 'Chart';
+  function updateChart(currencyId, labels, data, gradient, lineColor, currencyId) {
+    chart = currencyId + 'Chart';
     eval(chart).data = {
       labels: labels,
       datasets: [{
-        label: currencyID,
+        label: currencyId,
         pointRadius: 0,
         pointHitRadius: 8,
         backgroundColor: 'rgba(110, 216, 110, 0)',
@@ -320,15 +320,15 @@ $(document).ready(function() {
     }
     eval(chart).update();
     if (compareIndex === 0) {
-      lineColor = '#42bcf4';
-      backgroundColor = 'rgba(66, 188, 244, .2)';
+      lineColor = '#db2418';
+      backgroundColor = 'rgba(249, 41, 27, .2)';
     } else {
-      lineColor = '#f48041';
-      backgroundColor = 'rgba(244, 128, 65, .2)';
+      lineColor = '#28AFFA';
+      backgroundColor = 'rgba(40,175,250,.2)';
     }
     compareChart.data.labels = labels;
     compareChart.data.datasets.push({
-      label: currencyID + ' vs GBP',
+      label: currencyId + ' vs GBP',
       pointRadius: 0,
       pointHitRadius: 8,
       backgroundColor: backgroundColor,
@@ -432,9 +432,22 @@ $(document).ready(function() {
           tension: .2,
         }
       },
-      scales: scalesObj,
+      scales: {
+        yAxes: [{
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 3
+          }
+        }],
+        xAxes: [{
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 10
+          }
+        }]
+      },
       legend: {
-        display: false
+        display: true
       },
     }
   });
@@ -444,17 +457,31 @@ $(document).ready(function() {
 
     type: 'line',
 
-    data: {},
-
     options: {
       elements: {
         line: {
           tension: .2,
         }
       },
-      scales: scalesObj,
+      scales: {
+        yAxes: [{
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 4,
+            fontColor: '#ccc'
+          }
+        }],
+        xAxes: [{
+          ticks: {
+            fontColor: '#ccc'
+          }
+        }]
+      },
       legend: {
-        display: true
+        display: true,
+        labels: {
+          fontColor: '#ccc'
+        }
       },
     }
   });

@@ -42,14 +42,14 @@ buildArray('USD');
 
 
 
-function buildArray(currencyID) {
+function buildArray(currencyId) {
 
   var getPromises = [];
 
   for (var i = 0; i < 20; i++) {
     var url = 'https://exchangeratesapi.io/api/' + graphData.urlDates[i] + '?base=GBP';
     var getPromise = new Promise(function(resolve, reject) {
-      getData(url, currencyID, i, resolve);
+      getData(url, currencyId, i, resolve);
     });
     getPromises.push(getPromise);
 
@@ -62,7 +62,7 @@ function buildArray(currencyID) {
 }
 
 
-function getData(url, currencyID, i, resolve) {
+function getData(url, currencyId, i, resolve) {
   https.get(url, (res) => {
     const {
       statusCode
@@ -93,9 +93,9 @@ function getData(url, currencyID, i, resolve) {
       try {
 
         const parsedData = JSON.parse(rawData);
-        graphData.plots[currencyID][i] = parsedData.rates[currencyID]
+        graphData.plots[currencyId][i] = parsedData.rates[currencyId]
 
-        resolve(parsedData.rates[currencyID])
+        resolve(parsedData.rates[currencyId])
 
       } catch (e) {
         console.error(e.message);
