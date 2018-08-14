@@ -1,10 +1,10 @@
 {
   "name": "Since Brexit",
-  "short_name": "Since Brexit",
+  "short_name": "SinceBrexit",
   "display": "minimal-ui",
   "start_url": "/",
-  "theme_color": "#673ab6",
-  "background_color": "#111111",
+  "theme_color": "#3e86ad",
+  "background_color": "#ffffff",
   "icons": [
     {
       "src": "android-chrome-192x192.png",
