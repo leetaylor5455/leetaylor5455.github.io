@@ -106,6 +106,19 @@ $(document).ready(function() {
     var returnedCalc = changeCalc(rates[beforeAccessor], rates[nowAccessor], $('#' + id), symbol);
 
     $(jqueryID).text(returnedCalc[0]);
+    if (returnedCalc[1] == 'up') {
+      if (id == 'Unemploy') {
+        $(indicator).attr('src', 'images/arrow-up-red.svg');
+      } else {
+        $(indicator).attr('src', 'images/arrow-up-green.svg');
+      }
+    } else {
+      if (id == 'Unemploy') {
+        $(indicator).attr('src', 'images/arrow-down-green.svg');
+      } else {
+        $(indicator).attr('src', 'images/arrow-down-red.svg');
+      }
+    }
     $(indicator).text(returnedCalc[1]);
 
     if (returnedCalc[1] === ' ▲') {
@@ -153,13 +166,13 @@ $(document).ready(function() {
         if (rateNow < rateBefore) {
           changer.addClass('rate-down');
           var rateChange = (rateBefore - rateNow).toFixed(2);
-          var change = ' ▼'
+          var change = 'down'
           rateChange = 'DOWN BY' + symbol + rateChange + " ▼";
 
         } else if (rateNow > rateBefore) {
           changer.addClass('rate-up');
           var rateChange = (rateNow - rateBefore).toFixed(2);
-          var change = ' ▲'
+          var change = 'up'
           rateChange = 'UP BY' + symbol + rateChange + " ▲";
 
         }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="32px" viewBox="0 0 25 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>arrow down</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop-HD" transform="translate(-446.000000, -307.000000)" fill="#8D0011">
+            <g id="Card-1-Copy-4" transform="translate(77.000000, 287.000000)">
+                <g id="arrow-down" transform="translate(369.000000, 20.000000)">
+                    <polygon id="Triangle-2-Copy-4" points="12.5 0 25 15 0 15"></polygon>
+                    <path d="M12.25,9.5 L12.25,29.5" id="Line-3" stroke="#8D0011" stroke-width="4" stroke-linecap="square"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
