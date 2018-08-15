@@ -111,7 +111,7 @@ function writeToFile(dataObj) {
   //ratesJSON = fs.readFileSync("json\\rates.json");
   let dataJSON = JSON.stringify(dataObj, null, 2);
   //ratesJSON.rates = dataJSON;
-  fs.writeFile('json\\chartrates.json', dataJSON, (err) => {
+  fs.writeFile('json/chartrates.json', dataJSON, (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
 

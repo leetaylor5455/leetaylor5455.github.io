@@ -71,13 +71,13 @@ writeToFile(data)
 
 // writes currency rates to a file
 function writeToFile(dataObj) {
-  ratesJSON = fs.readFileSync("json\\rates.json");
+  ratesJSON = fs.readFileSync("json/rates.json");
   ratesJSON = JSON.parse(ratesJSON)
   //console.log(ratesJSON)
   //console.log(dataObj)
   ratesJSON.rates.FTSE100 = dataObj.rates.FTSE100;
   ratesJSON = JSON.stringify(ratesJSON, null, 2)
-  fs.writeFile('json\\rates.json', ratesJSON, (err) => {
+  fs.writeFile('json/rates.json', ratesJSON, (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
 

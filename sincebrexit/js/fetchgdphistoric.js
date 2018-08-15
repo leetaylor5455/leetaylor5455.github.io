@@ -43,7 +43,7 @@ https.get('https://www.quandl.com/api/v3/datasets/ODA/GBR_NGDPD.json?end_date=20
 
 function writeToFile(dataObj) {
   let dataJSON = JSON.stringify(dataObj, null, 2);
-  fs.writeFile('json\\gdphistoric.json', dataJSON, (err) => {
+  fs.writeFile('json/gdphistoric.json', dataJSON, (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
 
