@@ -1,17 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="25px" height="32px" viewBox="0 0 25 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
-    <title>arrow down</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Desktop-HD" transform="translate(-446.000000, -305.000000)" fill="#2B4D04">
-            <g id="Card-1-Copy-4" transform="translate(77.000000, 287.000000)">
-                <g id="arrow-down" transform="translate(381.500000, 35.000000) scale(1, -1) translate(-381.500000, -35.000000) translate(369.000000, 20.000000)">
-                    <polygon id="Triangle-2-Copy-4" points="12.5 0 25 15 0 15"></polygon>
-                    <path d="M12.25,9.5 L12.25,29.5" id="Line-3" stroke="#2B4D04" stroke-width="4" stroke-linecap="square"></path>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 40" width="16" height="40"><defs><path d="M8 40L4 31.38L0 22.75L7.25 22.75L7.25 0L8.75 0L8.75 22.75L16 22.75L12 31.38L12 31.38L8 40Z" id="e1nUTwKsiB"></path></defs><g><g><g><use xlink:href="#e1nUTwKsiB" opacity="1" fill="#2b4d04" fill-opacity="1"></use></g></g></g></svg>

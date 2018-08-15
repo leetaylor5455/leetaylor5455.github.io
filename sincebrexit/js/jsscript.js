@@ -109,44 +109,29 @@ $(document).ready(function() {
     if (returnedCalc[1] == 'up') {
       if (id == 'Unemploy') {
         $(indicator).attr('src', 'images/arrow-up-red.svg');
+        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
+        // Change column split colour
+        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #8d0011')
       } else {
         $(indicator).attr('src', 'images/arrow-up-green.svg');
+        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
+        // Change column split colour
+        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04')
       }
     } else {
       if (id == 'Unemploy') {
         $(indicator).attr('src', 'images/arrow-down-green.svg');
+        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
+        // Change column split colour
+        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04')
       } else {
         $(indicator).attr('src', 'images/arrow-down-red.svg');
+        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
+        // Change column split colour
+        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #8d0011')
       }
     }
     $(indicator).text(returnedCalc[1]);
-
-    if (returnedCalc[1] === ' ▲') {
-      if (id == 'Unemploy') {
-        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
-        // Change column split colour
-        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #8d0011')
-      } else {
-        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
-        // Change column split colour
-        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04')
-      }
-
-    } else {
-      if (id == 'Unemploy') {
-        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
-        // Change column split colour
-        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04')
-      } else {
-        $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
-        // Change column split colour
-        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #8d0011')
-      }
-
-
-    }
-
-
 
 
     function changeCalc(rateBefore, rateNow, changer, symbol) {
