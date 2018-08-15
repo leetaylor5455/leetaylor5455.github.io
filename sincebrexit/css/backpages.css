@@ -30,3 +30,8 @@ li ol>li:before {
   font-size: 18px;
   font-weight: 700;
 }
+
+.content a {
+  text-decoration: underline;
+  font-weight: 700;
+}
