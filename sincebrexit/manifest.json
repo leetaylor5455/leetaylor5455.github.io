@@ -2,11 +2,10 @@
   "name": "Since Brexit",
   "short_name": "SinceBrexit",
   "display": "minimal-ui",
-  "start_url": "/",
-  "theme_color": "#3e86ad",
+  "start_url": "index.html",
+  "theme_color": "#19283F",
   "background_color": "#ffffff",
-  "icons": [
-    {
+  "icons": [{
       "src": "android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
