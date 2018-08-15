@@ -256,9 +256,9 @@ $(document).ready(function() {
   // });
 
   function calculateChart(currencyId) {
-    graphData.plots[currencyId] = Array(23);
+    graphData.plots[currencyId] = Array(20);
     graphData.urlDates[currencyId] = [];
-    graphData.labels[currencyId] = [];
+    graphData.labels[currencyId] = Array(20);
     var startFullDate = new Date().toISOString().slice(0, 10);
     var day = startFullDate.substring(8, 10)
     var year = parseInt(startFullDate.substring(0, 4), 10)
@@ -281,9 +281,11 @@ $(document).ready(function() {
     for (var i = 0; i < 20; i++) {
       graphData.urlDates[currencyId].unshift(new Date(todayDate.setDate(todayDate.getDate() - dayInterval)).toISOString().slice(0, 10));
     }
+    graphData.labels[currencyId][0] = 'Ref.';
+    graphData.labels[currencyId][19] = 'Today'
 
-    for (var i = 0; i < 20; i++) {
-      graphData.labels[currencyId].push(graphData.urlDates[currencyId][i].substring(5, 7) + '-' + graphData.urlDates[currencyId][i].substring(2, 4));
+    for (var i = 1; i < 19; i++) {
+      graphData.labels[currencyId][i] = (graphData.urlDates[currencyId][i].substring(5, 7) + '-' + graphData.urlDates[currencyId][i].substring(2, 4));
     }
 
     graphData.urlDates[currencyId][0] = '2016-06-22';
