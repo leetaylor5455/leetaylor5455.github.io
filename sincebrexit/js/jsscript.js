@@ -59,7 +59,7 @@ $(document).ready(function() {
   function updateRatesNow(id, symbol) {
     var accessor = id + 'Now';
 
-    $.get("js\\json\\rates.json", function(returnedVals) {
+    $.get("js/json/rates.json", function(returnedVals) {
       rates[accessor] = returnedVals.rates[id].toFixed(2);
       //console.log(id + " Rate: ", rates[accessor]);
       var jqueryID = '#' + id + 'Now';
@@ -76,7 +76,7 @@ $(document).ready(function() {
   function updateRatesBefore(id, symbol) {
     var accessor = id + 'Before';
 
-    $.get("js\\json\\ratesbefore.json", function(returnedVals) {
+    $.get("js/json/ratesbefore.json", function(returnedVals) {
       rates[accessor] = returnedVals.rates[id].toFixed(2);
       var jqueryID = '#' + id + 'Before';
       if (id == 'Unemploy') {
@@ -180,7 +180,8 @@ $(document).ready(function() {
     }
 
 
-    $.get('js\\json\\gdphistoric.json', function(data) {
+    $.get('js/json/gdphistoric.json', function(data) {
+      console.log(data)
       for (var i = data.length - 20; i < data.length; i++) {
         graphData.urlDates.GDP.push(data[i][0]);
       }
