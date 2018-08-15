@@ -39,11 +39,15 @@ https.get('https://www.quandl.com/api/v3/datasets/ODA/GBR_NGDPD.json?end_date=20
   console.error(`Got error: ${e.message}`);
 });
 
-
-
+// writes currency rates to a file
 function writeToFile(dataObj) {
-  let dataJSON = JSON.stringify(dataObj, null, 2);
-  fs.writeFile('json/gdphistoric.json', dataJSON, (err) => {
+  ratesJSON = JSON.parse(fs.readFileSync("json/rates.json"));
+  let dataJSON = JSON.stringify(dataObj);
+  //console.log(ratesJSON.rates[currencyId])
+  ratesJSON.rates.GDP = dataObj;
+  //console.log(ratesJSON)
+  //console.log(dataJSON)
+  fs.writeFile('json/rates.json', JSON.stringify(ratesJSON, null, 2), (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
 
@@ -51,3 +55,14 @@ function writeToFile(dataObj) {
     console.log('File saved successfully.');
   });
 }
+
+// function writeToFile(dataObj) {
+//   let dataJSON = JSON.stringify(dataObj, null, 2);
+//   fs.writeFile('json/gdphistoric.json', dataJSON, (err) => {
+//     // throws an error, you could also catch it here
+//     if (err) throw err;
+//
+//     // success case, the file was saved
+//     console.log('File saved successfully.');
+//   });
+// }

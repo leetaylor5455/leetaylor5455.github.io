@@ -60,7 +60,14 @@ $(document).ready(function() {
     var accessor = id + 'Now';
 
     $.get("js/json/rates.json", function(returnedVals) {
-      rates[accessor] = returnedVals.rates[id].toFixed(2);
+      if (id == 'EUR' || id == 'USD') {
+        rates[accessor] = returnedVals.rates[id][19].toFixed(2);
+      } else if (id == 'GDP') {
+        rates[accessor] = ((returnedVals.rates[id][returnedVals.rates[id].length-1][1])/1000).toFixed(2);
+      } else {
+        rates[accessor] = returnedVals.rates[id].toFixed(2);
+      }
+
       //console.log(id + " Rate: ", rates[accessor]);
       var jqueryID = '#' + id + 'Now';
       if (id == 'Unemploy') {
@@ -164,7 +171,6 @@ $(document).ready(function() {
 
   updateRatesNow('EUR', ' €');
   updateRatesNow('USD', ' $');
-  updateRatesNow('CHF', ' ₣');
   updateRatesNow('GDP', ' $');
   updateRatesNow('Unemploy', '% ');
   updateRatesNow('FTSE100', ' ');
@@ -180,24 +186,24 @@ $(document).ready(function() {
     }
 
 
-    $.get('js/json/gdphistoric.json', function(data) {
-      console.log(data)
-      for (var i = data.length - 20; i < data.length; i++) {
-        graphData.urlDates.GDP.push(data[i][0]);
+    $.get('js/json/rates.json', function(data) {
+      var gdpArray = data.rates.GDP;
+      for (var i = gdpArray.length - 20; i < gdpArray.length; i++) {
+        graphData.urlDates.GDP.push(gdpArray[i][0]);
       }
 
       // So it still works when its 2019, 2020 etc
       var yearsSinceBrexit = parseInt(year, 10) - 2016
 
       var beforeBrexitArray = graphData.plots.GDP[0];
-      for (var i = data.length - 20; i < data.length - yearsSinceBrexit; i++) {
+      for (var i = gdpArray.length - 20; i < gdpArray.length - yearsSinceBrexit; i++) {
         // Not sure why it's i-18 but that's what works
-        beforeBrexitArray[i - 18] = ((data[i][1])/1000).toFixed(2);
+        beforeBrexitArray[i - 18] = ((gdpArray[i][1])/1000).toFixed(2);
       }
 
       var sinceBrexitArray = graphData.plots.GDP[1];
-      for (var i = data.length - yearsSinceBrexit - 1; i < data.length; i++) {
-        sinceBrexitArray[i - 18] = ((data[i][1])/1000).toFixed(2);
+      for (var i = gdpArray.length - yearsSinceBrexit - 1; i < gdpArray.length; i++) {
+        sinceBrexitArray[i - 18] = ((gdpArray[i][1])/1000).toFixed(2);
       }
 
       // Clears datasets so that they don't build up for each click
@@ -296,8 +302,8 @@ $(document).ready(function() {
 
   function getRates(currencyId) {
 
-    $.get('js/json/chartrates.json', function(data) {
-      graphData.plots[currencyId] = data[currencyId];
+    $.get('js/json/rates.json', function(data) {
+      graphData.plots[currencyId] = data.rates[currencyId];
     }).then(function() {
       if (graphData.plots[currencyId][0] > graphData.plots[currencyId][19]) {
         //var lineColor = '#f73b3b';

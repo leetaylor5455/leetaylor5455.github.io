@@ -35,7 +35,7 @@ for (var i = 0; i < 20; i++) {
 
 graphData.urlDates[0] = '2016-06-22';
 
-console.log(graphData.urlDates)
+//console.log(graphData.urlDates)
 
 buildArray('EUR');
 buildArray('USD');
@@ -49,20 +49,20 @@ function buildArray(currencyId) {
   for (var i = 0; i < 20; i++) {
     var url = 'https://exchangeratesapi.io/api/' + graphData.urlDates[i] + '?base=GBP';
     var getPromise = new Promise(function(resolve, reject) {
-      getData(url, currencyId, i, resolve);
+      getChartData(url, currencyId, i, resolve);
     });
     getPromises.push(getPromise);
 
   }
 
   Promise.all(getPromises).then(function() {
-    console.log(graphData.plots)
-    writeToFile(graphData.plots)
+    //console.log(graphData.plots)
+    writeToFile(graphData.plots[currencyId], currencyId)
   });
 }
 
 
-function getData(url, currencyId, i, resolve) {
+function getChartData(url, currencyId, i, resolve) {
   https.get(url, (res) => {
     const {
       statusCode
@@ -107,11 +107,12 @@ function getData(url, currencyId, i, resolve) {
 }
 
 // writes currency rates to a file
-function writeToFile(dataObj) {
-  //ratesJSON = fs.readFileSync("json\\rates.json");
-  let dataJSON = JSON.stringify(dataObj, null, 2);
-  //ratesJSON.rates = dataJSON;
-  fs.writeFile('json/chartrates.json', dataJSON, (err) => {
+function writeToFile(dataObj, currencyId) {
+  ratesJSON = JSON.parse(fs.readFileSync("json/rates.json"));
+  ratesJSON.rates[currencyId] = dataObj;
+  //console.log(ratesJSON)
+  //console.log(dataJSON)
+  fs.writeFile('json/rates.json', JSON.stringify(ratesJSON, null, 2), (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
 
