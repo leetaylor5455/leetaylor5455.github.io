@@ -69,7 +69,6 @@ $(document).ready(function() {
 
 
   $.get('https://api.ons.gov.uk/dataset/BB/timeseries/MGSC/data', function(data) {
-    console.log(data.years[data.years.length-1].date)
     UnemployDate = data.years[data.years.length-1].date + '-12-31'
   }).then(function() {
     $('#Unemploy').find('.dateNow').text(convertDate(new Date(UnemployDate)))
@@ -270,6 +269,42 @@ $(document).ready(function() {
     });
   });
 
+  function FTSEChartRates() {
+    $.get('js/json/stockrates.json', function(data) {
+      console.log(data)
+      graphData.plots.FTSE = [];
+      graphData.labels.FTSE = [];
+      for (var i = 0; i < data.rates.FTSE100.length-1; i++) {
+        graphData.plots.FTSE.unshift(data.rates.FTSE100[i].close);
+        graphData.labels.FTSE.unshift(data.rates.FTSE100[i].date.substring(5, 7) + '-' + data.rates.FTSE100[i].date.substring(2, 4));
+      }
+    }).then(function() {
+      // graphData.plots.FTSE[0] = 6261.20;
+      // graphData.plots.FTSE[graphData.plots.FTSE.length-1] = rates.FTSE100Now;
+      // graphData.labels.FTSE[0] = 'Ref.'
+      // graphData.labels.FTSE[graphData.labels.FTSE.length-1] = 'Today'
+      if (graphData.plots.FTSE[graphData.plots.FTSE.length-1] > graphData.plots.FTSE[0]) {
+        var lineColor = '#2b4d04';
+      } else {
+        var lineColor = '#8d0011'
+      }
+      FTSEChart.data = {
+        labels: graphData.labels.FTSE,
+        datasets: [{
+          label: 'Monthly Values Since Ref.',
+          pointRadius: 0,
+          pointHitRadius: 3,
+          backgroundColor: 'rgba(110, 216, 110, 0)',
+          borderColor: lineColor,
+          data: graphData.plots.FTSE,
+        }]
+      }
+      FTSEChart.update();
+    });
+  }
+
+  FTSEChartRates();
+
   $('#EUR').ready(function() {
     calculateChart('EUR');
   });
@@ -338,12 +373,12 @@ $(document).ready(function() {
         // gradient.addColorStop(.75, 'rgba(110, 216, 110, 0)');
       }
 
-      updateChart(currencyId, graphData.labels[currencyId], graphData.plots[currencyId], 'rgba(0, 0, 0, 0)', lineColor, currencyId);
+      updateChart(currencyId, graphData.labels[currencyId], graphData.plots[currencyId], lineColor, currencyId);
     });
   }
 
 
-  function updateChart(currencyId, labels, data, gradient, lineColor, currencyId) {
+  function updateChart(currencyId, labels, data, lineColor, currencyId) {
     chart = currencyId + 'Chart';
     eval(chart).data = {
       labels: labels,
@@ -524,6 +559,24 @@ $(document).ready(function() {
     }
   });
 
+
+  var FTSECtx = $('#FTSEChart')[0].getContext('2d');
+  var FTSEChart = new Chart(FTSECtx, {
+
+    type: 'line',
+
+    options: {
+      elements: {
+        line: {
+          tension: .2,
+        }
+      },
+      scales: scalesObj,
+      legend: {
+        display: true,
+      },
+    }
+  });
 
 //   var cardHeight;
 //   // Sets the height of the back of the card to match the image in front

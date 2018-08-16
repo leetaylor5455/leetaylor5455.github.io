@@ -1,5 +1,6 @@
 const https = require('https');
 const fs = require('fs');
+var yahooFinance = require('yahoo-finance');
 
 var graphData = {
   plots: {
@@ -160,6 +161,14 @@ function getUnemployment(url) {
     console.error(`Got error: ${e.message}`);
   });
 }
+
+
+yahooFinance.quote({
+  symbol: '^FTSE',
+  modules: ['price']
+}, function (err, quotes) {
+  writeToFile(quotes.price.regularMarketPrice, 'FTSE100')
+});
 
 // writes currency rates to a file
 function writeToFile(dataObj, currencyId) {
