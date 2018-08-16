@@ -88,7 +88,6 @@ $(document).ready(function() {
       } else if (id == 'GDP') {
         rates[accessor] = ((returnedVals.rates[id][returnedVals.rates[id].length-1][1])/1000).toFixed(2);
       } else if(id == 'Inflation') {
-        console.log('Inflation Called')
         rates[accessor] = returnedVals.rates[id][0][1];
       } else {
         rates[accessor] = returnedVals.rates[id].toFixed(2);
@@ -132,7 +131,6 @@ $(document).ready(function() {
     var returnedCalc = changeCalc(rates[beforeAccessor], rates[nowAccessor], $('#' + id), symbol);
 
     $(jqueryID).text(returnedCalc[0]);
-    console.log('ID: ', id, '; Symbol: ', symbol)
     if (returnedCalc[1] == 'up') {
       if (symbol == '% ') {
         $(indicator).attr('src', 'images/arrow-up-red.svg');
@@ -162,6 +160,10 @@ $(document).ready(function() {
 
 
     function changeCalc(rateBefore, rateNow, changer, symbol) {
+      if (changer == '#FTSE100') {
+        var changePercentage = (rateNow/rateBefore);
+        symbol = '(' + changePercentage + ') ';
+      }
       if (symbol == '% ') {
         if (rateNow > rateBefore) {
           changer.addClass('rate-down');
@@ -278,7 +280,6 @@ $(document).ready(function() {
 
   function FTSEChart() {
     $.get('js/json/stockrates.json', function(data) {
-      console.log(data)
       graphData.plots.FTSE = [];
       graphData.labels.FTSE = [];
       for (var i = 0; i < data.rates.FTSE100.length-1; i++) {

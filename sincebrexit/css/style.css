@@ -82,6 +82,10 @@ nav {
   margin-bottom: 0;
 }
 
+.card-bottom-text:not(.bottom-link) {
+  text-align: right;
+}
+
 .date-title {
   font-size: 12px;
   color: #666;
