@@ -6,7 +6,7 @@ yahooFinance.quote({
   symbol: '^FTSE',
   modules: [ 'price' ] // see the docs for the full list
 }, function (err, quotes) {
-  console.log(quotes.price.regularMarketPrice)
+  console.log(quotes.price)
   writeToFile(quotes.price.regularMarketPrice);
 });
 
