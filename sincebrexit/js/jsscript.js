@@ -21,39 +21,61 @@ $(document).ready(function() {
     "July", "August", "September", "October", "November", "December"
   ];
 
+  function convertDate(d) {
+
+    var month = monthNames[d.getMonth()];
+    var day = d.getDate();
+    var dayString = '' + day;
+    year = '' + d.getFullYear();
+
+
+    day = String(day);
+
+    if (day.length < 2) {
+      var dateIndex = 0;
+    } else {
+      var dateIndex = 1;
+    }
+
+    if (parseInt(day, 10) > 10 && parseInt(day, 10) < 20) {
+      day = day + "th ";
+    } else if (day.charAt(dateIndex) == 1) {
+      day = day + "st ";
+    } else if (day.charAt(dateIndex) == 2) {
+      day = day + "nd ";
+    } else if (day.charAt(dateIndex) == 3) {
+      day = day + "rd ";
+    } else {
+      day = day + "th ";
+    }
+
+    var fullDate = day + month + " " + year;
+    return fullDate;
+  }
 
   var d = new Date();
 
-  var month = monthNames[d.getMonth()];
-  var day = d.getDate();
-  var dayString = '' + day;
-  var year = '' + d.getFullYear();
 
 
-  day = String(day);
-
-  if (day.length < 2) {
-    var dateIndex = 0;
-  } else {
-    var dateIndex = 1;
-  }
-
-  if (parseInt(day, 10) > 10 && parseInt(day, 10) < 20) {
-    day = day + "th ";
-  } else if (day.charAt(dateIndex) == 1) {
-    day = day + "st ";
-  } else if (day.charAt(dateIndex) == 2) {
-    day = day + "nd ";
-  } else if (day.charAt(dateIndex) == 3) {
-    day = day + "rd ";
-  } else {
-    day = day + "th ";
-  }
-
-  var fullDate = day + month + " " + year;
 
 
-  $('.dateNow').text(fullDate);
+  $('#EUR, #USD, #FTSE100').find('.dateNow').text(convertDate(d));
+
+  $.get('js/json/rates.json', function(data) {
+    GDPDate = data.rates.GDP[data.rates.GDP.length-1][0];
+  }).then(function() {
+    $('#GDP').find('.dateNow').text(convertDate(new Date(GDPDate)))
+  });
+
+
+  $.get('https://api.ons.gov.uk/dataset/BB/timeseries/MGSC/data', function(data) {
+    console.log(data.years[data.years.length-1].date)
+    UnemployDate = data.years[data.years.length-1].date + '-12-31'
+  }).then(function() {
+    $('#Unemploy').find('.dateNow').text(convertDate(new Date(UnemployDate)))
+  });
+
+
 
   // Update New Rates
   function updateRatesNow(id, symbol) {
