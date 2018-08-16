@@ -71,7 +71,7 @@
                 <div>
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
-                    <p class="dateBefore">22nd June 2016</p>
+                    <p class="dateBefore">22nd Jun 2016</p>
                     <h1 class="card-text" id="EURBefore"></h1>
                   </div>
                 </div>
@@ -117,7 +117,7 @@
                 <div>
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
-                    <p class="dateBefore">22nd June 2016</p>
+                    <p class="dateBefore">22nd Jun 2016</p>
                     <h1 class="card-text" id="USDBefore"></h1>
                   </div>
                 </div>
@@ -162,7 +162,7 @@
                 <div>
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
-                    <p class="dateBefore">22nd June 2016</p>
+                    <p class="dateBefore">22nd Jun 2016</p>
                     <h1 class="card-text" id="GDPBefore" style="display: inline;"></h1></h1><span style="font-size: 14px;">tn</span>
                     <!-- <p class="card-title date-title">Trillion</p> -->
                   </div>
@@ -209,7 +209,7 @@
                 <div>
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
-                    <p class="dateBefore">22nd June 2016</p>
+                    <p class="dateBefore">22nd Jun 2016</p>
                     <h1 class="card-text" id="FTSE100Before"></h1>
                   </div>
                 </div>
@@ -218,7 +218,6 @@
                 <div>
                   <div class="card-body nested-card">
                     <p class="card-title date-title">TODAY</p>
-                    <p class="card-title text-muted time-title"></p>
                     <p class="dateNow"></p>
                     <h1 class="card-text" id="FTSE100Now"></h1>
                   </div>
@@ -255,7 +254,7 @@
                 <div>
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
-                    <p class="dateBefore">22nd June 2016</p>
+                    <p class="dateBefore">22nd Jun 2016</p>
                     <h1 class="card-text" id="UnemployBefore"></h1>
                   </div>
                 </div>
@@ -278,6 +277,50 @@
                 <p class="card-bottom-text" id="UnemployChange"></p>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Inflation Card -->
+        <div class="card mx-auto" id="Inflation" style="min-width: 250px;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h3 class="card-title">Inflation</h3></div>
+              <div class="col">
+                <img id="InflationInd" class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col card-split">
+                <div>
+                  <div class="card-body nested-card">
+                    <p class="card-title date-title">SINCE</p>
+                    <p class="dateBefore">22nd Jun 2016</p>
+                    <h1 class="card-text" id="InflationBefore"></h1>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div>
+                  <div class="card-body nested-card">
+                    <p class="card-title date-title">LATEST</p>
+                    <p class="dateNow"></p>
+                    <h1 class="card-text" id="InflationNow"></h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p class="card-bottom-text"><a href="https://exchangeratesapi.io">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
+              </div>
+              <div class="col align-self-end">
+                <p class="card-bottom-text" id="InflationChange"></p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body chart-card">
+            <canvas id="InflationChart" width=window.innerWidth height="100"></canvas>
           </div>
         </div>
 

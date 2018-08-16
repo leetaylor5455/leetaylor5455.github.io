@@ -17,8 +17,8 @@ $(document).ready(function() {
   var compareIndex = 0;
 
   // Date Function
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ];
 
   function convertDate(d) {
@@ -63,8 +63,10 @@ $(document).ready(function() {
 
   $.get('js/json/rates.json', function(data) {
     GDPDate = data.rates.GDP[data.rates.GDP.length-1][0];
+    InflationDate = data.rates.Inflation[0][0];
   }).then(function() {
-    $('#GDP').find('.dateNow').text(convertDate(new Date(GDPDate)))
+    $('#GDP').find('.dateNow').text(convertDate(new Date(GDPDate)));
+    $('#Inflation').find('.dateNow').text(convertDate(new Date(InflationDate)))
   });
 
 
@@ -85,13 +87,16 @@ $(document).ready(function() {
         rates[accessor] = returnedVals.rates[id][19].toFixed(2);
       } else if (id == 'GDP') {
         rates[accessor] = ((returnedVals.rates[id][returnedVals.rates[id].length-1][1])/1000).toFixed(2);
+      } else if(id == 'Inflation') {
+        console.log('Inflation Called')
+        rates[accessor] = returnedVals.rates[id][0][1];
       } else {
         rates[accessor] = returnedVals.rates[id].toFixed(2);
       }
 
       //console.log(id + " Rate: ", rates[accessor]);
       var jqueryID = '#' + id + 'Now';
-      if (id == 'Unemploy') {
+      if (symbol == '% ') {
         $(jqueryID).text(rates[accessor] + symbol);
       } else {
         $(jqueryID).text(symbol + rates[accessor]);
@@ -107,7 +112,7 @@ $(document).ready(function() {
     $.get("js/json/ratesbefore.json", function(returnedVals) {
       rates[accessor] = returnedVals.rates[id].toFixed(2);
       var jqueryID = '#' + id + 'Before';
-      if (id == 'Unemploy') {
+      if (symbol == '% ') {
         $(jqueryID).text(rates[accessor] + symbol);
       } else {
         $(jqueryID).text(symbol + rates[accessor]);
@@ -127,8 +132,9 @@ $(document).ready(function() {
     var returnedCalc = changeCalc(rates[beforeAccessor], rates[nowAccessor], $('#' + id), symbol);
 
     $(jqueryID).text(returnedCalc[0]);
+    console.log('ID: ', id, '; Symbol: ', symbol)
     if (returnedCalc[1] == 'up') {
-      if (id == 'Unemploy') {
+      if (symbol == '% ') {
         $(indicator).attr('src', 'images/arrow-up-red.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
         // Change column split colour
@@ -140,7 +146,7 @@ $(document).ready(function() {
         $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04')
       }
     } else {
-      if (id == 'Unemploy') {
+      if (symbol == '% ') {
         $(indicator).attr('src', 'images/arrow-down-green.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
         // Change column split colour
@@ -156,17 +162,17 @@ $(document).ready(function() {
 
 
     function changeCalc(rateBefore, rateNow, changer, symbol) {
-      if (id == 'Unemploy') {
+      if (symbol == '% ') {
         if (rateNow > rateBefore) {
           changer.addClass('rate-down');
           var rateChange = (rateNow - rateBefore).toFixed(2);
           rateChange = 'UP BY ' + rateChange + symbol + " ▲";
-          var change = ' ▲'
+          var change = 'up'
         } else if (rateNow < rateBefore) {
           changer.addClass('rate-up');
           var rateChange = (rateBefore - rateNow).toFixed(2);
           rateChange = 'DOWN BY ' + rateChange + symbol + " ▼";
-          var change = ' ▼'
+          var change = 'down'
         }
       } else {
         if (rateNow < rateBefore) {
@@ -193,6 +199,7 @@ $(document).ready(function() {
   updateRatesNow('GDP', ' $');
   updateRatesNow('Unemploy', '% ');
   updateRatesNow('FTSE100', ' ');
+  updateRatesNow('Inflation', '% ')
 
 
   $('#GDP').ready(function() {
@@ -261,7 +268,7 @@ $(document).ready(function() {
         // Updates after both datasets pushed
         if (GDPChart.data.datasets.length === 2) {
           GDPChart.update();
-          console.log('Chart updated.')
+          console.log('Chart updated.');
         }
 
 
@@ -269,7 +276,7 @@ $(document).ready(function() {
     });
   });
 
-  function FTSEChartRates() {
+  function FTSEChart() {
     $.get('js/json/stockrates.json', function(data) {
       console.log(data)
       graphData.plots.FTSE = [];
@@ -300,10 +307,42 @@ $(document).ready(function() {
         }]
       }
       FTSEChart.update();
+      console.log('Chart updated.');
     });
   }
 
-  FTSEChartRates();
+  function InflationChart() {
+    $.get('js/json/rates.json', function(data) {
+      graphData.plots.Inflation = [];
+      graphData.labels.Inflation = [];
+      for (var i = 0; i < data.rates.Inflation.length-1; i++) {
+        graphData.plots.Inflation.unshift(data.rates.Inflation[i][1]);
+        graphData.labels.Inflation.unshift(data.rates.Inflation[i][0].substring(5, 7) + '-' + data.rates.Inflation[i][0].substring(2, 4));
+      }
+    }).then(function() {
+      if (graphData.plots.Inflation[graphData.plots.Inflation.length-1] < graphData.plots.Inflation[0]) {
+        var lineColor = '#2b4d04';
+      } else {
+        var lineColor = '#8d0011'
+      }
+      InflationChart.data = {
+        labels: graphData.labels.Inflation,
+        datasets: [{
+          label: 'Monthly Values Since Ref.',
+          pointRadius: 0,
+          pointHitRadius: 8,
+          backgroundColor: 'rgba(110, 216, 110, 0)',
+          borderColor: lineColor,
+          data: graphData.plots.Inflation,
+        }]
+      }
+      InflationChart.update();
+      console.log('Chart updated.')
+    });
+  }
+
+  InflationChart();
+  FTSEChart();
 
   $('#EUR').ready(function() {
     calculateChart('EUR');
@@ -573,7 +612,25 @@ $(document).ready(function() {
       },
       scales: scalesObj,
       legend: {
-        display: true,
+        display: false,
+      },
+    }
+  });
+
+  var InflationCtx = $('#InflationChart')[0].getContext('2d');
+  var InflationChart = new Chart(InflationCtx, {
+
+    type: 'line',
+
+    options: {
+      elements: {
+        line: {
+          tension: .2,
+        }
+      },
+      scales: scalesObj,
+      legend: {
+        display: false,
       },
     }
   });
