@@ -1,0 +1,9 @@
+{
+  "name": "since-brexit",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "yahoo-finance": "^0.3.5"
+  }
+}
