@@ -42,12 +42,12 @@ todayDate = new Date(todayDate.setDate(todayDate.getDate() + dayInterval))
 
 
 for (var i = 0; i < 20; i++) {
-  graphData.urlDates.unshift(new Date(todayDate.setDate(todayDate.getDate() - dayInterval)).toISOString().slice(0, 10));
+  graphData.urlDates.push(new Date(todayDate.setDate(todayDate.getDate() - dayInterval)).toISOString().slice(0, 10));
 }
 
-graphData.urlDates[0] = '2016-06-22';
+graphData.urlDates[19] = '2016-06-22';
 
-//console.log(graphData.urlDates)
+console.log(graphData.urlDates)
 
 buildArray('EUR');
 buildArray('USD');
@@ -58,10 +58,10 @@ function buildArray(currencyId) {
 
   var getPromises = [];
 
-  for (var i = 0; i < 20; i++) {
+  for (var i = 19; i >= 0; i--) {
     var url = 'https://exchangeratesapi.io/api/' + graphData.urlDates[i] + '?base=GBP';
     var getPromise = new Promise(function(resolve, reject) {
-      getChartData(url, currencyId, i, resolve);
+      getChartData(url, graphData.urlDates[i], currencyId, i, resolve);
     });
     getPromises.push(getPromise);
 
@@ -74,7 +74,7 @@ function buildArray(currencyId) {
 }
 
 
-function getChartData(url, currencyId, i, resolve) {
+function getChartData(url, date, currencyId, i, resolve) {
   https.get(url, (res) => {
     const {
       statusCode
@@ -105,7 +105,7 @@ function getChartData(url, currencyId, i, resolve) {
       try {
 
         const parsedData = JSON.parse(rawData);
-        graphData.plots[currencyId][i] = parsedData.rates[currencyId]
+        graphData.plots[currencyId][i] = [date, parsedData.rates[currencyId]]
 
         resolve(parsedData.rates[currencyId])
 
@@ -150,7 +150,8 @@ function getUnemployment(url) {
         const parsedData = JSON.parse(rawData);
         // console.log('Parsed Data: ', parsedData);
         var Unemploy = (((parseInt((parsedData.years[parsedData.years.length-1].value), 10)/1000)/35)*100);
-        writeToFile(Unemploy, 'Unemploy');
+        var UnemployDate = parsedData.years[parsedData.years.length-1].date + '-12-31'
+        writeToFile([UnemployDate, Unemploy], 'Unemploy');
       } catch (e) {
         console.error(e.message);
       }
@@ -165,7 +166,7 @@ yahooFinance.quote({
   symbol: '^FTSE',
   modules: ['price']
 }, function (err, quotes) {
-  writeToFile(quotes.price.regularMarketPrice, 'FTSE100')
+  writeToFile([startFullDate, quotes.price.regularMarketPrice], 'FTSE100')
 });
 
 // writes currency rates to a file
