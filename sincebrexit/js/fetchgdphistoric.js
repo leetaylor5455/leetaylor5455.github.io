@@ -30,7 +30,7 @@ https.get('https://www.quandl.com/api/v3/datasets/ODA/GBR_NGDPD.json?end_date=20
   res.on('end', () => {
     try {
       const parsedData = JSON.parse(rawData);
-      writeToFile(parsedData.dataset.data.reverse());
+      writeToFile(parsedData.dataset.data);
     } catch (e) {
       console.error(e.message);
     }
