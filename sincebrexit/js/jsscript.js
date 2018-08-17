@@ -160,9 +160,9 @@ $(document).ready(function() {
 
 
     function changeCalc(rateBefore, rateNow, changer, symbol) {
-      if (changer == '#FTSE100') {
-        var changePercentage = (rateNow/rateBefore);
-        symbol = '(' + changePercentage + ') ';
+      if (changer.attr('id') == 'FTSE100') {
+        var changePercentage = (((rateNow/rateBefore)*100)-100).toFixed(2);
+        symbol = ' (' + changePercentage + '%) ';
       }
       if (symbol == '% ') {
         if (rateNow > rateBefore) {

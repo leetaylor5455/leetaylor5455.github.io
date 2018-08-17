@@ -19,8 +19,6 @@ var data = {
   }
 }
 
-var todayDate = new Date().toISOString().slice(0, 10);
-
 const latestUnemployURL = 'https://api.ons.gov.uk/dataset/BB/timeseries/MGSC/data';
 
 
