@@ -254,7 +254,7 @@ $(document).ready(function() {
     $(jqueryId).text(returnedCalc[0]);
 
     if (returnedCalc[1] == 'up') {
-      if (symbol == '% ') {
+      if (reverseColours.includes(id)) {
         $(indicator).attr('src', 'images/arrow-up-red.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
         // Change column split colour
@@ -266,7 +266,7 @@ $(document).ready(function() {
         $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04');
       }
     } else {
-      if (symbol == '% ') {
+      if (reverseColours.includes(id)) {
         $(indicator).attr('src', 'images/arrow-down-green.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
         // Change column split colour
