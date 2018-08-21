@@ -10,8 +10,9 @@ $(document).ready(function() {
   };
 
   var twoDDatasets = ['USD', 'EUR', 'GDP', 'Inflation'];
-  var graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100'];
+  var graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100', 'FTSE250'];
   var reverseColours = ['Inflation', 'Unemploy'];
+  var stockRates = ['FTSE100', 'FTSE250'];
 
   var compareIndex = 0;
 
@@ -59,7 +60,7 @@ $(document).ready(function() {
       $.get('js/json/rates.json', function(data) {
         if (twoDDatasets.includes(id)) {
           if (id == 'GDP') {
-            ratesNow[id] = [data.rates[id][0][0], (data.rates[id][0][1]/1000).toFixed(2)];
+            ratesNow[id] = [data.rates[id][0][0], (data.rates[id][0][1] / 1000).toFixed(2)];
           } else {
             ratesNow[id] = [data.rates[id][0][0], data.rates[id][0][1].toFixed(2)];
           }
@@ -70,7 +71,7 @@ $(document).ready(function() {
         $.get('js/json/ratesbefore.json', function(data) {
           if (twoDDatasets.includes(id)) {
             if (id == 'GDP') {
-              ratesBefore[id] = [data.rates[id][0][0], (data.rates[id][0][1]/1000).toFixed(2)];
+              ratesBefore[id] = [data.rates[id][0][0], (data.rates[id][0][1] / 1000).toFixed(2)];
             } else {
               ratesBefore[id] = [data.rates[id][0][0], data.rates[id][0][1].toFixed(2)];
             }
@@ -79,7 +80,7 @@ $(document).ready(function() {
           }
         }).then(function() {
           resolve();
-        })
+        });
       });
     });
   }
@@ -87,35 +88,35 @@ $(document).ready(function() {
   function calculateChart(id) {
     return new Promise(function(resolve, reject) {
       // Redirects to Bespoke Function for FTSE100
-      if (id == 'FTSE100') {
-        CalculateFTSE100Chart();
+      if (stockRates.includes(id)) {
+        FTSECharts(id);
         return;
       }
 
-      function CalculateFTSE100Chart() {
+      function FTSECharts(id) {
         $.get('js/json/stockrates.json', function(data) {
-          graphData.plots.FTSE100 = [];
-          graphData.labels.FTSE100 = [];
-          for (var i = 0; i < data.rates.FTSE100.length-1; i++) {
-            graphData.plots.FTSE100.unshift(data.rates.FTSE100[i].close);
-            graphData.labels.FTSE100.unshift(data.rates.FTSE100[i].date.substring(5, 7) + '-' + data.rates.FTSE100[i].date.substring(2, 4));
+          graphData.plots[id] = [];
+          graphData.labels[id] = [];
+          for (var i = 0; i < data.rates[id].length - 1; i++) {
+            graphData.plots[id].unshift(data.rates[id][i].close);
+            graphData.labels[id].unshift(data.rates[id][i].date.substring(5, 7) + '-' + data.rates[id][i].date.substring(2, 4));
           }
         }).then(function() {
-          if (graphData.plots.FTSE100[graphData.plots.FTSE100.length-1] > graphData.plots.FTSE100[0]) {
+          if (graphData.plots[id][graphData.plots[id].length - 1] > graphData.plots[id][0]) {
             var lineColor = '#2b4d04';
           } else {
-            var lineColor = '#8d0011'
+            var lineColor = '#8d0011';
           }
 
-          pushToChart(graphData.plots.FTSE100, graphData.labels.FTSE100, lineColor, 'FTSE100', 'Monthly Vals Since Ref.')
+          pushToChart(graphData.plots[id], graphData.labels[id], lineColor, id, 'Weekly Vals Since Ref.');
         });
       }
 
       (function(id) {
         $.get('js/json/rates.json', function(data) {
           var chartArray = data.rates[id];
-          graphData.plots[id] = Array(chartArray.length-1)
-          graphData.labels[id] = Array(chartArray.length-1)
+          graphData.plots[id] = Array(chartArray.length - 1);
+          graphData.labels[id] = Array(chartArray.length - 1);
           for (var i = 0; i < chartArray.length; i++) {
             graphData.plots[id][i] = chartArray[i][1];
             graphData.labels[id][i] = chartArray[i][0].substring(5, 7) + '-' + chartArray[i][0].substring(2, 4);
@@ -123,7 +124,7 @@ $(document).ready(function() {
           graphData.plots[id].reverse();
           graphData.labels[id].reverse();
         }).then(function() {
-          if (graphData.plots[id][0] < graphData.plots[id][graphData.plots[id].length-1]) {
+          if (graphData.plots[id][0] < graphData.plots[id][graphData.plots[id].length - 1]) {
             if (reverseColours.includes(id)) {
               var lineColor = '#8d0011';
             } else {
@@ -142,7 +143,7 @@ $(document).ready(function() {
       })(id);
 
       function pushToChart(plots, labels, lineColor, id, legend = null) {
-        chart = id + 'Chart';
+        var chart = id + 'Chart';
         eval(chart).data = {
           labels: labels,
           datasets: [{
@@ -157,26 +158,27 @@ $(document).ready(function() {
         eval(chart).update();
         console.log('Chart updated.')
       }
-    }).then(function(){
+    }).then(function() {
       if (compareUpdated === false) {
         compareChart.data = {
           labels: graphData.labels.EUR,
           datasets: [{
-            label: 'GBP vs EUR',
-            pointRadius: 0,
-            pointHitRadius: 8,
-            backgroundColor: 'rgba(219, 36, 24, .2)',
-            borderColor: '#db2418',
-            data: graphData.plots.EUR
-          },
-          {
-            label: 'GBP vs USD',
-            pointRadius: 0,
-            pointHitRadius: 8,
-            backgroundColor: 'rgba(40, 175, 250, .2)',
-            borderColor: '#28affa',
-            data: graphData.plots.USD
-          }]
+              label: 'GBP vs EUR',
+              pointRadius: 0,
+              pointHitRadius: 8,
+              backgroundColor: 'rgba(219, 36, 24, .2)',
+              borderColor: '#db2418',
+              data: graphData.plots.EUR
+            },
+            {
+              label: 'GBP vs USD',
+              pointRadius: 0,
+              pointHitRadius: 8,
+              backgroundColor: 'rgba(40, 175, 250, .2)',
+              borderColor: '#28affa',
+              data: graphData.plots.USD
+            }
+          ]
         }
         compareChart.update();
         compareUpdated = true;
@@ -257,8 +259,8 @@ $(document).ready(function() {
     $(indicator).text(returnedCalc[1]);
 
     function changeCalc(rateBefore, rateNow, changer, symbol) {
-      if (changer.attr('id') == 'FTSE100') {
-        var changePercentage = (((rateNow/rateBefore)*100)-100).toFixed(2);
+      if (stockRates.includes(changer.attr('id'))) {
+        var changePercentage = (((rateNow / rateBefore) * 100) - 100).toFixed(2);
         symbol = ' (' + changePercentage + '%) ';
       }
       if (symbol == '% ') {
@@ -311,6 +313,7 @@ $(document).ready(function() {
   runAll('Unemploy', '% ');
   runAll('Inflation', '% ');
   runAll('FTSE100', ' ');
+  runAll('FTSE250', ' ')
 
 
   var showScales = true;
@@ -442,6 +445,24 @@ $(document).ready(function() {
 
   var FTSE100Ctx = $('#FTSE100Chart')[0].getContext('2d');
   var FTSE100Chart = new Chart(FTSE100Ctx, {
+
+    type: 'line',
+
+    options: {
+      elements: {
+        line: {
+          tension: .2,
+        }
+      },
+      scales: scalesObj,
+      legend: {
+        display: false,
+      },
+    }
+  });
+
+  var FTSE250Ctx = $('#FTSE250Chart')[0].getContext('2d');
+  var FTSE250Chart = new Chart(FTSE250Ctx, {
 
     type: 'line',
 

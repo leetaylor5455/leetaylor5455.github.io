@@ -47,11 +47,8 @@ for (var i = 0; i < 20; i++) {
 
 graphData.urlDates[19] = '2016-06-22';
 
-console.log(graphData.urlDates)
-
 buildArray('EUR');
 buildArray('USD');
-
 
 
 function buildArray(currencyId) {
@@ -167,6 +164,13 @@ yahooFinance.quote({
   modules: ['price']
 }, function (err, quotes) {
   writeToFile([startFullDate, quotes.price.regularMarketPrice], 'FTSE100')
+});
+
+yahooFinance.quote({
+  symbol: '^FTMC',
+  modules: ['price']
+}, function (err, quotes) {
+  writeToFile([startFullDate, quotes.price.regularMarketPrice], 'FTSE250')
 });
 
 // writes currency rates to a file

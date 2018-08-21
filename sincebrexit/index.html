@@ -226,7 +226,7 @@
             </div>
             <div class="row">
               <div class="col-4">
-                <p class="card-bottom-text bottom-link"><a href="https://exchangeratesapi.io">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
+                <p class="card-bottom-text bottom-link"><a href="https://github.com/pilwon/node-yahoo-finance">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
               </div>
               <div class="col-8 align-self-end">
                 <p class="card-bottom-text" id="FTSE100Change"></p>
@@ -235,6 +235,51 @@
           </div>
           <div class="card-body chart-card">
             <canvas id="FTSE100Chart" width=window.innerWidth height="150"></canvas>
+          </div>
+        </div>
+
+        <!-- FTSE250 Index Card -->
+        <div class="card mx-auto" id="FTSE250" style="min-width: 250px;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h3 class="card-title">FTSE 250 Index</h3></div>
+              <div class="col">
+                <!-- <h3 id="FTSE100Ind" class="indicator"></h3> -->
+                <img id="FTSE250Ind" class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col card-split">
+                <div>
+                  <div class="card-body nested-card">
+                    <p class="card-title date-title">SINCE</p>
+                    <p class="dateBefore">22nd Jun 2016</p>
+                    <h1 class="card-text" id="FTSE250Before"></h1>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div>
+                  <div class="card-body nested-card">
+                    <p class="card-title date-title">TODAY</p>
+                    <p class="dateNow"></p>
+                    <h1 class="card-text" id="FTSE250Now"></h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <p class="card-bottom-text bottom-link"><a href="https://github.com/pilwon/node-yahoo-finance">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
+              </div>
+              <div class="col-8 align-self-end">
+                <p class="card-bottom-text" id="FTSE250Change"></p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body chart-card">
+            <canvas id="FTSE250Chart" width=window.innerWidth height="150"></canvas>
           </div>
         </div>
 
