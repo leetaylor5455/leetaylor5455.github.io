@@ -6,21 +6,24 @@ $(document).ready(function() {
 
   var graphData = {
     plots: {},
-    labels: {},
+    labels: {}
   };
 
+  // For easy expansion of cards
   var twoDDatasets = ['USD', 'EUR', 'GDP', 'Inflation'];
   var graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100', 'FTSE250'];
   var reverseColours = ['Inflation', 'Unemploy'];
   var stockRates = ['FTSE100', 'FTSE250'];
 
-  var compareIndex = 0;
-
-  // Date Function
+  // To be used in convertDate Function
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ];
 
+  /**
+   * @param {string} d date in ISOString Format
+   * @returns {string} date in 'dd(th) mmm yyyy' format
+   */
   function convertDate(d) {
 
     d = new Date(d);
@@ -54,7 +57,10 @@ $(document).ready(function() {
     return fullDate;
   }
 
-
+  /**
+   * @param {string} id rate selector to assign and identify rates
+   * @returns {promise} rates object populated
+   */
   function populateRates(id) {
     return new Promise(function(resolve, reject) {
       $.get('js/json/rates.json', function(data) {
@@ -85,15 +91,22 @@ $(document).ready(function() {
     });
   }
 
+  /**
+   * @param {string} id rate selector to assign and identify rates
+   * @returns {promise} charts populated
+   */
   function calculateChart(id) {
     return new Promise(function(resolve, reject) {
-      // Redirects to Bespoke Function for FTSE100
+      // Redirects to Bespoke Function for stock rate charts due to different .json file
       if (stockRates.includes(id)) {
-        FTSECharts(id);
+        FTSEChart(id);
         return;
       }
 
-      function FTSECharts(id) {
+      /**
+       * @param {string} id rate selector to assign and identify rates
+       */
+      function FTSEChart(id) {
         $.get('js/json/stockrates.json', function(data) {
           graphData.plots[id] = [];
           graphData.labels[id] = [];
@@ -112,6 +125,9 @@ $(document).ready(function() {
         });
       }
 
+      /**
+       * @param {string} id rate selector to access rates object
+       */
       (function(id) {
         $.get('js/json/rates.json', function(data) {
           var chartArray = data.rates[id];
@@ -125,6 +141,7 @@ $(document).ready(function() {
           graphData.labels[id].reverse();
         }).then(function() {
           if (graphData.plots[id][0] < graphData.plots[id][graphData.plots[id].length - 1]) {
+            // Percentage rates like unemployment are better when lower - so colour indication is reversed
             if (reverseColours.includes(id)) {
               var lineColor = '#8d0011';
             } else {
@@ -142,6 +159,13 @@ $(document).ready(function() {
         });
       })(id);
 
+      /**
+       * @param {array<float>} plots chart values
+       * @param {array<string>} labels condensed date for timescale
+       * @param {string} lineColor hex color value used to paint line
+       * @param {string} id used to reference specific chart object
+       * @param {string} legend for graph titling (if specified, otherwise null)
+       */
       function pushToChart(plots, labels, lineColor, id, legend = null) {
         var chart = id + 'Chart';
         eval(chart).data = {
@@ -156,7 +180,6 @@ $(document).ready(function() {
           }]
         }
         eval(chart).update();
-        console.log('Chart updated.')
       }
     }).then(function() {
       if (compareUpdated === false) {
@@ -182,82 +205,88 @@ $(document).ready(function() {
         }
         compareChart.update();
         compareUpdated = true;
-        console.log('Compare chart updated.')
       }
     });
   }
 
-  function displayDateNow(id) {
-    // console.log('Rates now: ', ratesNow)
+  /**
+   * @param {string} id to reference html element and rates object
+   */
+  function displayDates(id) {
     $('#' + id).find('.dateNow').text(convertDate(ratesNow[id][0]));
-  }
-
-  function displayDateBefore(id) {
-    // console.log('Rates before: ', ratesBefore)
     $('#' + id).find('.dateBefore').text(convertDate(ratesBefore[id][0]));
   }
 
-  // Displays Pp to Date Rates on Card
-  function updateRatesNow(id, symbol) {
-    var jqueryID = '#' + id + 'Now';
+  /**
+   * @param {string} id to reference html element and rates object
+   * @param {string} symbol to be placed in string output
+   */
+  function displayRates(id, symbol) {
+    var nowId = '#' + id + 'Now';
+    var beforeId = '#' + id + 'Before';
+
     if (symbol == '% ') {
-      $(jqueryID).text(ratesNow[id][1] + symbol);
+      $(nowId).text(ratesNow[id][1] + symbol);
     } else {
-      $(jqueryID).text(symbol + ratesNow[id][1]);
+      $(nowId).text(symbol + ratesNow[id][1]);
     }
 
-    updateRatesBefore(id, symbol);
-  }
-
-  // Displays Previous Rates on Card
-  function updateRatesBefore(id, symbol) {
-    var jqueryID = '#' + id + 'Before';
     if (symbol == '% ') {
-      $(jqueryID).text(ratesBefore[id][1] + symbol);
+      $(beforeId).text(ratesBefore[id][1] + symbol);
     } else {
-      $(jqueryID).text(symbol + ratesBefore[id][1]);
+      $(beforeId).text(symbol + ratesBefore[id][1]);
     }
 
     updateRatesChange(id, symbol);
   }
 
-  // Displays Rates Change on Card
+  /**
+   * @param {string} id to reference html element and rates object
+   * @param {string} symbol to be placed in string output
+   */
   function updateRatesChange(id, symbol) {
 
-    var jqueryID = '#' + id + 'Change';
-    var indicator = '#' + id + 'Ind'
+    var jqueryId = '#' + id + 'Change';
+    var indicator = '#' + id + 'Ind';
 
     var returnedCalc = changeCalc(ratesBefore[id][1], ratesNow[id][1], $('#' + id), symbol);
 
-    $(jqueryID).text(returnedCalc[0]);
+    $(jqueryId).text(returnedCalc[0]);
+
     if (returnedCalc[1] == 'up') {
       if (symbol == '% ') {
         $(indicator).attr('src', 'images/arrow-up-red.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
         // Change column split colour
-        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #8d0011')
+        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #8d0011');
       } else {
         $(indicator).attr('src', 'images/arrow-up-green.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
         // Change column split colour
-        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04')
+        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04');
       }
     } else {
       if (symbol == '% ') {
         $(indicator).attr('src', 'images/arrow-down-green.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
         // Change column split colour
-        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04')
+        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04');
       } else {
         $(indicator).attr('src', 'images/arrow-down-red.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
         // Change column split colour
-        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #8d0011')
+        $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #8d0011');
       }
     }
 
     $(indicator).text(returnedCalc[1]);
 
+    /**
+     * @param {int} rateBefore rate before referendum
+     * @param {int} rateNow most up to date value
+     * @param {obj} changer jQuery object used to extract and implant data
+     * @param {string} symbol to be placed in string output
+     */
     function changeCalc(rateBefore, rateNow, changer, symbol) {
       if (stockRates.includes(changer.attr('id'))) {
         var changePercentage = (((rateNow / rateBefore) * 100) - 100).toFixed(2);
@@ -268,24 +297,24 @@ $(document).ready(function() {
           changer.addClass('rate-down');
           var rateChange = (rateNow - rateBefore).toFixed(2);
           rateChange = 'UP BY ' + rateChange + symbol + " ▲";
-          var change = 'up'
+          var change = 'up';
         } else if (rateNow < rateBefore) {
           changer.addClass('rate-up');
           var rateChange = (rateBefore - rateNow).toFixed(2);
           rateChange = 'DOWN BY ' + rateChange + symbol + " ▼";
-          var change = 'down'
+          var change = 'down';
         }
       } else {
         if (rateNow < rateBefore) {
           changer.addClass('rate-down');
           var rateChange = (rateBefore - rateNow).toFixed(2);
-          var change = 'down'
+          var change = 'down';
           rateChange = 'DOWN BY' + symbol + rateChange + " ▼";
 
         } else if (rateNow > rateBefore) {
           changer.addClass('rate-up');
           var rateChange = (rateNow - rateBefore).toFixed(2);
-          var change = 'up'
+          var change = 'up';
           rateChange = 'UP BY' + symbol + rateChange + " ▲";
 
         }
@@ -295,12 +324,14 @@ $(document).ready(function() {
     }
   }
 
-
+  /**
+   * @param {string} id to be passed into function calls
+   * @param {string} symbol to be passed into function calls
+   */
   function runAll(id, symbol) {
     populateRates(id).then(function() {
-      displayDateNow(id);
-      displayDateBefore(id);
-      updateRatesNow(id, symbol);
+      displayDates(id);
+      displayRates(id, symbol);
       if (graphDatasets.includes(id)) {
         calculateChart(id);
       }
@@ -313,9 +344,9 @@ $(document).ready(function() {
   runAll('Unemploy', '% ');
   runAll('Inflation', '% ');
   runAll('FTSE100', ' ');
-  runAll('FTSE250', ' ')
+  runAll('FTSE250', ' ');
 
-
+  // Allows quick changing of scales in testing
   var showScales = true;
   var scalesObj = {};
 
@@ -339,7 +370,7 @@ $(document).ready(function() {
     }
   }
 
-  // Charts
+  // Chart declarations
   var EURCtx = $('#EURChart')[0].getContext('2d');
   var EURChart = new Chart(EURCtx, {
 
@@ -357,7 +388,6 @@ $(document).ready(function() {
       },
     }
   });
-
 
   var USDCtx = $('#USDChart')[0].getContext('2d');
   var USDChart = new Chart(USDCtx, {
@@ -388,20 +418,7 @@ $(document).ready(function() {
           tension: .2,
         }
       },
-      scales: {
-        yAxes: [{
-          ticks: {
-            autoSkip: true,
-            maxTicksLimit: 3
-          }
-        }],
-        xAxes: [{
-          ticks: {
-            autoSkip: true,
-            maxTicksLimit: 10
-          }
-        }]
-      },
+      scales: scalesObj,
       legend: {
         display: false
       },
@@ -441,7 +458,6 @@ $(document).ready(function() {
       },
     }
   });
-
 
   var FTSE100Ctx = $('#FTSE100Chart')[0].getContext('2d');
   var FTSE100Chart = new Chart(FTSE100Ctx, {
