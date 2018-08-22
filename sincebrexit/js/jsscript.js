@@ -12,8 +12,9 @@ $(document).ready(function() {
   // For easy expansion of cards
   var twoDDatasets = ['USD', 'EUR', 'GDP', 'Inflation'];
   var graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100', 'FTSE250'];
-  var reverseColours = ['Inflation', 'Unemploy'];
+  var reverseRates = ['Inflation', 'Unemploy'];
   var stockRates = ['FTSE100', 'FTSE250'];
+  var dailyCharts = ['USD', 'EUR'];
 
   // To be used in convertDate Function
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -137,19 +138,24 @@ $(document).ready(function() {
             graphData.plots[id][i] = chartArray[i][1];
             graphData.labels[id][i] = chartArray[i][0].substring(5, 7) + '-' + chartArray[i][0].substring(2, 4);
           }
+          // Replaces first and last labels for clarity
+          if (dailyCharts.includes(id)) {
+            graphData.labels[id][0] = 'Today'
+            graphData.labels[id][graphData.labels[id].length-1] = 'Ref.'
+          }
           graphData.plots[id].reverse();
           graphData.labels[id].reverse();
         }).then(function() {
           if (graphData.plots[id][0] < graphData.plots[id][graphData.plots[id].length - 1]) {
             // Percentage rates like unemployment are better when lower - so colour indication is reversed
-            if (reverseColours.includes(id)) {
+            if (reverseRates.includes(id)) {
               var lineColor = '#8d0011';
             } else {
               var lineColor = '#2b4d04';
             }
 
           } else {
-            if (reverseColours.includes(id)) {
+            if (reverseRates.includes(id)) {
               var lineColor = '#2b4d04';
             } else {
               var lineColor = '#8d0011';
@@ -254,7 +260,7 @@ $(document).ready(function() {
     $(jqueryId).text(returnedCalc[0]);
 
     if (returnedCalc[1] == 'up') {
-      if (reverseColours.includes(id)) {
+      if (reverseRates.includes(id)) {
         $(indicator).attr('src', 'images/arrow-up-red.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
         // Change column split colour
@@ -266,7 +272,7 @@ $(document).ready(function() {
         $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04');
       }
     } else {
-      if (reverseColours.includes(id)) {
+      if (reverseRates.includes(id)) {
         $(indicator).attr('src', 'images/arrow-down-green.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
         // Change column split colour
