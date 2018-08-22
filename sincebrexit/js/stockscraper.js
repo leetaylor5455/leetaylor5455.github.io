@@ -1,7 +1,7 @@
-var yahooFinance = require('yahoo-finance');
+const yahooFinance = require('yahoo-finance');
 const fs = require('fs');
 
-var todayDate = new Date().toISOString().slice(0, 10);
+const todayDate = new Date().toISOString().slice(0, 10);
 
 
 yahooFinance.historical({

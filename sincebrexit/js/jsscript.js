@@ -10,11 +10,11 @@ $(document).ready(function() {
   };
 
   // For easy expansion of cards
-  var twoDDatasets = ['USD', 'EUR', 'GDP', 'Inflation'];
-  var graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100', 'FTSE250'];
-  var reverseRates = ['Inflation', 'Unemploy'];
-  var stockRates = ['FTSE100', 'FTSE250'];
-  var dailyCharts = ['USD', 'EUR'];
+  const twoDDatasets = ['USD', 'EUR', 'GDP', 'Inflation'];
+  const graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100', 'FTSE250'];
+  const reverseRates = ['Inflation', 'Unemploy'];
+  const stockRates = ['FTSE100', 'FTSE250'];
+  const dailyCharts = ['USD', 'EUR'];
 
   // To be used in convertDate Function
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -60,7 +60,7 @@ $(document).ready(function() {
 
   /**
    * @param {string} id rate selector to assign and identify rates
-   * @returns {promise} rates object populated
+   * @returns {promise} resolved when rates object populated
    */
   function populateRates(id) {
     return new Promise(function(resolve, reject) {
@@ -117,14 +117,20 @@ $(document).ready(function() {
           }
         }).then(function() {
           if (graphData.plots[id][graphData.plots[id].length - 1] > graphData.plots[id][0]) {
+            var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 180);
+            grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
+            grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
             var lineColor = '#2b4d04';
           } else {
+            var grd = eval(id + 'Ctx').createLinearGradient(0, 180, 0, 0);
+            grd.addColorStop(0, 'rgba(221, 0, 26, 0.9)');
+            grd.addColorStop(0.75, 'rgba(255, 255, 255, 0.4)');
             var lineColor = '#8d0011';
           }
 
-          pushToChart(graphData.plots[id], graphData.labels[id], lineColor, id, 'Weekly Vals Since Ref.');
+          pushToChart(graphData.plots[id], graphData.labels[id], lineColor, id, grd, 'Weekly Vals Since Ref.', 2, 2);
         });
-      }
+      };
 
       /**
        * @param {string} id rate selector to access rates object
@@ -146,22 +152,38 @@ $(document).ready(function() {
           graphData.plots[id].reverse();
           graphData.labels[id].reverse();
         }).then(function() {
+          // If rate has risen
           if (graphData.plots[id][0] < graphData.plots[id][graphData.plots[id].length - 1]) {
-            // Percentage rates like unemployment are better when lower - so colour indication is reversed
             if (reverseRates.includes(id)) {
+              // Is bad percentage rate
               var lineColor = '#8d0011';
+              var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+              grd.addColorStop(0.000, 'rgba(221, 0, 26, 0.6)');
+              grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
             } else {
+              // Is good non-percentage rate
               var lineColor = '#2b4d04';
+              var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+              grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
+              grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
             }
-
+            // If Rate has fallen
           } else {
             if (reverseRates.includes(id)) {
+              // Is good percentage rate
               var lineColor = '#2b4d04';
+              var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+              grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
+              grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
             } else {
+              // Is bad non-percentage rate
+              var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+              grd.addColorStop(0, 'rgba(221, 0, 26, 0.6)');
+              grd.addColorStop(0.75, 'rgba(255, 255, 255, 0.1)');
               var lineColor = '#8d0011';
             }
           }
-          resolve(pushToChart(graphData.plots[id], graphData.labels[id], lineColor, id));
+          resolve(pushToChart(graphData.plots[id], graphData.labels[id], lineColor, id, grd));
         });
       })(id);
 
@@ -170,17 +192,21 @@ $(document).ready(function() {
        * @param {array<string>} labels condensed date for timescale
        * @param {string} lineColor hex color value used to paint line
        * @param {string} id used to reference specific chart object
+       * @param {gradient} backgroundColor gradient for visual touch
        * @param {string} legend for graph titling (if specified, otherwise null)
+       * @param {float} borderWidth the width of the graph line
+       * @param {float} pointHitRadius the precision needed to trigger a plot label
        */
-      function pushToChart(plots, labels, lineColor, id, legend = null) {
+      function pushToChart(plots, labels, lineColor, id, backgroundColor, legend = null, borderWidth = 2.5, pointHitRadius = 6) {
         var chart = id + 'Chart';
         eval(chart).data = {
           labels: labels,
           datasets: [{
             label: legend,
             pointRadius: 0,
-            pointHitRadius: 8,
-            backgroundColor: 'rgba(0, 0, 0, 0)',
+            borderWidth: borderWidth,
+            pointHitRadius: 5,
+            backgroundColor: backgroundColor,
             borderColor: lineColor,
             data: plots,
           }]
@@ -334,7 +360,7 @@ $(document).ready(function() {
    * @param {string} id to be passed into function calls
    * @param {string} symbol to be passed into function calls
    */
-  function runAll(id, symbol) {
+  function runAll(id, symbol = '') {
     populateRates(id).then(function() {
       displayDates(id);
       displayRates(id, symbol);
@@ -349,8 +375,8 @@ $(document).ready(function() {
   runAll('GDP', ' $');
   runAll('Unemploy', '% ');
   runAll('Inflation', '% ');
-  runAll('FTSE100', ' ');
-  runAll('FTSE250', ' ');
+  runAll('FTSE100');
+  runAll('FTSE250');
 
   // Allows quick changing of scales in testing
   var showScales = true;
@@ -473,7 +499,7 @@ $(document).ready(function() {
     options: {
       elements: {
         line: {
-          tension: .2,
+          tension: .1,
         }
       },
       scales: scalesObj,
@@ -491,7 +517,7 @@ $(document).ready(function() {
     options: {
       elements: {
         line: {
-          tension: .2,
+          tension: .1,
         }
       },
       scales: scalesObj,
