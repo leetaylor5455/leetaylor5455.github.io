@@ -20,6 +20,10 @@ var data = {
   }
 }
 
+const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+  "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
+];
+
 const latestUnemployURL = 'https://api.ons.gov.uk/dataset/LMS/timeseries/MGSX/data';
 
 
@@ -146,8 +150,15 @@ function getUnemployment(url) {
     res.on('end', () => {
       try {
         const parsedData = JSON.parse(rawData);
-        for (var i = parsedData.quarters.length-1; i > parsedData.quarters.length-21; i--) {
-          graphData.plots.Unemploy.push([parsedData.quarters[i].date, parseFloat(parsedData.quarters[i].value)]);
+
+        var i = parsedData.months.length-1;
+        while (parsedData.months[i].date != '2016 MAY') {
+          var monthDigit = monthNames.indexOf(parsedData.months[i].date.substring(5,8)) + 1
+          if (String(monthDigit).length == 1) {
+            monthDigit = '0' + monthDigit;
+          }
+          graphData.plots.Unemploy.push([parsedData.months[i].date.substring(0,4) + '-' + monthDigit + '-' + '01', parseFloat(parsedData.months[i].value)]);
+          i--;
         }
         writeToFile(graphData.plots.Unemploy, 'Unemploy');
       } catch (e) {

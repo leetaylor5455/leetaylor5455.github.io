@@ -27,10 +27,6 @@ $(document).ready(function() {
    */
   function convertDate(d) {
 
-    if (d.length >= 7) {
-      return d;
-    }
-
     d = new Date(d);
 
     var month = monthNames[d.getMonth()];
@@ -560,7 +556,7 @@ $(document).ready(function() {
     options: {
       elements: {
         line: {
-          tension: .2,
+          tension: .4,
         }
       },
       scales: scalesObj,
