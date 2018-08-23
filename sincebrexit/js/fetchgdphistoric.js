@@ -1,7 +1,10 @@
 const https = require('https');
 const fs = require('fs');
 
+// Only needs to run once a year
+
 https.get('https://www.quandl.com/api/v3/datasets/ODA/GBR_NGDPD.json?end_date=2018-08-08?api_key=B8xkkrnAcricJ1NZGbAw?', (res) => {
+
   const {
     statusCode
   } = res;
@@ -55,14 +58,3 @@ function writeToFile(dataObj) {
     console.log('File saved successfully.');
   });
 }
-
-// function writeToFile(dataObj) {
-//   let dataJSON = JSON.stringify(dataObj, null, 2);
-//   fs.writeFile('json/gdphistoric.json', dataJSON, (err) => {
-//     // throws an error, you could also catch it here
-//     if (err) throw err;
-//
-//     // success case, the file was saved
-//     console.log('File saved successfully.');
-//   });
-// }

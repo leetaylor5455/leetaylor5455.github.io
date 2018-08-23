@@ -221,14 +221,17 @@ $(document).ready(function() {
               label: 'GBP vs EUR',
               pointRadius: 0,
               pointHitRadius: 8,
-              backgroundColor: 'rgba(219, 36, 24, .2)',
-              borderColor: '#db2418',
+              borderWidth: 2.5,
+              // backgroundColor: 'rgba(219, 36, 24, .2)',
+              backgroundColor: 'rgba(255, 255, 255, .15)',
+              borderColor: '#e0e0e0',
               data: graphData.plots.EUR
             },
             {
               label: 'GBP vs USD',
               pointRadius: 0,
               pointHitRadius: 8,
+              borderWidth: 2.5,
               backgroundColor: 'rgba(40, 175, 250, .2)',
               borderColor: '#28affa',
               data: graphData.plots.USD
@@ -387,7 +390,7 @@ $(document).ready(function() {
       yAxes: [{
         ticks: {
           autoSkip: true,
-          maxTicksLimit: 3
+          maxTicksLimit: 5
         }
       }]
     }
