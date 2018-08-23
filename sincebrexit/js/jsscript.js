@@ -1,9 +1,5 @@
 $(document).ready(function() {
 
-  $.get('https://api.ons.gov.uk/dataset/MM23/timeseries/L55O/data', function(data) {
-    console.log(data)
-  })
-
   var ratesNow = {};
   var ratesBefore = {};
   var compareUpdated = false;
@@ -19,6 +15,7 @@ $(document).ready(function() {
   const reverseRates = ['Inflation', 'Unemploy'];
   const stockRates = ['FTSE100', 'FTSE250'];
   const dailyCharts = ['USD', 'EUR'];
+  const splitDatasets = ['GDP'];
 
   // To be used in convertDate Function
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -134,52 +131,120 @@ $(document).ready(function() {
       (function(id) {
         $.get('js/json/rates.json', function(data) {
           var chartArray = data.rates[id];
-          graphData.plots[id] = Array(chartArray.length - 1);
-          graphData.labels[id] = Array(chartArray.length - 1);
-          for (var i = 0; i < chartArray.length; i++) {
-            graphData.plots[id][i] = chartArray[i][1];
-            graphData.labels[id][i] = chartArray[i][0].substring(5, 7) + '-' + chartArray[i][0].substring(2, 4);
-          }
-          // Replaces first and last labels for clarity
-          if (dailyCharts.includes(id)) {
-            graphData.labels[id][0] = 'Today'
-            graphData.labels[id][graphData.labels[id].length-1] = 'Ref.'
-          }
-          graphData.plots[id].reverse();
-          graphData.labels[id].reverse();
-        }).then(function() {
-          // If rate has risen
-          if (graphData.plots[id][0] < graphData.plots[id][graphData.plots[id].length - 1]) {
-            if (reverseRates.includes(id)) {
-              // Is bad percentage rate
-              var lineColor = '#8d0011';
-              var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
-              grd.addColorStop(0.000, 'rgba(221, 0, 26, 0.6)');
-              grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
-            } else {
-              // Is good non-percentage rate
-              var lineColor = '#2b4d04';
-              var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
-              grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
-              grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
+          // Creates split array so they can be coloured separately
+          if (splitDatasets.includes(id)) {
+            graphData.plots[id] = [[],[]];
+            graphData.labels[id] = [];
+            var i = data.rates[id].length-1;
+            while (Date.parse(data.rates[id][i][0]) < Date.parse('2016-06-22')) {
+              graphData.plots[id][0].push(data.rates[id][i][1]);
+              graphData.labels[id].push(data.rates[id][i][0]);
+              i--;
             }
-            // If Rate has fallen
+            while (i >= 0) {
+              graphData.plots[id][1].push(data.rates[id][i][1]);
+              graphData.labels[id].push(data.rates[id][i][0]);
+              i--;
+            }
+
+            var splitTwoLength = graphData.plots[id][1].length;
+            var splitOneLength = graphData.plots[id][0].length;
+
+            for (var j = 0; j < splitTwoLength; j++) {
+              graphData.plots[id][0].push(null);
+            }
+
+            graphData.plots[id][1].unshift(graphData.plots[id][0][graphData.plots[id][0].length-1-splitTwoLength]);
+
+            for (var k = 0; k < splitOneLength-1; k++) {
+              graphData.plots[id][1].unshift(null);
+            }
+
           } else {
-            if (reverseRates.includes(id)) {
-              // Is good percentage rate
-              var lineColor = '#2b4d04';
-              var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
-              grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
-              grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
-            } else {
-              // Is bad non-percentage rate
-              var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
-              grd.addColorStop(0, 'rgba(221, 0, 26, 0.6)');
-              grd.addColorStop(0.75, 'rgba(255, 255, 255, 0.1)');
-              var lineColor = '#8d0011';
+            graphData.plots[id] = Array(chartArray.length - 1);
+            graphData.labels[id] = Array(chartArray.length - 1);
+            for (var i = 0; i < chartArray.length; i++) {
+              graphData.plots[id][i] = chartArray[i][1];
+              graphData.labels[id][i] = chartArray[i][0].substring(5, 7) + '-' + chartArray[i][0].substring(2, 4);
             }
+            // Replaces first and last labels for clarity
+            if (dailyCharts.includes(id)) {
+              graphData.labels[id][0] = 'Today'
+              graphData.labels[id][graphData.labels[id].length-1] = 'Ref.'
+            }
+            graphData.plots[id].reverse();
+            graphData.labels[id].reverse();
           }
-          resolve(pushToChart(graphData.plots[id], graphData.labels[id], lineColor, id, grd));
+
+        }).then(function() {
+          if (splitDatasets.includes(id)) {
+            var datasetOne = renderColours(graphData.plots[id][0], id);
+            var datasetTwo = renderColours(graphData.plots[id][1], id);
+            var chart = id + 'Chart';
+            eval(chart).data = {
+              labels: graphData.labels[id],
+              datasets: [{
+                label: 'GDP Up to Ref.',
+                pointRadius: 0,
+                borderWidth: 2.5,
+                pointHitRadius: 5,
+                backgroundColor: datasetTwo[4],
+                borderColor: datasetTwo[2],
+                data: datasetOne[0],
+              },
+              {
+                label: 'GDP Since Ref.',
+                pointRadius: 0,
+                borderWidth: 2.5,
+                pointHitRadius: 5,
+                backgroundColor: datasetOne[4],
+                borderColor: datasetOne[2],
+                data: datasetTwo[0],
+              }]
+            }
+            eval(chart).update();
+            resolve();
+          } else {
+            //console.log(graphData.plots[id])
+            var params = renderColours(graphData.plots[id], id);
+            resolve(pushToChart(params[0], params[1], params[2], params[3], params[4]));
+          }
+
+          function renderColours(plotArray, id) {
+            // If rate has risen
+            if (plotArray[0] < plotArray[plotArray.length - 1]) {
+              if (reverseRates.includes(id)) {
+                // Is bad percentage rate
+                var lineColor = '#8d0011';
+                var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+                grd.addColorStop(0.000, 'rgba(221, 0, 26, 0.6)');
+                grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
+              } else {
+                // Is good non-percentage rate
+                var lineColor = '#2b4d04';
+                var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+                grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
+                grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
+              }
+              // If Rate has fallen
+            } else {
+              if (reverseRates.includes(id)) {
+                // Is good percentage rate
+                var lineColor = '#2b4d04';
+                var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+                grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
+                grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
+              } else {
+                // Is bad non-percentage rate
+                var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+                grd.addColorStop(0, 'rgba(221, 0, 26, 0.6)');
+                grd.addColorStop(0.75, 'rgba(255, 255, 255, 0.1)');
+                var lineColor = '#8d0011';
+              }
+            }
+            return [plotArray, graphData.labels[id], lineColor, id, grd];
+          }
+
         });
       })(id);
 
@@ -201,7 +266,7 @@ $(document).ready(function() {
             label: legend,
             pointRadius: 0,
             borderWidth: borderWidth,
-            pointHitRadius: 5,
+            pointHitRadius: pointHitRadius,
             backgroundColor: backgroundColor,
             borderColor: lineColor,
             data: plots,
@@ -451,7 +516,7 @@ $(document).ready(function() {
       },
       scales: scalesObj,
       legend: {
-        display: false
+        display: true
       },
     }
   });
