@@ -1,5 +1,9 @@
 $(document).ready(function() {
 
+  $.get('https://api.ons.gov.uk/dataset/MM23/timeseries/L55O/data', function(data) {
+    console.log(data)
+  })
+
   var ratesNow = {};
   var ratesBefore = {};
   var compareUpdated = false;
@@ -66,22 +70,14 @@ $(document).ready(function() {
     return new Promise(function(resolve, reject) {
       $.get('js/json/rates.json', function(data) {
         if (twoDDatasets.includes(id)) {
-          if (id == 'GDP') {
-            ratesNow[id] = [data.rates[id][0][0], (data.rates[id][0][1] / 1000).toFixed(2)];
-          } else {
-            ratesNow[id] = [data.rates[id][0][0], data.rates[id][0][1].toFixed(2)];
-          }
+          ratesNow[id] = [data.rates[id][0][0], data.rates[id][0][1].toFixed(2)];
         } else {
           ratesNow[id] = [data.rates[id][0], data.rates[id][1].toFixed(2)];
         }
       }).then(function() {
         $.get('js/json/ratesbefore.json', function(data) {
           if (twoDDatasets.includes(id)) {
-            if (id == 'GDP') {
-              ratesBefore[id] = [data.rates[id][0][0], (data.rates[id][0][1] / 1000).toFixed(2)];
-            } else {
-              ratesBefore[id] = [data.rates[id][0][0], data.rates[id][0][1].toFixed(2)];
-            }
+            ratesBefore[id] = [data.rates[id][0][0], data.rates[id][0][1].toFixed(2)];
           } else {
             ratesBefore[id] = [data.rates[id][0], data.rates[id][1].toFixed(2)];
           }
@@ -224,7 +220,7 @@ $(document).ready(function() {
               borderWidth: 2.5,
               // backgroundColor: 'rgba(219, 36, 24, .2)',
               backgroundColor: 'rgba(255, 255, 255, .15)',
-              borderColor: '#e0e0e0',
+              borderColor: '#f0f0f0',
               data: graphData.plots.EUR
             },
             {

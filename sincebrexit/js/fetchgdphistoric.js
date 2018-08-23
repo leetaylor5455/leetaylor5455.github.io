@@ -3,7 +3,9 @@ const fs = require('fs');
 
 // Only needs to run once a year
 
-https.get('https://www.quandl.com/api/v3/datasets/ODA/GBR_NGDPD.json?end_date=2018-08-08?api_key=B8xkkrnAcricJ1NZGbAw?', (res) => {
+var ukGDP = [];
+
+https.get('https://api.worldbank.org/v2/countries/gb/indicators/NY.GDP.MKTP.CD?format=json', (res) => {
 
   const {
     statusCode
@@ -33,7 +35,10 @@ https.get('https://www.quandl.com/api/v3/datasets/ODA/GBR_NGDPD.json?end_date=20
   res.on('end', () => {
     try {
       const parsedData = JSON.parse(rawData);
-      writeToFile(parsedData.dataset.data);
+      for (var i = 0; i < 20; i++) {
+        ukGDP.push([parsedData[1][i].date + '-12-31', parsedData[1][i].value/1000000000000])
+      }
+      writeToFile(ukGDP);
     } catch (e) {
       console.error(e.message);
     }

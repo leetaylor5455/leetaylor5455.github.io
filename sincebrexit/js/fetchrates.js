@@ -6,7 +6,8 @@ var graphData = {
   plots: {
     EUR: Array(20),
     USD: Array(20),
-    Unemploy: []
+    Unemploy: [],
+    Inflation: []
   },
   urlDates: []
 }
@@ -24,7 +25,8 @@ const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
   "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
 ];
 
-const latestUnemployURL = 'https://api.ons.gov.uk/dataset/LMS/timeseries/MGSX/data';
+const unemployURL = 'https://api.ons.gov.uk/dataset/LMS/timeseries/MGSX/data';
+const inflationURL = 'https://api.ons.gov.uk/dataset/MM23/timeseries/L55O/data';
 
 
 var startFullDate = new Date().toISOString().slice(0, 10);
@@ -120,7 +122,7 @@ function getChartData(url, date, currencyId, i, resolve) {
   });
 }
 
-function getUnemployment(url) {
+function getONSData(url, id) {
   https.get(url, (res) => {
     const {
       statusCode
@@ -157,10 +159,10 @@ function getUnemployment(url) {
           if (String(monthDigit).length == 1) {
             monthDigit = '0' + monthDigit;
           }
-          graphData.plots.Unemploy.push([parsedData.months[i].date.substring(0,4) + '-' + monthDigit + '-' + '01', parseFloat(parsedData.months[i].value)]);
+          graphData.plots[id].push([parsedData.months[i].date.substring(0,4) + '-' + monthDigit + '-' + '01', parseFloat(parsedData.months[i].value)]);
           i--;
         }
-        writeToFile(graphData.plots.Unemploy, 'Unemploy');
+        writeToFile(graphData.plots[id], id);
       } catch (e) {
         console.error(e.message);
       }
@@ -200,4 +202,5 @@ function writeToFile(dataObj, currencyId) {
   });
 }
 
-getUnemployment(latestUnemployURL)
+getONSData(unemployURL, 'Unemploy')
+getONSData(inflationURL, 'Inflation')
