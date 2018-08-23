@@ -10,8 +10,8 @@ $(document).ready(function() {
   };
 
   // For easy expansion of cards
-  const twoDDatasets = ['USD', 'EUR', 'GDP', 'Inflation'];
-  const graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100', 'FTSE250'];
+  const twoDDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'Unemploy'];
+  const graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100', 'FTSE250', 'Unemploy'];
   const reverseRates = ['Inflation', 'Unemploy'];
   const stockRates = ['FTSE100', 'FTSE250'];
   const dailyCharts = ['USD', 'EUR'];
@@ -26,6 +26,10 @@ $(document).ready(function() {
    * @returns {string} date in 'dd(th) mmm yyyy' format
    */
   function convertDate(d) {
+
+    if (d.length >= 7) {
+      return d;
+    }
 
     d = new Date(d);
 
@@ -532,6 +536,24 @@ $(document).ready(function() {
 
   var InflationCtx = $('#InflationChart')[0].getContext('2d');
   var InflationChart = new Chart(InflationCtx, {
+
+    type: 'line',
+
+    options: {
+      elements: {
+        line: {
+          tension: .2,
+        }
+      },
+      scales: scalesObj,
+      legend: {
+        display: false,
+      },
+    }
+  });
+
+  var UnemployCtx = $('#UnemployChart')[0].getContext('2d');
+  var UnemployChart = new Chart(UnemployCtx, {
 
     type: 'line',
 

@@ -5,7 +5,8 @@ var yahooFinance = require('yahoo-finance');
 var graphData = {
   plots: {
     EUR: Array(20),
-    USD: Array(20)
+    USD: Array(20),
+    Unemploy: []
   },
   urlDates: []
 }
@@ -19,7 +20,7 @@ var data = {
   }
 }
 
-const latestUnemployURL = 'https://api.ons.gov.uk/dataset/BB/timeseries/MGSC/data';
+const latestUnemployURL = 'https://api.ons.gov.uk/dataset/LMS/timeseries/MGSX/data';
 
 
 var startFullDate = new Date().toISOString().slice(0, 10);
@@ -145,10 +146,10 @@ function getUnemployment(url) {
     res.on('end', () => {
       try {
         const parsedData = JSON.parse(rawData);
-        // console.log('Parsed Data: ', parsedData);
-        var Unemploy = (((parseInt((parsedData.years[parsedData.years.length-1].value), 10)/1000)/35)*100);
-        var UnemployDate = parsedData.years[parsedData.years.length-1].date + '-12-31'
-        writeToFile([UnemployDate, Unemploy], 'Unemploy');
+        for (var i = parsedData.quarters.length-1; i > parsedData.quarters.length-21; i--) {
+          graphData.plots.Unemploy.push([parsedData.quarters[i].date, parseFloat(parsedData.quarters[i].value)]);
+        }
+        writeToFile(graphData.plots.Unemploy, 'Unemploy');
       } catch (e) {
         console.error(e.message);
       }
