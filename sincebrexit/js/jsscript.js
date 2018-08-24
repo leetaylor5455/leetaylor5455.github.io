@@ -225,7 +225,7 @@ $(document).ready(function() {
                 // Is bad percentage rate
                 var lineColor = '#8d0011';
                 var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
-                grd.addColorStop(0.000, 'rgba(221, 0, 26, 0.6)');
+                grd.addColorStop(0, 'rgba(221, 0, 26, 0.6)');
                 grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
               } else {
                 // Is good non-percentage rate
@@ -328,13 +328,13 @@ $(document).ready(function() {
     var $rateNow = $('#' + id).find('.rate-now')
     var $rateBefore = $('#' + id).find('.rate-before')
 
-    if (symbol == '% ') {
+    if (symbol === '% ') {
       $rateNow.text(ratesNow[id][1] + symbol);
     } else {
       $rateNow.text(symbol + ratesNow[id][1]);
     }
 
-    if (symbol == '% ') {
+    if (symbol === '% ') {
       $rateBefore.text(ratesBefore[id][1] + symbol);
     } else {
       $rateBefore.text(symbol + ratesBefore[id][1]);
@@ -356,7 +356,7 @@ $(document).ready(function() {
 
     $change.text(returnedCalc[0]);
 
-    if (returnedCalc[1] == 'up') {
+    if (returnedCalc[1] === 'up') {
       if (reverseRates.includes(id)) {
         $indicator.attr('src', 'images/arrow-up-red.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
@@ -395,7 +395,7 @@ $(document).ready(function() {
         var changePercentage = (((rateNow / rateBefore) * 100) - 100).toFixed(2);
         symbol = ' (' + changePercentage + '%) ';
       }
-      if (symbol == '% ') {
+      if (symbol === '% ') {
         if (rateNow > rateBefore) {
           changer.addClass('rate-down');
           var rateChange = (rateNow - rateBefore).toFixed(2);
