@@ -29,6 +29,7 @@ $(document).ready(function() {
 
   /**
    * @param {string} d date in ISOString Format
+   * @param {boolean} condense function has two uses, this defines which one
    * @returns {string} date in 'dd(th) mmm yyyy' format
    */
   function convertDate(d, condense = false) {
@@ -47,24 +48,20 @@ $(document).ready(function() {
 
     day = String(day);
 
-    if (day.length < 2) {
-      var dateIndex = 0;
-    } else {
-      var dateIndex = 1;
-    }
-
+    // All numbers between 10 and 20 end in th
     if (parseInt(day, 10) > 10 && parseInt(day, 10) < 20) {
       day = day + "th ";
-    } else if (day.charAt(dateIndex) == 1) {
+    } else if (day.charAt(day.length-1) == 1) {
       day = day + "st ";
-    } else if (day.charAt(dateIndex) == 2) {
+    } else if (day.charAt(day.length-1) == 2) {
       day = day + "nd ";
-    } else if (day.charAt(dateIndex) == 3) {
+    } else if (day.charAt(day.length-1) == 3) {
       day = day + "rd ";
     } else {
       day = day + "th ";
     }
 
+    // dd(th) mmm yyyy format
     var fullDate = day + month + " " + year;
     return fullDate;
   }
@@ -119,19 +116,8 @@ $(document).ready(function() {
             graphData.labels[id].unshift(convertDate(data.rates[id][i].date, true))
           }
         }).then(function() {
-          if (graphData.plots[id][graphData.plots[id].length - 1] > graphData.plots[id][0]) {
-            var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 180);
-            grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
-            grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
-            var lineColor = '#2b4d04';
-          } else {
-            var grd = charts.ctx[id].createLinearGradient(0, 180, 0, 0);
-            grd.addColorStop(0, 'rgba(221, 0, 26, 0.9)');
-            grd.addColorStop(0.75, 'rgba(255, 255, 255, 0.4)');
-            var lineColor = '#8d0011';
-          }
-
-          pushToChart(graphData.plots[id], graphData.labels[id], lineColor, id, grd, 'Weekly Vals Since Ref.', 2, 2);
+          var params = renderColours(graphData.plots[id], id);
+          pushToChart(params[0], params[1], params[2], params[3], params[4], 'Weekly Vals Since Ref.', 2, 2);
         });
       };
 
@@ -217,44 +203,48 @@ $(document).ready(function() {
             var params = renderColours(graphData.plots[id], id);
             resolve(pushToChart(params[0], params[1], params[2], params[3], params[4]));
           }
-
-          function renderColours(plotArray, id) {
-            // If rate has risen
-            if (plotArray[0] < plotArray[plotArray.length - 1]) {
-              if (reverseRates.includes(id)) {
-                // Is bad percentage rate
-                var lineColor = '#8d0011';
-                var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
-                grd.addColorStop(0, 'rgba(221, 0, 26, 0.6)');
-                grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
-              } else {
-                // Is good non-percentage rate
-                var lineColor = '#2b4d04';
-                var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
-                grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
-                grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
-              }
-              // If Rate has fallen
-            } else {
-              if (reverseRates.includes(id)) {
-                // Is good percentage rate
-                var lineColor = '#2b4d04';
-                var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
-                grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
-                grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
-              } else {
-                // Is bad non-percentage rate
-                var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
-                grd.addColorStop(0, 'rgba(221, 0, 26, 0.6)');
-                grd.addColorStop(0.75, 'rgba(255, 255, 255, 0.1)');
-                var lineColor = '#8d0011';
-              }
-            }
-            return [plotArray, graphData.labels[id], lineColor, id, grd];
-          }
-
         });
       })(id);
+
+      /**
+       * @param {arr<int>} plotArray to be used in chart.data.datasets.data
+       * @param {string} id to reference specific objects
+       * @returns {arr} parameters for pushToChart function
+       */
+      function renderColours(plotArray, id) {
+        // If rate has risen
+        if (plotArray[0] < plotArray[plotArray.length - 1]) {
+          if (reverseRates.includes(id)) {
+            // Is bad percentage rate
+            var lineColor = '#8d0011';
+            var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
+            grd.addColorStop(0, 'rgba(221, 0, 26, 0.6)');
+            grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
+          } else {
+            // Is good non-percentage rate
+            var lineColor = '#2b4d04';
+            var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
+            grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
+            grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
+          }
+          // If Rate has fallen
+        } else {
+          if (reverseRates.includes(id)) {
+            // Is good percentage rate
+            var lineColor = '#2b4d04';
+            var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
+            grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
+            grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
+          } else {
+            // Is bad non-percentage rate
+            var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
+            grd.addColorStop(0, 'rgba(221, 0, 26, 0.6)');
+            grd.addColorStop(0.75, 'rgba(255, 255, 255, 0.1)');
+            var lineColor = '#8d0011';
+          }
+        }
+        return [plotArray, graphData.labels[id], lineColor, id, grd];
+      }
 
       /**
        * @param {array<float>} plots chart values
