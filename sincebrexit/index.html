@@ -45,7 +45,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
     <div class="container">
-      <a class="navbar-brand" href="index.html"><h1 style="font-weight: 700; color: #4a4a4a; margin: 0; font-size: 2rem">Since Brexit... <span class="text-primary" style="font-size: 14px;vertical-align: top;">BETA</span></h1></a>
+      <a class="navbar-brand" href="index.html"><h1 style="font-weight: 700; color: #4a4a4a; margin: 0; font-size: 2rem">Since Brexit... <span class="text-primary" style="font-size: 14px; vertical-align: top;">BETA</span></h1></a>
     </div>
   </nav>
   <div class="content">
@@ -282,6 +282,50 @@
             <div class="row">
               <div class="col">
                 <h3 class="card-title">Unemployment Rate</h3></div>
+              <div class="col">
+                <img class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col card-split">
+                <div>
+                  <div class="card-body nested-card">
+                    <p class="card-title date-title">SINCE</p>
+                    <p class="dateBefore">22nd Jun 2016</p>
+                    <h1 class="card-text rate-before"></h1>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div>
+                  <div class="card-body nested-card">
+                    <p class="card-title date-title">LATEST</p>
+                    <p class="dateNow"></p>
+                    <h1 class="card-text rate-now"></h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p class="card-bottom-text bottom-link"><a href="https://www.ons.gov.uk/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms" target="_blank">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
+              </div>
+              <div class="col align-self-end">
+                <p class="card-bottom-text rate-change"></p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body chart-card">
+            <canvas class="chart" width=window.innerWidth height="120"></canvas>
+          </div>
+        </div>
+
+        <!-- Unemployment Rate Card -->
+        <div class="card mx-auto" id="Employ" style="min-width: 250px;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h3 class="card-title">Employment Rate</h3></div>
               <div class="col">
                 <img class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
               </div>

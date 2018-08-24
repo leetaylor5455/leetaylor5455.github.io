@@ -7,7 +7,8 @@ var graphData = {
     EUR: Array(20),
     USD: Array(20),
     Unemploy: [],
-    Inflation: []
+    Inflation: [],
+    Employ: []
   },
   urlDates: []
 }
@@ -27,6 +28,7 @@ const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
 
 const unemployURL = 'https://api.ons.gov.uk/dataset/LMS/timeseries/MGSX/data';
 const inflationURL = 'https://api.ons.gov.uk/dataset/MM23/timeseries/L55O/data';
+const employURL = 'https://api.ons.gov.uk/dataset/LMS/timeseries/LF24/data';
 
 
 var startFullDate = new Date().toISOString().slice(0, 10);
@@ -64,7 +66,6 @@ function buildArray(currencyId) {
 
   for (var i = 19; i >= 0; i--) {
     var url = 'https://api.exchangeratesapi.io/' + graphData.urlDates[i] + '?base=GBP';
-    console.log(url)
     var getPromise = new Promise(function(resolve, reject) {
       getChartData(url, graphData.urlDates[i], currencyId, i, resolve);
     });
@@ -153,10 +154,10 @@ function getONSData(url, id) {
     res.on('end', () => {
       try {
         const parsedData = JSON.parse(rawData);
-
         var i = parsedData.months.length-1;
+        //console.log(id, parsedData.months[i])
         while (parsedData.months[i].date != '2016 MAY') {
-          var monthDigit = monthNames.indexOf(parsedData.months[i].date.substring(5,8)) + 1
+          var monthDigit = monthNames.indexOf(parsedData.months[i].date.substring(5,8)) + 1;
           if (String(monthDigit).length == 1) {
             monthDigit = '0' + monthDigit;
           }
@@ -205,3 +206,4 @@ function writeToFile(dataObj, currencyId) {
 
 getONSData(unemployURL, 'Unemploy')
 getONSData(inflationURL, 'Inflation')
+getONSData(employURL, 'Employ')

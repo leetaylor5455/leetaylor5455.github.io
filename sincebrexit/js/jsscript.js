@@ -15,8 +15,8 @@ $(document).ready(function() {
   };
 
   // For easy expansion of cards
-  const twoDDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'Unemploy'];
-  const graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100', 'FTSE250', 'Unemploy'];
+  const twoDDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'Unemploy', 'Employ'];
+  const graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100', 'FTSE250', 'Unemploy', 'Employ'];
   const reverseRates = ['Inflation', 'Unemploy'];
   const stockRates = ['FTSE100', 'FTSE250'];
   const dailyCharts = ['USD', 'EUR'];
@@ -387,35 +387,45 @@ $(document).ready(function() {
     /**
      * @param {int} rateBefore rate before referendum
      * @param {int} rateNow most up to date value
-     * @param {obj} changer jQuery object used to extract and implant data
+     * @param {obj} $changer jQuery object used to extract and implant data
      * @param {string} symbol to be placed in string output
      */
-    function changeCalc(rateBefore, rateNow, changer, symbol) {
-      if (stockRates.includes(changer.attr('id'))) {
+    function changeCalc(rateBefore, rateNow, $changer, symbol) {
+      if (stockRates.includes($changer.attr('id'))) {
         var changePercentage = (((rateNow / rateBefore) * 100) - 100).toFixed(2);
         symbol = ' (' + changePercentage + '%) ';
       }
       if (symbol === '% ') {
         if (rateNow > rateBefore) {
-          changer.addClass('rate-down');
+          // Some percentage rates aren't reversed so must be accounted for
+          if (reverseRates.includes($changer.attr('id'))) {
+            $changer.addClass('rate-down');
+          } else {
+            $changer.addClass('rate-up');
+          }
           var rateChange = (rateNow - rateBefore).toFixed(2);
           rateChange = 'UP BY ' + rateChange + symbol + " ▲";
           var change = 'up';
+
         } else if (rateNow < rateBefore) {
-          changer.addClass('rate-up');
+          if (reverseRates.includes($changer.attr('id'))) {
+            $changer.addClass('rate-up');
+          } else {
+            $changer.addClass('rate-down');
+          }
           var rateChange = (rateBefore - rateNow).toFixed(2);
           rateChange = 'DOWN BY ' + rateChange + symbol + " ▼";
           var change = 'down';
         }
       } else {
         if (rateNow < rateBefore) {
-          changer.addClass('rate-down');
+          $changer.addClass('rate-down');
           var rateChange = (rateBefore - rateNow).toFixed(2);
           var change = 'down';
           rateChange = 'DOWN BY' + symbol + rateChange + " ▼";
 
         } else if (rateNow > rateBefore) {
-          changer.addClass('rate-up');
+          $changer.addClass('rate-up');
           var rateChange = (rateNow - rateBefore).toFixed(2);
           var change = 'up';
           rateChange = 'UP BY' + symbol + rateChange + " ▲";
@@ -489,6 +499,7 @@ $(document).ready(function() {
   runAll('Inflation', '% ');
   runAll('FTSE100');
   runAll('FTSE250');
+  runAll('Employ', '% ')
 
 
   var compareCtx = $('#compareChart')[0].getContext('2d');
