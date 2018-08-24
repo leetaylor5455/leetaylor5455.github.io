@@ -190,7 +190,6 @@ $(document).ready(function() {
           if (splitDatasets.includes(id)) {
             var datasetOne = renderColours(graphData.plots[id][0], id);
             var datasetTwo = renderColours(graphData.plots[id][1], id);
-            //var chart = id + 'Chart';
             charts.chart[id].data = {
               labels: graphData.labels[id],
               datasets: [{
@@ -215,7 +214,6 @@ $(document).ready(function() {
             charts.chart[id].update();
             resolve();
           } else {
-            //console.log(graphData.plots[id])
             var params = renderColours(graphData.plots[id], id);
             resolve(pushToChart(params[0], params[1], params[2], params[3], params[4]));
           }
@@ -269,7 +267,6 @@ $(document).ready(function() {
        * @param {float} pointHitRadius the precision needed to trigger a plot label
        */
       function pushToChart(plots, labels, lineColor, id, backgroundColor, legend = null, borderWidth = 2.5, pointHitRadius = 6) {
-        //var chart = id + 'Chart';
         charts.chart[id].data = {
           labels: labels,
           datasets: [{
@@ -328,19 +325,19 @@ $(document).ready(function() {
    * @param {string} symbol to be placed in string output
    */
   function displayRates(id, symbol) {
-    var nowId = '#' + id + 'Now';
-    var beforeId = '#' + id + 'Before';
+    var $rateNow = $('#' + id).find('.rate-now')
+    var $rateBefore = $('#' + id).find('.rate-before')
 
     if (symbol == '% ') {
-      $(nowId).text(ratesNow[id][1] + symbol);
+      $rateNow.text(ratesNow[id][1] + symbol);
     } else {
-      $(nowId).text(symbol + ratesNow[id][1]);
+      $rateNow.text(symbol + ratesNow[id][1]);
     }
 
     if (symbol == '% ') {
-      $(beforeId).text(ratesBefore[id][1] + symbol);
+      $rateBefore.text(ratesBefore[id][1] + symbol);
     } else {
-      $(beforeId).text(symbol + ratesBefore[id][1]);
+      $rateBefore.text(symbol + ratesBefore[id][1]);
     }
 
     updateRatesChange(id, symbol);
@@ -352,40 +349,40 @@ $(document).ready(function() {
    */
   function updateRatesChange(id, symbol) {
 
-    var jqueryId = '#' + id + 'Change';
-    var indicator = '#' + id + 'Ind';
+    var $change = $('#' + id).find('.rate-change')
+    var $indicator = $('#' + id).find('.indicator')
 
     var returnedCalc = changeCalc(ratesBefore[id][1], ratesNow[id][1], $('#' + id), symbol);
 
-    $(jqueryId).text(returnedCalc[0]);
+    $change.text(returnedCalc[0]);
 
     if (returnedCalc[1] == 'up') {
       if (reverseRates.includes(id)) {
-        $(indicator).attr('src', 'images/arrow-up-red.svg');
+        $indicator.attr('src', 'images/arrow-up-red.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
         // Change column split colour
         $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #8d0011');
       } else {
-        $(indicator).attr('src', 'images/arrow-up-green.svg');
+        $indicator.attr('src', 'images/arrow-up-green.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
         // Change column split colour
         $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04');
       }
     } else {
       if (reverseRates.includes(id)) {
-        $(indicator).attr('src', 'images/arrow-down-green.svg');
+        $indicator.attr('src', 'images/arrow-down-green.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-green.svg');
         // Change column split colour
         $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #2b4d04');
       } else {
-        $(indicator).attr('src', 'images/arrow-down-red.svg');
+        $indicator.attr('src', 'images/arrow-down-red.svg');
         $('#' + id).find('.source-link').attr('src', 'images/external-link-symbol-red.svg');
         // Change column split colour
         $('#' + id).find('.card-split').attr('style', 'border-right: 1px solid #8d0011');
       }
     }
 
-    $(indicator).text(returnedCalc[1]);
+    $indicator.text(returnedCalc[1]);
 
     /**
      * @param {int} rateBefore rate before referendum
@@ -434,10 +431,8 @@ $(document).ready(function() {
    * @param {string} id indicator identification
    */
   function declareChart(id) {
-    var jqueryId = '#' + id + 'Chart';
-    // charts.ctx[id] = {};
-    // charts.chart[id] = {};
-    charts.ctx[id] = $(jqueryId)[0].getContext('2d');
+    var $chartCanvas = $('#' + id).find('.chart');
+    charts.ctx[id] = $chartCanvas[0].getContext('2d');
     charts.chart[id] = new Chart(charts.ctx[id], {
 
       type: 'line',

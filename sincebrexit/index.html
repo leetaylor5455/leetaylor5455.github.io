@@ -62,8 +62,7 @@
                 <h3 class="card-title">£ vs €</h3>
               </div>
               <div class="col">
-                <!-- <h3 id="EURInd" class="indicator"></h3> -->
-                <img id="EURInd" class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
+                <img class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
               </div>
             </div>
             <div class="row">
@@ -72,7 +71,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
                     <p class="dateBefore">22nd Jun 2016</p>
-                    <h1 class="card-text" id="EURBefore"></h1>
+                    <h1 class="card-text rate-before"></h1>
                   </div>
                 </div>
               </div>
@@ -81,7 +80,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">LATEST</p>
                     <p class="dateNow"></p>
-                    <h1 class="card-text" id="EURNow"></h1>
+                    <h1 class="card-text rate-now"></h1>
                   </div>
                 </div>
               </div>
@@ -91,12 +90,12 @@
                 <p class="card-bottom-text bottom-link"><a href="https://exchangeratesapi.io" target="_blank">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
               </div>
               <div class="col align-self-end">
-                <p class="card-bottom-text" id="EURChange"></p>
+                <p class="card-bottom-text rate-change"></p>
               </div>
             </div>
           </div>
           <div class="card-body chart-card">
-            <canvas id="EURChart" width=window.innerWidth height="120"></canvas>
+            <canvas class="chart" width=window.innerWidth height="120"></canvas>
           </div>
         </div>
 
@@ -108,8 +107,7 @@
                 <h3 class="card-title">£ vs $</h3>
               </div>
               <div class="col">
-                <!-- <h3 id="USDInd" class="indicator"></h3> -->
-                <img id="USDInd" class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
+                <img class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
               </div>
             </div>
             <div class="row">
@@ -118,7 +116,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
                     <p class="dateBefore">22nd Jun 2016</p>
-                    <h1 class="card-text" id="USDBefore"></h1>
+                    <h1 class="card-text rate-before"></h1>
                   </div>
                 </div>
               </div>
@@ -127,7 +125,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">LATEST</p>
                     <p class="dateNow"></p>
-                    <h1 class="card-text" id="USDNow"></h1>
+                    <h1 class="card-text rate-now"></h1>
                   </div>
                 </div>
               </div>
@@ -137,12 +135,12 @@
                 <p class="card-bottom-text bottom-link"><a href="https://exchangeratesapi.io" target="_blank">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
               </div>
               <div class="col align-self-end">
-                <p class="card-bottom-text" id="USDChange"></p>
+                <p class="card-bottom-text rate-change"></p>
               </div>
             </div>
           </div>
           <div class="card-body chart-card">
-            <canvas id="USDChart" width=window.innerWidth height="120"></canvas>
+            <canvas class="chart" width=window.innerWidth height="120"></canvas>
           </div>
         </div>
 
@@ -153,8 +151,7 @@
               <div class="col">
                 <h3 class="card-title">UK GDP</h3></div>
               <div class="col">
-                <!-- <h3 id="GDPInd" class="indicator"></h3> -->
-                <img id="GDPInd" class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
+                <img class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
               </div>
             </div>
             <div class="row">
@@ -163,8 +160,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
                     <p class="dateBefore">22nd Jun 2016</p>
-                    <h1 class="card-text" id="GDPBefore" style="display: inline;"></h1></h1><span style="font-size: 14px;">tn</span>
-                    <!-- <p class="card-title date-title">Trillion</p> -->
+                    <h1 class="card-text rate-before" style="display: inline;"></h1></h1><span style="font-size: 14px;">tn</span>
                   </div>
                 </div>
               </div>
@@ -173,8 +169,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">LATEST</p>
                     <p class="dateNow"></p>
-                    <h1 class="card-text" id="GDPNow" style="display: inline;"></h1><span style="font-size: 14px;">tn</span>
-                    <!-- <p class="card-title date-title">Trillion</p> -->
+                    <h1 class="card-text rate-now" style="display: inline;"></h1><span style="font-size: 14px;">tn</span>
                   </div>
                 </div>
               </div>
@@ -184,12 +179,12 @@
                 <p class="card-bottom-text bottom-link"><a href="http://www.worldbank.org/" target="_blank">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
               </div>
               <div class="col align-self-end">
-                <p class="card-bottom-text" id="GDPChange"></p>
+                <p class="card-bottom-text rate-change"></p>
               </div>
             </div>
           </div>
           <div class="card-body chart-card">
-            <canvas id="GDPChart" width=window.innerWidth height="150"></canvas>
+            <canvas class="chart" width=window.innerWidth height="150"></canvas>
           </div>
         </div>
 
@@ -200,8 +195,7 @@
               <div class="col">
                 <h3 class="card-title">FTSE 100 Index</h3></div>
               <div class="col">
-                <!-- <h3 id="FTSE100Ind" class="indicator"></h3> -->
-                <img id="FTSE100Ind" class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
+                <img class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
               </div>
             </div>
             <div class="row">
@@ -210,7 +204,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
                     <p class="dateBefore">22nd Jun 2016</p>
-                    <h1 class="card-text" style="font-size: 32px" id="FTSE100Before"></h1>
+                    <h1 class="card-text rate-before" style="font-size: 32px"></h1>
                   </div>
                 </div>
               </div>
@@ -219,7 +213,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">LATEST</p>
                     <p class="dateNow"></p>
-                    <h1 class="card-text" style="font-size: 32px" id="FTSE100Now"></h1>
+                    <h1 class="card-text rate-now" style="font-size: 32px"></h1>
                   </div>
                 </div>
               </div>
@@ -229,12 +223,12 @@
                 <p class="card-bottom-text bottom-link"><a href="https://uk.finance.yahoo.com/" target="_blank">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
               </div>
               <div class="col-8 align-self-end">
-                <p class="card-bottom-text" id="FTSE100Change"></p>
+                <p class="card-bottom-text rate-change"></p>
               </div>
             </div>
           </div>
           <div class="card-body chart-card">
-            <canvas id="FTSE100Chart" width=window.innerWidth height="160"></canvas>
+            <canvas class="chart" width=window.innerWidth height="160"></canvas>
           </div>
         </div>
 
@@ -245,8 +239,7 @@
               <div class="col">
                 <h3 class="card-title">FTSE 250 Index</h3></div>
               <div class="col">
-                <!-- <h3 id="FTSE100Ind" class="indicator"></h3> -->
-                <img id="FTSE250Ind" class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
+                <img class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
               </div>
             </div>
             <div class="row">
@@ -255,7 +248,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
                     <p class="dateBefore">22nd Jun 2016</p>
-                    <h1 class="card-text" style="font-size: 28px" id="FTSE250Before"></h1>
+                    <h1 class="card-text rate-before" style="font-size: 28px"></h1>
                   </div>
                 </div>
               </div>
@@ -264,7 +257,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">LATEST</p>
                     <p class="dateNow"></p>
-                    <h1 class="card-text" style="font-size: 28px" id="FTSE250Now"></h1>
+                    <h1 class="card-text rate-before" style="font-size: 28px"></h1>
                   </div>
                 </div>
               </div>
@@ -274,12 +267,12 @@
                 <p class="card-bottom-text bottom-link"><a href="https://uk.finance.yahoo.com/" target="_blank">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
               </div>
               <div class="col-8 align-self-end">
-                <p class="card-bottom-text" id="FTSE250Change"></p>
+                <p class="card-bottom-text rate-change"></p>
               </div>
             </div>
           </div>
           <div class="card-body chart-card">
-            <canvas id="FTSE250Chart" width=window.innerWidth height="160"></canvas>
+            <canvas class="chart" width=window.innerWidth height="160"></canvas>
           </div>
         </div>
 
@@ -290,8 +283,7 @@
               <div class="col">
                 <h3 class="card-title">Unemployment Rate</h3></div>
               <div class="col">
-                <!-- <h3 id="UnemployInd" class="indicator"></h3> -->
-                <img id="UnemployInd" class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
+                <img class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
               </div>
             </div>
             <div class="row">
@@ -300,7 +292,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
                     <p class="dateBefore">22nd Jun 2016</p>
-                    <h1 class="card-text" id="UnemployBefore"></h1>
+                    <h1 class="card-text rate-before"></h1>
                   </div>
                 </div>
               </div>
@@ -309,7 +301,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">LATEST</p>
                     <p class="dateNow"></p>
-                    <h1 class="card-text" id="UnemployNow"></h1>
+                    <h1 class="card-text rate-now"></h1>
                   </div>
                 </div>
               </div>
@@ -319,12 +311,12 @@
                 <p class="card-bottom-text bottom-link"><a href="https://www.ons.gov.uk/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms" target="_blank">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
               </div>
               <div class="col align-self-end">
-                <p class="card-bottom-text" id="UnemployChange"></p>
+                <p class="card-bottom-text rate-change"></p>
               </div>
             </div>
           </div>
           <div class="card-body chart-card">
-            <canvas id="UnemployChart" width=window.innerWidth height="120"></canvas>
+            <canvas class="chart" width=window.innerWidth height="120"></canvas>
           </div>
         </div>
 
@@ -335,7 +327,7 @@
               <div class="col">
                 <h3 class="card-title">Inflation (CPI)</h3></div>
               <div class="col">
-                <img id="InflationInd" class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
+                <img class="indicator" class="source-link" src="images/arrow-down-red.svg" alt="Link to Source">
               </div>
             </div>
             <div class="row">
@@ -344,7 +336,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">SINCE</p>
                     <p class="dateBefore">22nd Jun 2016</p>
-                    <h1 class="card-text" id="InflationBefore"></h1>
+                    <h1 class="card-text rate-before"></h1>
                   </div>
                 </div>
               </div>
@@ -353,7 +345,7 @@
                   <div class="card-body nested-card">
                     <p class="card-title date-title">LATEST</p>
                     <p class="dateNow"></p>
-                    <h1 class="card-text" id="InflationNow"></h1>
+                    <h1 class="card-text rate-now"></h1>
                   </div>
                 </div>
               </div>
@@ -363,12 +355,12 @@
                 <p class="card-bottom-text bottom-link"><a href="https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/l55o/mm23" target="_blank">Source <img class="source-link" src="images/external-link-symbol-green.svg" alt="Link to Source"></a></p>
               </div>
               <div class="col align-self-end">
-                <p class="card-bottom-text" id="InflationChange"></p>
+                <p class="card-bottom-text rate-change"></p>
               </div>
             </div>
           </div>
           <div class="card-body chart-card">
-            <canvas id="InflationChart" width=window.innerWidth height="120"></canvas>
+            <canvas class="chart" width=window.innerWidth height="120"></canvas>
           </div>
         </div>
 
