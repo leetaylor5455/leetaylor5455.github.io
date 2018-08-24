@@ -63,7 +63,8 @@ function buildArray(currencyId) {
   var getPromises = [];
 
   for (var i = 19; i >= 0; i--) {
-    var url = 'https://exchangeratesapi.io/api/' + graphData.urlDates[i] + '?base=GBP';
+    var url = 'https://api.exchangeratesapi.io/' + graphData.urlDates[i] + '?base=GBP';
+    console.log(url)
     var getPromise = new Promise(function(resolve, reject) {
       getChartData(url, graphData.urlDates[i], currencyId, i, resolve);
     });

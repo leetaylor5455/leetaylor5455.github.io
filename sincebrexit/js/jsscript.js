@@ -9,6 +9,11 @@ $(document).ready(function() {
     labels: {}
   };
 
+  var charts = {
+    ctx: {},
+    chart: {}
+  };
+
   // For easy expansion of cards
   const twoDDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'Unemploy'];
   const graphDatasets = ['USD', 'EUR', 'GDP', 'Inflation', 'FTSE100', 'FTSE250', 'Unemploy'];
@@ -26,7 +31,12 @@ $(document).ready(function() {
    * @param {string} d date in ISOString Format
    * @returns {string} date in 'dd(th) mmm yyyy' format
    */
-  function convertDate(d) {
+  function convertDate(d, condense = false) {
+
+    if (condense) {
+      var condensed = d.substring(5, 7) + '-' + d.substring(2, 4);
+      return condensed;
+    }
 
     d = new Date(d);
 
@@ -106,16 +116,16 @@ $(document).ready(function() {
           graphData.labels[id] = [];
           for (var i = 0; i < data.rates[id].length - 1; i++) {
             graphData.plots[id].unshift(data.rates[id][i].close);
-            graphData.labels[id].unshift(data.rates[id][i].date.substring(5, 7) + '-' + data.rates[id][i].date.substring(2, 4));
+            graphData.labels[id].unshift(convertDate(data.rates[id][i].date, true))
           }
         }).then(function() {
           if (graphData.plots[id][graphData.plots[id].length - 1] > graphData.plots[id][0]) {
-            var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 180);
+            var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 180);
             grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
             grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
             var lineColor = '#2b4d04';
           } else {
-            var grd = eval(id + 'Ctx').createLinearGradient(0, 180, 0, 0);
+            var grd = charts.ctx[id].createLinearGradient(0, 180, 0, 0);
             grd.addColorStop(0, 'rgba(221, 0, 26, 0.9)');
             grd.addColorStop(0.75, 'rgba(255, 255, 255, 0.4)');
             var lineColor = '#8d0011';
@@ -138,12 +148,12 @@ $(document).ready(function() {
             var i = data.rates[id].length-1;
             while (Date.parse(data.rates[id][i][0]) < Date.parse('2016-06-22')) {
               graphData.plots[id][0].push(data.rates[id][i][1]);
-              graphData.labels[id].push(data.rates[id][i][0]);
+              graphData.labels[id].push(convertDate(data.rates[id][i][0], true));
               i--;
             }
             while (i >= 0) {
               graphData.plots[id][1].push(data.rates[id][i][1]);
-              graphData.labels[id].push(data.rates[id][i][0]);
+              graphData.labels[id].push(convertDate(data.rates[id][i][0], true));
               i--;
             }
 
@@ -180,8 +190,8 @@ $(document).ready(function() {
           if (splitDatasets.includes(id)) {
             var datasetOne = renderColours(graphData.plots[id][0], id);
             var datasetTwo = renderColours(graphData.plots[id][1], id);
-            var chart = id + 'Chart';
-            eval(chart).data = {
+            //var chart = id + 'Chart';
+            charts.chart[id].data = {
               labels: graphData.labels[id],
               datasets: [{
                 label: 'GDP Up to Ref.',
@@ -202,7 +212,7 @@ $(document).ready(function() {
                 data: datasetTwo[0],
               }]
             }
-            eval(chart).update();
+            charts.chart[id].update();
             resolve();
           } else {
             //console.log(graphData.plots[id])
@@ -216,13 +226,13 @@ $(document).ready(function() {
               if (reverseRates.includes(id)) {
                 // Is bad percentage rate
                 var lineColor = '#8d0011';
-                var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+                var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
                 grd.addColorStop(0.000, 'rgba(221, 0, 26, 0.6)');
                 grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
               } else {
                 // Is good non-percentage rate
                 var lineColor = '#2b4d04';
-                var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+                var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
                 grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
                 grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
               }
@@ -231,12 +241,12 @@ $(document).ready(function() {
               if (reverseRates.includes(id)) {
                 // Is good percentage rate
                 var lineColor = '#2b4d04';
-                var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+                var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
                 grd.addColorStop(0, 'rgba(119, 214, 10, 0.6)');
                 grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
               } else {
                 // Is bad non-percentage rate
-                var grd = eval(id + 'Ctx').createLinearGradient(0, 0, 0, 150);
+                var grd = charts.ctx[id].createLinearGradient(0, 0, 0, 150);
                 grd.addColorStop(0, 'rgba(221, 0, 26, 0.6)');
                 grd.addColorStop(0.75, 'rgba(255, 255, 255, 0.1)');
                 var lineColor = '#8d0011';
@@ -259,8 +269,8 @@ $(document).ready(function() {
        * @param {float} pointHitRadius the precision needed to trigger a plot label
        */
       function pushToChart(plots, labels, lineColor, id, backgroundColor, legend = null, borderWidth = 2.5, pointHitRadius = 6) {
-        var chart = id + 'Chart';
-        eval(chart).data = {
+        //var chart = id + 'Chart';
+        charts.chart[id].data = {
           labels: labels,
           datasets: [{
             label: legend,
@@ -272,7 +282,7 @@ $(document).ready(function() {
             data: plots,
           }]
         }
-        eval(chart).update();
+        charts.chart[id].update();
       }
     }).then(function() {
       if (compareUpdated === false) {
@@ -421,10 +431,44 @@ $(document).ready(function() {
   }
 
   /**
+   * @param {string} id indicator identification
+   */
+  function declareChart(id) {
+    var jqueryId = '#' + id + 'Chart';
+    // charts.ctx[id] = {};
+    // charts.chart[id] = {};
+    charts.ctx[id] = $(jqueryId)[0].getContext('2d');
+    charts.chart[id] = new Chart(charts.ctx[id], {
+
+      type: 'line',
+
+      options: {
+        elements: {
+          line: {
+            tension: .2,
+          }
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              autoSkip: true,
+              maxTicksLimit: 5
+            }
+          }]
+        },
+        legend: {
+          display: false
+        },
+      }
+    });
+  }
+
+  /**
    * @param {string} id to be passed into function calls
    * @param {string} symbol to be passed into function calls
    */
   function runAll(id, symbol = '') {
+    declareChart(id);
     populateRates(id).then(function() {
       displayDates(id);
       displayRates(id, symbol);
@@ -442,84 +486,6 @@ $(document).ready(function() {
   runAll('FTSE100');
   runAll('FTSE250');
 
-  // Allows quick changing of scales in testing
-  var showScales = true;
-  var scalesObj = {};
-
-  if (showScales === true) {
-    scalesObj = {
-      yAxes: [{
-        ticks: {
-          autoSkip: true,
-          maxTicksLimit: 5
-        }
-      }]
-    }
-  } else {
-    scalesObj = {
-      xAxes: [{
-        display: false
-      }],
-      yAxes: [{
-        display: false
-      }]
-    }
-  }
-
-  // Chart declarations
-  var EURCtx = $('#EURChart')[0].getContext('2d');
-  var EURChart = new Chart(EURCtx, {
-
-    type: 'line',
-
-    options: {
-      elements: {
-        line: {
-          tension: .2,
-        }
-      },
-      scales: scalesObj,
-      legend: {
-        display: false
-      },
-    }
-  });
-
-  var USDCtx = $('#USDChart')[0].getContext('2d');
-  var USDChart = new Chart(USDCtx, {
-
-    type: 'line',
-
-    options: {
-      elements: {
-        line: {
-          tension: .2,
-        }
-      },
-      scales: scalesObj,
-      legend: {
-        display: false
-      },
-    }
-  });
-
-  var GDPCtx = $('#GDPChart')[0].getContext('2d');
-  var GDPChart = new Chart(GDPCtx, {
-
-    type: 'line',
-
-    options: {
-      elements: {
-        line: {
-          tension: .2,
-        }
-      },
-      scales: scalesObj,
-      legend: {
-        display: true
-      },
-    }
-  });
 
   var compareCtx = $('#compareChart')[0].getContext('2d');
   var compareChart = new Chart(compareCtx, {
@@ -551,78 +517,6 @@ $(document).ready(function() {
         labels: {
           fontColor: '#ccc'
         }
-      },
-    }
-  });
-
-  var FTSE100Ctx = $('#FTSE100Chart')[0].getContext('2d');
-  var FTSE100Chart = new Chart(FTSE100Ctx, {
-
-    type: 'line',
-
-    options: {
-      elements: {
-        line: {
-          tension: .1,
-        }
-      },
-      scales: scalesObj,
-      legend: {
-        display: false,
-      },
-    }
-  });
-
-  var FTSE250Ctx = $('#FTSE250Chart')[0].getContext('2d');
-  var FTSE250Chart = new Chart(FTSE250Ctx, {
-
-    type: 'line',
-
-    options: {
-      elements: {
-        line: {
-          tension: .1,
-        }
-      },
-      scales: scalesObj,
-      legend: {
-        display: false,
-      },
-    }
-  });
-
-  var InflationCtx = $('#InflationChart')[0].getContext('2d');
-  var InflationChart = new Chart(InflationCtx, {
-
-    type: 'line',
-
-    options: {
-      elements: {
-        line: {
-          tension: .2,
-        }
-      },
-      scales: scalesObj,
-      legend: {
-        display: false,
-      },
-    }
-  });
-
-  var UnemployCtx = $('#UnemployChart')[0].getContext('2d');
-  var UnemployChart = new Chart(UnemployCtx, {
-
-    type: 'line',
-
-    options: {
-      elements: {
-        line: {
-          tension: .4,
-        }
-      },
-      scales: scalesObj,
-      legend: {
-        display: false,
       },
     }
   });
