@@ -432,6 +432,17 @@ $(document).ready(function() {
    */
   function declareChart(id) {
     var $chartCanvas = $('#' + id).find('.chart');
+    let legendObj;
+    if (id === 'GDP') {
+      legendObj = {
+        display: true
+      }
+    } else {
+      legendObj = {
+        display: false
+      }
+    }
+
     charts.ctx[id] = $chartCanvas[0].getContext('2d');
     charts.chart[id] = new Chart(charts.ctx[id], {
 
@@ -451,9 +462,7 @@ $(document).ready(function() {
             }
           }]
         },
-        legend: {
-          display: false
-        },
+        legend: legendObj,
       }
     });
   }
