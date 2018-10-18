@@ -1,2 +1,3 @@
 # leetaylor5455.github.io
-Portfolio Website @ (leetaylor5455.github.io/portfolio)
+Portfolio Website @ /portfolio
+Since Brexit @ /sincebreit
