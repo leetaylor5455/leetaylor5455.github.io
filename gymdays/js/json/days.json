@@ -1,0 +1,83 @@
+{
+  "Mon": {
+    "exercise": "Arms",
+    "exercises": [
+      ["Preacher Curls", "5 sets, 3, 3, 2, 2, 1 reps"],
+      ["EZ Bar Decline Hammerheads", "4 sets, 8-10 reps"],
+      ["Hammer Curls", "4 sets, 8-10 reps"],
+      ["Tricep Dips", "3 sets, 8-10 reps"],
+      ["21s", "3 sets"],
+      ["Tricep Cable Pulldown", "3 sets, 12-15 reps"],
+      ["Bicep Cable Pullup", "3 sets, 12-15 reps"],
+      ["Tricep Dip Machine", "3 sets, 8-10 reps"]
+    ]
+  },
+  "Tue": {
+    "exercise": "Rest",
+    "exercises": []
+  },
+  "Wed": {
+    "exercise": "Legs and Abs",
+    "exercises": [
+      ["Barbell Full Squat", "5 sets, 3, 3, 2, 2, 1 reps"],
+      ["Leg Press", "Superset with seated leg curl, 4 sets, 8-10 reps"],
+      ["Seated Leg Curl", "4 sets, 8-10 reps"],
+      ["Leg Extension", "4 sets, 12-15 reps"],
+      ["Standing Calf Raise", "4 sets, 12-15 reps"],
+      ["Crunches", "5 sets, 5 reps"],
+      ["Flat Bench Leg Raise", "Superset with cable crunch, 3 sets, 10-12 reps"],
+      ["Cable Crunch", "3 sets, 10-12 reps"],
+      ["Plank", "3 sets, to failure"]
+    ]
+  },
+  "Thu": {
+    "exercise": "Chest",
+    "exercises": [
+      ["Bench Press", "Sets (adjusted) upping weight until failure"],
+      ["Incline Bench Press", "Sets (adjusted) upping weight until failure"],
+      ["Flat Dumbell Press", "Superset with dumbell fly, 4 sets, 8-10 reps"],
+      ["Decline Dumbell Press", "4 sets, 8-10 reps"],
+      ["Butterfly Machine", "3 sets, 12-15 reps"],
+      ["Decline Cable Fly", "3 sets, 12-15 reps"],
+      ["Incline Cable Fly", "3 sets, 12-15 reps"],
+      ["Flat Cable Fly", "3 sets, 12-15 reps"],
+      ["Bent Arm Dumbell Pullover", "3 sets, 12-15 reps"]
+    ]
+  },
+  "Fri": {
+    "exercise": "Back and Abs",
+    "exercises": [
+      ["Pullups", "5 sets, 3, 3, 2, 2, 1 reps"],
+      ["Bent Over Barbell Row", "Superset with straight arm pulldown, 4 sets, 8-10 reps"],
+      ["Straight Arm Pulldown", "4 sets, 8-10 reps"],
+      ["Barbell Shrug", "3 sets, 12-15 reps"],
+      ["Lat Pulldown", "3 sets, 12-15 reps"],
+      ["Cable Pullback", "3 sets, 12-15 reps"],
+      ["Weighted Row", "3 sets, 12-15 reps"],
+      ["Crunches", "5 sets, 5 reps"],
+      ["Flat Bench Leg Raise", "Superset with cable crunch, 3 sets, 10-12 reps"],
+      ["Cable Crunch", "3 sets, 10-12 reps"],
+      ["Plank", "3 sets, to failure"]
+    ]
+  },
+  "Sat": {
+    "exercise": "Rest",
+    "exercises": []
+  },
+  "Sun": {
+    "exercise": "Shoulders and Abs",
+    "exercises": [
+      ["Military Press", "3 sets, 12-15 reps"],
+      ["Upright Barbell Row Press", "Superset with One-Arm Incline Lateral Raise, 4 sets, 8-10 reps"],
+      ["One-Arm Incline Lateral Raise", "4 sets, 8-10 reps"],
+      ["Front Dumbell Raise", "3 sets, 12-15 reps"],
+      ["Bent Over Low-Pulley Side Lateral", "3 sets, 12-15 reps"],
+      ["Shoulder Press Machine", "Superset with Dumbell Fly, 3 sets, 12-15 reps"],
+      ["Dumbell Fly", "3 sets, 12-15 reps"],
+      ["Crunches", "5 sets, 5 reps"],
+      ["Flat Bench Leg Raise", "Superset with cable crunch, 3 sets, 10-12 reps"],
+      ["Cable Crunch", "3 sets, 10-12 reps"],
+      ["Plank", "3 sets, to failure"]
+    ]
+  }
+}
