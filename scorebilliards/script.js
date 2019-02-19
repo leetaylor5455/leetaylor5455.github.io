@@ -1,83 +1,91 @@
 $(document).ready(function() {
 
+
+  $('#btnNewGame').click(function() {
+    $('#addPlayer').show(100);
+    $(this).hide();
+    $('#playerNameInput').focus();
+  });
+
+  $('#btnAnotherPlayer').click(function() {
+    if ($('#playerNameInput').val() != '') {
+      addPlayer();
+    }
+    if (players.length > 0) {
+      $('#btnFinishPlayer').show(100);
+    }
+    $('#playerNameInput').focus();
+  });
+
+  $('#btnFinishPlayer').click(function() {
+    if ($('#playerNameInput').val() != '') {
+      addPlayer();
+    }
+    $('#beforeGame').hide(100)
+    $('#inGame').show(100);
+    highlightActive(0)
+  });
+
+  function addPlayer() {
+    playerName = $('#playerNameInput').val();
+    var newPlayer = new Player();
+    newPlayer.name = playerName;
+    players.push(newPlayer);
+    $('#playerList').append('<li id="li' + playerName + '">' + playerName + ' - <span style="font-weight: bold" id="playerScore' + (players.length-1) + '">0</span></li>');
+    $('#playerNameInput').val('')
+    console.log(players);
+  }
+
+  function highlightActive(counter) {
+    // naming will be name followed by 'li' > liLee
+    var activePlayerLi = '#li' + players[counter].name
+    $(activePlayerLi).toggleClass('activePlayer')
+  }
+
   players = [];
   playerCounter = 0;
 
-  function addPlayer() {
-    playerName = prompt('Enter player name: ');
-    var player = new Player();
-    player.name = playerName;
-    players.push(player);
-    console.log(players)
-    $('#playerList').append('<li>' + playerName + ' - <span style="font-weight: bold" id="playerScore' + (players.length-1) + '">0</span></li>')
-  }
-
   function nextPlayer() {
     players[playerCounter].breaks.unshift(new Break())
+    highlightActive(playerCounter);
     if (playerCounter < players.length-1) {
       playerCounter += 1;
     } else {
       playerCounter = 0;
     }
-    $('#currentPlayer').text(players[playerCounter].name)
+    highlightActive(playerCounter);
     $('#currentBreakScore').text(0)
   }
 
-  $('button').click(function() {
-    var buttonClicked = $(this)[0];
-    if (buttonClicked.id == 'btnAddPlayer') {
-      addPlayer();
-      var player = players[playerCounter];
-      if (playerCounter === 0) {
-        $('#currentPlayer').text(players[playerCounter].name)
-      }
+  $('#btnSafe').click(function() {
+    var player = players[playerCounter];
+    player.total += player.breaks[0].score;
+    $('#playerScore' + playerCounter).text(player.total);
+    console.log('Player: ', player)
+    nextPlayer();
+  });
 
-    } else if (buttonClicked.id == 'btnEnd') {
-      var player = players[playerCounter];
-      player.total += player.breaks[0].score;
-      $('#playerScore' + playerCounter).text(player.total);
-      console.log('Player: ', player)
-      nextPlayer();
+  $('#btnFoul').click(function() {
+    var player = players[playerCounter];
+    player.breaks[0].score = 0;
+    player.breaks[0].foul = true;
+    nextPlayer();
+  });
 
-    } else if (buttonClicked.id == 'btnFoul') {
-      var player = players[playerCounter];
-      player.breaks[0].score = 0;
-      player.breaks[0].foul = true;
-      nextPlayer();
-
-    } else if (buttonClicked.id == 'btnBlack') {
-      var player = players[playerCounter];
+  $('#btnBlack').click(function() {
+    var player = players[playerCounter];
       player.breaks[0].score = 0;
       player.breaks[0].foul = true;
       player.total = 0;
       $('#playerScore' + playerCounter).text(player.total);
       nextPlayer();
+  });
 
-    } else {
-      var player = players[playerCounter];
-      player.breaks[0].score += parseInt($(this)[0].textContent, 10);
-      $('#currentBreakScore').text(player.breaks[0].score)
-      switch (buttonClicked.id) {
-        case 'btn10':
-          player.breaks[0].in10++
-          break;
-        case 'btn20':
-          player.breaks[0].in20++
-          break;
-        case 'btn30':
-          player.breaks[0].in30++
-          break;
-        case 'btn50':
-          player.breaks[0].in50++
-          break;
-        case 'btn100':
-          player.breaks[0].in100++
-          break;
-        case 'btn200':
-          player.breaks[0].in200++
-          break;
-      }
-    }
+  $('#additions > button').click(function() {
+    var player = players[playerCounter];
+    // takes score value from button text content
+    player.breaks[0].score += parseInt($(this)[0].textContent, 10);
+    $('#currentBreakScore').text(player.breaks[0].score)
   });
 
   $('#btnEndGame').click(function() {
@@ -106,12 +114,6 @@ var Player = function() {
 var Break = function() {
   return {
     score: 0,
-    in10: 0,
-    in20: 0,
-    in30: 0,
-    in50: 0,
-    in100: 0,
-    in200: 0,
     foul: false
   }
 }

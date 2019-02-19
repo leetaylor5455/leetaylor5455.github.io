@@ -1,34 +1,100 @@
 html {
-  font-family: sans-serif;
+  font-family: 'Orbitron', sans-serif;
+  color: #333;
+  background-color: #f6f6f6;
+}
+
+body {
+  margin: 0;
+}
+
+h1 {
+  margin: 0;
+  padding: 10px 10px 10px 0;
 }
 
 ul {
   font-size: 32px;
   list-style-type: none;
+  padding-left: 0;
 }
 
-.container {
-  padding-top: 20px;
-  width: 80%;
-  max-width: 600px;
-  margin: auto;
-}
-
-
-
-/* Button Styling */
-button {
-  font-size: 48px;
-  background-color: white;
-  color: #333;
-  border: 2px solid #ccc;
+li {
+  padding: 5px;
   border-radius: 2px;
+}
+
+input[type=text] {
+  padding: 7px 5px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+
+input[type=text], button {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  margin: 0;
   padding: 8px;
+  border: none;
+  border-radius: 2px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+}
+
+.container {
+  width: 80%;
+  max-width: 800px;
+  margin: auto;
+}
+
+a, a:visited, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.topbar {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.15);
+  background-color: #f7f9fb;
+}
+
+#addPlayer {
+  display: none;
+}
+
+#btnFinishPlayer {
+  display: none;
+}
+
+#inGame {
+  display: none;
+}
+
+.activePlayer {
+  color: #eee;
+  background-color: #5085a5;
+}
+
+/* Button Styling */
+button {
+  background-color: white;
+  color: #333;
+  border: none;
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
   cursor: pointer;
+}
+
+#scoring > button, #additions > button {
+  font-size: 48px;
+  margin: 10px 10px 10px 0;
+}
+
+.button-primary {
+  background-color: #8fc1e3;
 }

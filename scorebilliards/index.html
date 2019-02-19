@@ -5,31 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:400,700" rel="stylesheet">
+
   <link href="style.css" rel="stylesheet">
 
   <title>Score Billiards</title>
 </head>
 <body>
-  <div id="players" class="container">
-    <button style="font-size: 16px" id="btnAddPlayer">Add Player</button>
-    <h1>Players</h1>
-    <ul id="playerList"></ul>
-    <h1>Current player: <span id="currentPlayer"></span></h1>
-    <h1>Break: <span id="currentBreakScore"></span></h1>
+  <div class="topbar">
+    <div class="container">
+        <a href="."><h1>SB<span style="font-size: 14px; vertical-align: top; color: #31708e;">BETA</span></h1></a>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div id="beforeGame">
+      <button id="btnNewGame" style="font-size: 24px; margin: 0;" class='button-primary'>New Game</button>
+      <div id="addPlayer">
+        <h2 style="margin-bottom: 3px;"><span style="border-bottom: 1px solid #ddd;">Player Setup</span></h2><br>
+        <input type="text" id="playerNameInput" placeholder="Name" style="width: 120px;">
+        <button id="btnAnotherPlayer">Add Another Player</button>
+        <button id="btnFinishPlayer" class="button-primary">Add and Finish</button>
+        
+      </div>
+    </div>
+
+    <div id="inGame">
+      <div id="players">
+          <ul id="playerList"></ul>
+          <h1>Break: <span id="currentBreakScore"></span></h1>
+        </div>
+      
+        <div id="scoring">
+          <div id="additions">
+              <button id="btn10">10</button>
+              <button id="btn20">20</button>
+              <button id="btn30">30</button>
+              <button id="btn50">50</button>
+              <button id="btn100">100</button>
+              <button id="btn200">200</button>
+          </div>
+          <button id="btnSafe">Safe Break</button>
+          <button id="btnFoul">Foul Break</button>
+          <button id="btnBlack">Black Pin</button>
+          <button id="btnEndGame" style="background-color: #687864; color: #eee">End Game</button>
+        </div>
+    </div>
   </div>
 
-  <div id="scoring" class="container">
-    <button id="btn10">10</button>
-    <button id="btn20">20</button>
-    <button id="btn30">30</button>
-    <button id="btn50">50</button>
-    <button id="btn100">100</button>
-    <button id="btn200">200</button>
-    <button id="btnEnd">End Break (Safe)</button>
-    <button id="btnFoul">Foul Break</button>
-    <button id="btnBlack">Black Pin</button>
-    <button id="btnEndGame">End Game</button>
-  </div>
+  
 
   <!-- jQuery -->
   <script src="jquery-3.2.1.min.js"></script>
