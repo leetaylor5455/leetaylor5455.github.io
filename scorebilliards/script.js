@@ -28,10 +28,16 @@ $(document).ready(function() {
 
   function addPlayer() {
     playerName = $('#playerNameInput').val();
+    for (var i = 0; i < players.length; i++) {
+      if (players[i].name === playerName) {
+        alert('Error, duplicate name')
+        return;
+      }
+    }
     var newPlayer = new Player();
     newPlayer.name = playerName;
     players.push(newPlayer);
-    $('#playerList').append('<li id="li' + playerName + '">' + playerName + ' - <span style="font-weight: bold" id="playerScore' + (players.length-1) + '">0</span></li>');
+    $('#playerList').append('<li id="li' + playerName + '">' + playerName + ' > <span style="font-weight: bold" id="playerScore' + (players.length-1) + '">0</span></li>');
     $('#playerNameInput').val('')
     console.log(players);
   }
