@@ -1,10 +1,11 @@
 {
-  "name": "Since Brexit",
-  "short_name": "SinceBrexit",
-  "display": "minimal-ui",
+  "name": "Score Billiards",
+  "short_name": "SB",
   "start_url": "index.html",
-  "theme_color": "#19283F",
-  "background_color": "#ffffff",
+  "theme_color": "#5085a5",
+  "background_color": "#5085a5",
+  "display": "standalone",
+
   "icons": [{
       "src": "android-chrome-192x192.png",
       "sizes": "192x192",
