@@ -26,8 +26,15 @@ ul {
   padding-left: 0;
 }
 
-#additions > button {
-  min-width: 100px;
+#additions {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+#breaks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
 }
 
 li {
@@ -126,11 +133,33 @@ button {
   cursor: pointer;
 }
 
-#scoring > button, #additions > button {
+#breaks > button, #additions > button {
   font-size: 48px;
   margin: 10px 5px 10px 5px;
 }
 
 .button-primary {
   background-color: #8fc1e3;
+}
+
+@media only screen and (max-width: 900px) {
+  #additions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+  }
+
+  input[type=text], #addPlayer > button {
+    text-align: left;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  #additions > button {
+    font-size: 36px;
+    margin: 5px;
+  }
+  #breaks > button {
+    font-size: 24px;
+  }
 }
