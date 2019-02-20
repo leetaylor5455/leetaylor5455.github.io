@@ -118,7 +118,7 @@ a, a:visited, a:active {
   margin-bottom: 10px;
 }
 
-.activePlayer {
+.activePlayer, .button-primary {
   color: #eee;
   background-color: #5085a5;
 }
@@ -138,9 +138,10 @@ button {
   margin: 10px 5px 10px 5px;
 }
 
-.button-primary {
+/* .button-primary {
   background-color: #8fc1e3;
-}
+} */
+
 
 @media only screen and (max-width: 900px) {
   #additions {
@@ -161,5 +162,9 @@ button {
   }
   #breaks > button {
     font-size: 24px;
+  }
+
+  .container {
+    width: 92%;
   }
 }
