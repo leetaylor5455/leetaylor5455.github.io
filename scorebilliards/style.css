@@ -57,6 +57,7 @@ input[type=text], button {
   transition: 0.4s ease-in-out;
   display: inline-block;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
 }
 
 button:active {
