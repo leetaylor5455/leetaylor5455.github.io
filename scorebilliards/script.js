@@ -49,6 +49,7 @@ $(document).ready(function() {
       players[i].breaks = [new Break()];
       $('#playerScore' + i).text(0);
     }
+    $('#currentBreakScore').text(0)
     fadeOutIn($('#afterGame'), $('#inGame'));
   }
 
