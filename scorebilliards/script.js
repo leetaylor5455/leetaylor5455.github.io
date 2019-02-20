@@ -1,10 +1,70 @@
 $(document).ready(function() {
 
+  function fadeOutIn(toFadeOut, toFadeIn) {
+    return new Promise(function(resolve, reject) {
+      $.when(toFadeOut.fadeOut(100)).then(function() {
+        toFadeIn.fadeIn(300);
+        toFadeIn.css('filter', 'blur(0)');
+      }).then(function() {
+        setTimeout(function() {
+          resolve();
+        }, 400);
+      })
+      
+    });
+
+  };
+
+  function gatherResults() {
+    $('#resultsList').html('');
+    var results = [];
+    var highscore = 0;
+    var winnerName = 0;
+    for (var i = 0; i < players.length; i++) {
+      var result = new Result();
+      result.name = players[i].name
+      result.total = players[i].total
+      if (result.total > highscore) {
+        highscore = result.total;
+        winnerName = result.name;
+      }
+      result.breaks = players[i].breaks.length-1;
+      for (var j = 0; j < players[i].breaks.length; j++) {
+        if (players[i].breaks[j].foul === true) {
+          result.foulBreaks++;
+        }
+        result.potential += players[i].breaks[j].score;
+      }
+      results.unshift(result);
+      $('#resultsList').append('<li><div class="resultCard"><h3 style="margin: 0 0 10px 0; padding: 5px;">' + result.name + '</h3><ul><li>Total: ' + result.total + '</li><li>Breaks: ' + result.breaks + '</li><li>Foul Breaks: ' + result.foulBreaks + '</li><li>Potential Score: ' + result.potential + '</li></ul></div></li>');
+    }
+    $('#winner').text(winnerName)
+    
+    console.log('Results: ', results)
+  };
+
+  function rematch() {
+    for (var i = 0; i < players.length; i++) {
+      players[i].total = 0;
+      players[i].breaks = [new Break()];
+      $('#playerScore' + i).text(0);
+    }
+    fadeOutIn($('#afterGame'), $('#inGame'));
+  }
+
+  function reset() {
+    $('#btnNewGame').show(0);
+    $('#addPlayer').hide(0);
+    $.when(fadeOutIn($('#afterGame'), $('#beforeGame'))).then(function() {
+      location.reload();
+    });
+  };
+
 
   $('#btnNewGame').click(function() {
-    $('#addPlayer').show(100);
-    $(this).hide();
-    $('#playerNameInput').focus();
+
+    fadeOutIn($('#btnNewGame'), $('#addPlayer'));
+
   });
 
   $('#btnAnotherPlayer').click(function() {
@@ -12,7 +72,7 @@ $(document).ready(function() {
       addPlayer();
     }
     if (players.length > 0) {
-      $('#btnFinishPlayer').show(100);
+      $('#btnFinishPlayer').fadeIn(200)
     }
     $('#playerNameInput').focus();
   });
@@ -21,9 +81,11 @@ $(document).ready(function() {
     if ($('#playerNameInput').val() != '') {
       addPlayer();
     }
-    $('#beforeGame').hide(100)
-    $('#inGame').show(100);
-    highlightActive(0)
+    setTimeout(function() {
+      fadeOutIn($('#beforeGame'), $('#inGame'));
+    }, 250);
+
+    highlightActive(0);
   });
 
   function addPlayer() {
@@ -37,15 +99,17 @@ $(document).ready(function() {
     var newPlayer = new Player();
     newPlayer.name = playerName;
     players.push(newPlayer);
-    $('#playerList').append('<li id="li' + playerName + '">' + playerName + ' > <span style="font-weight: bold" id="playerScore' + (players.length-1) + '">0</span></li>');
+
+    $('#playerSetupList').append('<li id="liSetup' + playerName + '" style="font-weight: 700;">' + playerName + '</li>');
+
+    $('#playerList').append('<li id="li' + playerName + '">' + playerName + ' > <span style="font-weight: bold; font-size: 42px;" id="playerScore' + (players.length-1) + '">0</span></li>');
     $('#playerNameInput').val('')
-    console.log(players);
   }
 
   function highlightActive(counter) {
     // naming will be name followed by 'li' > liLee
     var activePlayerLi = '#li' + players[counter].name
-    $(activePlayerLi).toggleClass('activePlayer')
+    $(activePlayerLi).toggleClass('activePlayer', 150)
   }
 
   players = [];
@@ -67,20 +131,17 @@ $(document).ready(function() {
     var player = players[playerCounter];
     player.total += player.breaks[0].score;
     $('#playerScore' + playerCounter).text(player.total);
-    console.log('Player: ', player)
     nextPlayer();
   });
 
   $('#btnFoul').click(function() {
     var player = players[playerCounter];
-    player.breaks[0].score = 0;
     player.breaks[0].foul = true;
     nextPlayer();
   });
 
   $('#btnBlack').click(function() {
     var player = players[playerCounter];
-      player.breaks[0].score = 0;
       player.breaks[0].foul = true;
       player.total = 0;
       $('#playerScore' + playerCounter).text(player.total);
@@ -95,15 +156,16 @@ $(document).ready(function() {
   });
 
   $('#btnEndGame').click(function() {
-    console.log(players[0].breaks[players[0].breaks.length-1])
-    var total10 = 0;
-    for (var i = 0; i < players.length-1; i++) {
-      for (var j = 0; j < players[i].breaks.length-1; j++) {
-        total10 += players[i].breaks[j].in10;
-      }
-    }
+    gatherResults();
+    fadeOutIn($('#inGame'), $('#afterGame'));
+  });
 
-    console.log(total10)
+  $('#btnRematch').click(function() {
+    rematch();
+  });
+
+  $('#btnReset').click(function() {
+    reset();
   });
 });
 
@@ -121,5 +183,15 @@ var Break = function() {
   return {
     score: 0,
     foul: false
+  }
+}
+
+var Result = function() {
+  return {
+    name: null,
+    breaks: 0,
+    foulBreaks: 0,
+    total: 0,
+    potential: 0
   }
 }

@@ -1,7 +1,8 @@
 html {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Raleway', sans-serif;
   color: #333;
   background-color: #f6f6f6;
+  zoom: 125%;
 }
 
 body {
@@ -14,14 +15,25 @@ h1 {
 }
 
 ul {
+  font-size: 24px;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#players > ul {
   font-size: 32px;
   list-style-type: none;
   padding-left: 0;
 }
 
+#additions > button {
+  min-width: 100px;
+}
+
 li {
   padding: 5px;
-  border-radius: 2px;
+  border-radius: 7.5px;
+  transition: .3s;
 }
 
 input[type=text] {
@@ -32,16 +44,31 @@ input[type=text] {
 }
 
 input[type=text], button {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-size: 24px;
-  margin: 0;
+  margin: 5px 0;
   padding: 8px;
+  outline: none;
   border: none;
-  border-radius: 2px;
+  border-radius:10px;
   text-align: center;
   text-decoration: none;
+  -webkit-transition: 0.4s ease-in-out; /* Safari */
+  transition: 0.4s ease-in-out;
   display: inline-block;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+}
+
+button:active {
+  -webkit-transition: 0.2s; /* Safari */
+  transition: 0.2s;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.16), 0 6px 12px rgba(0, 0, 0, 0.23);
+}
+
+input[type=text]:focus {
+  -webkit-transition: 0.1s; /* Safari */
+  transition: 0.1s;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.16), 0 6px 12px rgba(0, 0, 0, 0.23);
 }
 
 .container {
@@ -64,15 +91,23 @@ a, a:visited, a:active {
 }
 
 #addPlayer {
+  filter: blur(5px);
   display: none;
 }
 
-#btnFinishPlayer {
+#btnFinishPlayer, #inGame, #afterGame {
   display: none;
 }
 
-#inGame {
-  display: none;
+#playerList, .resultCard {
+  background-color: #e6e9ec;
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05), 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.resultCard {
+  margin-bottom: 10px;
 }
 
 .activePlayer {
@@ -92,7 +127,7 @@ button {
 
 #scoring > button, #additions > button {
   font-size: 48px;
-  margin: 10px 10px 10px 0;
+  margin: 10px 5px 10px 5px;
 }
 
 .button-primary {
