@@ -16,18 +16,23 @@ $(document).ready(function() {
   };
 
   function gatherResults() {
-    $('#resultsList').html('');
     var results = [];
     var highscore = 0;
-    var winnerName = 0;
+    var winnerName = 'None';
     for (var i = 0; i < players.length; i++) {
+      // Result Cards
       var result = new Result();
       result.name = players[i].name
       result.total = players[i].total
       if (result.total > highscore) {
         highscore = result.total;
         winnerName = result.name;
+      } else if (result.total === highscore) {
+        highscore = result.total;
+        winnerName = 'Draw';
       }
+
+
       result.breaks = players[i].breaks.length-1;
       for (var j = 0; j < players[i].breaks.length; j++) {
         if (players[i].breaks[j].foul === true) {
@@ -36,17 +41,33 @@ $(document).ready(function() {
         result.potential += players[i].breaks[j].score;
       }
       results.unshift(result);
-      $('#resultsList').append('<li><div class="resultCard"><h3 style="margin: 0 0 10px 0; padding: 5px;">' + result.name + '</h3><ul><li>Total: ' + result.total + '</li><li>Breaks: ' + result.breaks + '</li><li>Foul Breaks: ' + result.foulBreaks + '</li><li>Potential Score: ' + result.potential + '</li></ul></div></li>');
+      $('#resultsList').prepend('<li><div class="resultCard"><h3 style="margin: 0 0 10px 0; padding: 5px;">' + result.name + '</h3><ul><li>Total: ' + result.total + '</li><li>Breaks: ' + result.breaks + '</li><li>Foul Breaks: ' + result.foulBreaks + '</li><li>Potential Score: ' + result.potential + '</li></ul></div></li>');
     }
     $('#winner').text(winnerName)
+    populateChart();
     
-    console.log('Results: ', results)
+    //console.log('Results: ', results)
   };
 
   function rematch() {
+    $.when($('#resultsList').html('<li><div class="resultCard"><canvas id="compareChart" width=window.innerWidth height="180"></canvas></div></li>')).then(function() {
+      compareCtx = $('#compareChart')[0].getContext('2d');
+      compareChart = new Chart(compareCtx, {
+        type: 'line',
+
+        options: {
+          elements: {
+            line: {
+              tension: .2,
+            }
+          },
+        }
+      });
+    });
+    
     for (var i = 0; i < players.length; i++) {
-      players[i].total = 0;
-      players[i].breaks = [new Break()];
+      var nameTemp = players[i].name;
+      players[i] = new Player(nameTemp);
       $('#playerScore' + i).text(0);
     }
     $('#currentBreakScore').text(0)
@@ -117,6 +138,7 @@ $(document).ready(function() {
   playerCounter = 0;
 
   function nextPlayer() {
+    players[playerCounter].accumulative.push(players[playerCounter].total)
     players[playerCounter].breaks.unshift(new Break())
     highlightActive(playerCounter);
     if (playerCounter < players.length-1) {
@@ -168,17 +190,81 @@ $(document).ready(function() {
   $('#btnReset').click(function() {
     reset();
   });
+
+
+  var chartData = [];
+  var chartColours = ['#5085a5', '#687864', '#50a59c', '#a55050'];
+
+  function populateChart() {
+    var mostBreaks = 0;
+    chartData = [];
+    for (var i = 0; i < players.length; i++) {
+      var breaksLength = players[i].breaks.length;
+      var tempChartPlayer = new ChartPlayer();
+      tempChartPlayer.name = players[i].name;
+      tempChartPlayer.data = players[i].accumulative;
+      tempChartPlayer.data.unshift(0);
+
+      if (breaksLength > mostBreaks) {
+        mostBreaks = breaksLength;
+      }
+
+      if (i < chartColours.length) {
+        tempChartPlayer.colour = chartColours[i];
+      } else {
+        tempChartPlayer.colour = '#888';
+      }
+      chartData.push(tempChartPlayer);
+      compareChart.data.datasets.push({
+        label: tempChartPlayer.name,
+        pointRadius: 0,
+        pointHitRadius: 8,
+        borderWidth: 2.5,
+        // backgroundColor: 'rgba(219, 36, 24, .2)',
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+        borderColor: tempChartPlayer.colour,
+        data: tempChartPlayer.data
+      });
+    }
+
+    var chartLabels = new Array(mostBreaks);
+    for (var i = 0; i < mostBreaks; i++) {
+      chartLabels[i] = i;
+    }
+
+    chartLabels[0] = 'Start'
+
+    console.log(chartData)
+    compareChart.data.labels = chartLabels;
+    compareChart.update();
+    
+    
+  };
+
+  var compareCtx = $('#compareChart')[0].getContext('2d');
+  var compareChart = new Chart(compareCtx, {
+
+    type: 'line',
+
+    options: {
+      elements: {
+        line: {
+          tension: .2,
+        }
+      },
+    }
+  });
 });
 
 // Player Constructor
-var Player = function() {
+var Player = function(nameIn = null) {
   return {
-    name: null,
+    name: nameIn,
     breaks: [new Break()],
-    total: 0
+    total: 0,
+    accumulative: []
   }
 };
-
 // Break Constructor
 var Break = function() {
   return {
@@ -194,5 +280,13 @@ var Result = function() {
     foulBreaks: 0,
     total: 0,
     potential: 0
+  }
+}
+
+var ChartPlayer = function() {
+  return {
+    name: null,
+    colour: null,
+    data: null
   }
 }

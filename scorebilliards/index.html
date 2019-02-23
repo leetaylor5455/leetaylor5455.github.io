@@ -16,6 +16,9 @@
   
   <script defer src="site.js"></script>
 
+  <!-- Chartjs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Orbitron:400,700" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
@@ -52,7 +55,7 @@
           <h1 style="font-weight: 400">Break: <span style="font-weight: 700; font-size: 42px;" id="currentBreakScore">0</span></h1>
         </div>
       
-        <div id="scoring">
+        <div id="scoring" style="margin-bottom: 30px;">
           <div id="additions">
             <button id="btn10">10</button>
             <button id="btn20">20</button>
@@ -73,7 +76,11 @@
       <h1 style="border-bottom: 2px solid #5085a5;">Game Results</h1>
       <br>
       <h1 style="font-weight: 400;">Winner: <span id="winner" style="font-weight: 700;"></span></h1>
-      <ul id="resultsList"></ul>
+      <ul id="resultsList">
+        <li>
+          <div class="resultCard"><canvas id="compareChart" width=window.innerWidth height="180"></canvas></div>
+        </li>
+      </ul>
       <div style="margin-bottom: 40px;">
         <button id="btnRematch" class="button-primary">Rematch</button>
         <button id="btnReset" style="font-size: 24px; margin: 0;">Finish</button>
