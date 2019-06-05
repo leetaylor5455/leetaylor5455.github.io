@@ -20,6 +20,9 @@
   <!-- Chartjs -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="css/style.css">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -37,7 +40,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px;">
     <div class="container">
-      <a class="navbar-brand" href="."><h1 style="font-weight: 700; color: #4a4a4a; margin: 0; font-size: 2rem">Gym Days</h1></a>
+        <i><h1 style="font-family: 'Orbitron', sans-serif;">GymDays<span style="font-size: 14px; vertical-align: top; color: #488db3; font-family: 'Orbitron', sans-serif;"> BETA</span></h1></i>
     </div>
   </nav>
   <div class="content">
@@ -47,7 +50,7 @@
       <div class="card mx-auto" id="today">
         <h1 class="card-title">Today</h1>
         <div class="card-body">
-          <h2 class="exercise"></h2>
+          <h2 class="group"></h2>
           <div class="exercises">
           </div>
         </div>
@@ -57,12 +60,17 @@
       <div class="card mx-auto" id="tomorrow">
         <h1 class="card-title">Tomorrow</h1>
         <div class="card-body">
-          <h2 class="exercise"></h2>
+          <h2 class="group"></h2>
           <div class="exercises">
           </div>
         </div>
       </div>
 
+      <!-- Set Selector -->
+      <select id="selectSet">
+          <option value="set1" selected>Set 1</option>
+          <option value="set2">Set 2</option>
+        </select>
 
     </div>
   </div>

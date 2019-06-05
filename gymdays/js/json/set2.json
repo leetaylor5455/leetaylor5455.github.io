@@ -1,6 +1,6 @@
 {
   "Mon": {
-    "exercise": "Arms",
+    "group": "Arms",
     "exercises": [
       ["Preacher Curls", "5 sets, 3, 3, 2, 2, 1 reps"],
       ["EZ Bar Decline Hammerheads", "4 sets, 8-10 reps"],
@@ -13,11 +13,11 @@
     ]
   },
   "Tue": {
-    "exercise": "Rest",
+    "group": "Rest",
     "exercises": []
   },
   "Wed": {
-    "exercise": "Legs and Abs",
+    "group": "Legs and Abs",
     "exercises": [
       ["Barbell Full Squat", "5 sets, 3, 3, 2, 2, 1 reps"],
       ["Leg Press", "Superset with seated leg curl, 4 sets, 8-10 reps"],
@@ -31,7 +31,7 @@
     ]
   },
   "Thu": {
-    "exercise": "Chest",
+    "group": "Chest",
     "exercises": [
       ["Bench Press", "Sets (adjusted) upping weight until failure"],
       ["Incline Bench Press", "Sets (adjusted) upping weight until failure"],
@@ -45,7 +45,7 @@
     ]
   },
   "Fri": {
-    "exercise": "Back and Abs",
+    "group": "Back and Abs",
     "exercises": [
       ["Pullups", "5 sets, 3, 3, 2, 2, 1 reps"],
       ["Bent Over Barbell Row", "Superset with straight arm pulldown, 4 sets, 8-10 reps"],
@@ -61,11 +61,11 @@
     ]
   },
   "Sat": {
-    "exercise": "Rest",
+    "group": "Rest",
     "exercises": []
   },
   "Sun": {
-    "exercise": "Shoulders and Abs",
+    "group": "Shoulders and Abs",
     "exercises": [
       ["Military Press", "3 sets, 12-15 reps"],
       ["Upright Barbell Row Press", "Superset with One-Arm Incline Lateral Raise, 4 sets, 8-10 reps"],

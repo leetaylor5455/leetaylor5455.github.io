@@ -1,0 +1,87 @@
+{
+  "Mon": {
+    "group": "Push",
+    "exercises": [
+      ["Bench Press", "1 x 15 (30kg), 5 x 5 (65-70kg), 1 x AMRAP (60kg)"],
+      ["Cable Fly (Upper)", "4 x 12 (13.6/9.1)"],
+      ["Inclined Dumbell Press", "4 x 8 (20/18)"],
+      ["Tricep Dips", "4 x 10"],
+      ["Dumbell Shoulder Press", "4 x 10 (12kg)"],
+      ["Lateral Raises", "4 x 10 (8kg)"],
+      ["Rear Delt Fly", "3 x 15 (18/14kg)"],
+      ["Tricep Pulldown", "3 x 15 (22.7/18.1kg)"],
+      ["Skull Crushers", "4 x 10 (20kg)"],
+      ["Cardio", "15mins"]
+    ]
+  },
+  "Tue": {
+    "group": "Pull",
+    "exercises": [
+      ["Chin Ups", "4 x 8"],
+      ["Seated Row", "4 x 10"],
+      ["Deadlift", "5 x 5 (90-100kg)"],
+      ["Lat Pulldown", "4 x 10 (25kg a side)"],
+      ["Bent Over T-Bar Row", "Dropset 3 x 5, 12"],
+      ["Incline Dumbbell Curls", "2 x 10 (12kg)"],
+      ["Hammer Curl Holds", "2 x AMRAP (12/10kg)"],
+      ["Concentration Curls", "3 x 10 (10/8kg)"],
+      ["Bar Bicep Holds", "4 x ALAP"],
+      ["Cardio", "15mins"]
+    ]
+  },
+  "Wed": {
+    "group": "Legs",
+    "exercises": [
+      ["Squats", "1 x 15 (bar), 5 x 5 (70kg) "],
+      ["Leg Curl", "4 x 8 (50kg)"],
+      ["Leg Extension", "4 x 10 (55kg)"],
+      ["Leg Press", "4 x 10 (2 plates)"],
+      ["Calf Raises", "3 x AMRAP Dropset "],
+      ["Cardio", "15mins"]
+    ]
+  },
+  "Thu": {
+    "group": "Rest",
+    "exercises": []
+  },
+  "Fri": {
+    "group": "Push",
+    "exercises": [
+      ["Dumbell Shoulder Press", "4 x 10 (18kg)"],
+      ["Lateral Raises", "4 x 10 (8kg)"],
+      ["Rear Delt Fly", "3 x 15"],
+      ["Bench Press", "1 x 15 (30kg), 5 x 5 (65-70kg), 1 x AMRAP (60kg)"],
+      ["Cable Fly (Upper)", "4 x 12 (13.6/9.1)"],
+      ["Incline Dumbell Press", "4 x 8 (20kg)"],
+      ["Tricep Dips", "4 x 10"],
+      ["Tricep Pulldown", "3 x (15 x 2)"],
+      ["Skull Crushers", "4 x 10 (20kg)"],
+      ["Cardio", "15mins"]
+    ]
+  },
+  "Sat": {
+    "group": "Pull",
+    "exercises": [
+      ["Chin Ups", "4 x 8"],
+      ["Seated Row", "4 x 10"],
+      ["Deadlift", "5 x 5 (90-100kg)"],
+      ["Lat Pulldown", "4 x 10 (25kg a side)"],
+      ["Bent Over T-Bar Row", "Dropset 3 x 5, 12"],
+      ["Incline Dumbbell Curls", "2 x 10 (12kg)"],
+      ["Hammer Curl Holds", "2 x AMRAP (12/10kg)"],
+      ["Concentration Curls", "3 x 10 (10/8kg)"],
+      ["Bar Bicep Holds", "4 x ALAP"],
+      ["Cardio", "15mins"]
+    ]
+  },
+  "Sun": {
+    "group": "Legs",
+    "exercises": [
+      ["Squats", "1 x 15 (bar), 4 x 12-15 (50-60kg) "],
+      ["Leg Curl", "4 x Dropset 100, 80 & 60 x 8"],
+      ["Leg Extension", "4 x Straight, Inside and Outside x 8"],
+      ["Calf Raises", "3 x AMRAP Dropset "],
+      ["Cardio", "15mins"]
+    ]
+  }
+}
