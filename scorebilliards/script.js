@@ -133,7 +133,7 @@ $(document).ready(function() {
     var activePlayerLi = '#li' + players[counter].name
     $(activePlayerLi).toggleClass('activePlayer', 150);
     $(activePlayerLi + '> .bankPlusBreak').toggle(150);
-    
+    $(activePlayerLi + '> .bankPlusBreak').text(' > ' + players[counter].total);
   }
 
   players = [];
@@ -175,9 +175,11 @@ $(document).ready(function() {
 
   $('#additions > button').click(function() {
     var player = players[playerCounter];
+    var activePlayerLi = '#li' + players[playerCounter].name
     // takes score value from button text content
     player.breaks[0].score += parseInt($(this)[0].textContent, 10);
     $('#currentBreakScore').text(player.breaks[0].score)
+    $(activePlayerLi + '> .bankPlusBreak').text(' > ' + parseInt(player.breaks[0].score + players[playerCounter].total, 10));
   });
 
   $('#btnEndGame').click(function() {
