@@ -107,14 +107,14 @@ $(document).ready(function() {
       fadeOutIn($('#beforeGame'), $('#inGame'));
     }, 250);
 
-    highlightActive(0);
+    toggleActive(0);
   });
 
   function addPlayer() {
     playerName = $('#playerNameInput').val();
     for (var i = 0; i < players.length; i++) {
       if (players[i].name === playerName) {
-        alert('Error, duplicate name')
+        alert('Error, duplicate name');
         return;
       }
     }
@@ -124,14 +124,16 @@ $(document).ready(function() {
 
     $('#playerSetupList').append('<li id="liSetup' + playerName + '" style="font-weight: 700;">' + playerName + '</li>');
 
-    $('#playerList').append('<li id="li' + playerName + '">' + playerName + ' > <span style="font-weight: bold; font-size: 42px;" id="playerScore' + (players.length-1) + '">0</span></li>');
-    $('#playerNameInput').val('')
+    $('#playerList').append('<li id="li' + playerName + '">' + playerName + ' > <span style="font-weight: bold; font-size: 42px;" id="playerScore' + (players.length-1) + '">0</span><span class="bankPlusBreak" style="display: none; font-size: 34px; color: #a1b0bf;"> > 0</span></li>');
+    $('#playerNameInput').val('');
   }
 
-  function highlightActive(counter) {
-    // naming will be name followed by 'li' > liLee
+  function toggleActive(counter) {
+    // naming will be name precursed by 'li' > liLee
     var activePlayerLi = '#li' + players[counter].name
-    $(activePlayerLi).toggleClass('activePlayer', 150)
+    $(activePlayerLi).toggleClass('activePlayer', 150);
+    $(activePlayerLi + '> .bankPlusBreak').toggle(150);
+    
   }
 
   players = [];
@@ -140,13 +142,13 @@ $(document).ready(function() {
   function nextPlayer() {
     players[playerCounter].accumulative.push(players[playerCounter].total)
     players[playerCounter].breaks.unshift(new Break())
-    highlightActive(playerCounter);
+    toggleActive(playerCounter);
     if (playerCounter < players.length-1) {
       playerCounter += 1;
     } else {
       playerCounter = 0;
     }
-    highlightActive(playerCounter);
+    toggleActive(playerCounter);
     $('#currentBreakScore').text(0)
   }
 
