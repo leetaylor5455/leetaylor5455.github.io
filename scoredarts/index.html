@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- Chartjs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+
+  <link href="style.css" rel="stylesheet">
+
+  <title>Score Darts</title>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <a href="." style="color: #ffd38b;" class="title"><h1>SD<span style="font-size: 18px; vertical-align: top; color: #e0e0e0; -webkit-text-stroke: 0px;"> BETA</span></h1></a>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div id="beforeGame">
+      <button id="btnNewGame" class="button-primary" style="font-size: 24px; margin: 0;">NEW GAME</button>
+      <div id="addPlayer">
+
+        <h2 style="margin-bottom: 3px;"><span style="border-bottom: 1px solid #ddd;">PLAYER SETUP</span></h2><br>
+        <input type="text" id="playerNameInput" placeholder="Name" style="width: 120px;" autofocus>
+        <button id="btnAddPlayer">ADD PLAYER</button>
+        
+        <ul id="playerSetupList"><span style="border-bottom: 1px solid #ddd;">PLAYERS</span></ul>
+
+        <h2 style="margin-bottom: 3px;"><span style="border-bottom: 1px solid #ddd;">SCORE SETUP</span></h2><br>
+        <button class="scoreSetButton">301</button>
+        <button class="scoreSetButton">501</button>
+        <button class="scoreSetButton">701</button>
+        <br><br>
+
+        <button id="btnFinishSetup" class="button-primary" style="display: none;">START GAME</button>
+
+      </div>
+    </div>
+
+    <div id="inGame">
+      <div id="players">
+        <ul id="playerList" style="padding: 5px;"></ul>
+      </div>
+      <div>
+        <h2 style="font-size: 32px;">DART SCORE: <span id="dartScore">0</span></h2>
+      </div>
+      <div id="scoring">
+        <button class="scoringButton addScore">1</button>
+        <button class="scoringButton addScore">2</button>
+        <button class="scoringButton addScore">5</button>
+        <button class="scoringButton addScore">10</button>
+        <button id="btnDouble" class="scoringButton">DOUBLE</button>
+        <button id="btnTriple" class="scoringButton">TRIPLE</button>
+        <button id="submitDart" class="button-primary scoringButton">✔</button>
+        <button id="resetDart" class=" scoringButton" style="background-color: #920b0b; color: #eee">X</button>
+      </div>
+      <h2>TURN SCORE: <span id="turnScore">0</span></h2>
+      <ul id="turnDarts"></ul>
+    </div>
+
+    <div id="afterGame">
+      <h1 style="border-bottom: 2px solid #ccc;">GAME RESULTS</h1>
+      <br>
+      <h1 style="font-weight: 400;">Winner: <span id="winner" style="font-weight: 700;"></span></h1>
+      <br>
+      
+      <div style="margin-bottom: 40px;">
+        <!-- <button id="btnRematch" class="button-primary">Rematch</button> -->
+        <button id="btnReset" style="font-size: 24px; margin: 0;">Finish</button>
+      </div>
+    </div>
+  </div>
+  
+
+  
+
+  <!-- jQuery -->
+  <script src="jquery-3.2.1.min.js"></script>
+  <!-- jQuery UI -->
+  <script
+  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+  integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+  crossorigin="anonymous"></script>
+
+  <script src="script.js"></script>
+</body>
