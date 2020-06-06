@@ -16,19 +16,20 @@ $(document).ready(function() {
 
         // converts json into array
         var arraySkus = Object.entries(rawSkus);
-        //console.log(arraySkus)
 
         // compares name values
         arraySkus.sort(function(a, b){
-            if(a[1][0] < b[1][0]) { return -1; }
-            if(a[1][0] > b[1][0]) { return 1; }
+            if(a[1].productName < b[1].productName) { return -1; }
+            if(a[1].productName > b[1].productName) { return 1; }
             return 0;
         });
 
+        var sortedSkus = {}
+        arraySkus.forEach(function(item){
+            sortedSkus[item[0]]=item[1]
+        });
 
-        //console.log(arraySkus)
-        var sortedSkus = JSON.stringify(arraySkus)
-        console.log(sortedSkus);
+        console.log(sortedSkus)
         
         skuNumbers = rawSkus;
 
@@ -37,15 +38,15 @@ $(document).ready(function() {
         for (var key in skuNumbers) {
 
             // key values in the JSON file are stored as single length arrays
-            var name = skuNumbers[key][0];
-            // false pushed to indicate no stock
-            skuNumbers[key].push(false)
+            var name = skuNumbers[key].productName;
             
             // appends list with item with sku number as id (always unique)
             $('#nameList').append('<li class="list-item" id="' + key + '">' + name + '</li>');
             $('#' + key).append('<h6>' + key + '</h6>');
 
         }
+
+        //console.log(skuNumbers)
             
         // assigns altered skus to public variable
 
@@ -62,10 +63,10 @@ $(document).ready(function() {
 
         // toggles 'stocked' boolean
         console.log()
-        if (skuNumbers[sku][1]) {
-            skuNumbers[sku][1] = false;
+        if (skuNumbers[sku].inStock) {
+            skuNumbers[sku].inStock = false;
         } else {
-            skuNumbers[sku][1] = true;
+            skuNumbers[sku].inStock = true;
         }
 
     });
@@ -83,15 +84,15 @@ $(document).ready(function() {
         $('.list').toggle();
         $('#barcodes').toggle();
 
-
         for (var key in skuNumbers) {
 
-            if (!skuNumbers[key][1]) {
+            // if not in stock
+            if (!skuNumbers[key].inStock) {
 
                 // id will return as sku number with Barcode concatted, e.g. 1234567Barcode
                 $('#barcodes').append('<div class="swiper-slide"><div class="barcode-holder" id="' + key + 'Barcode"></div></div>');
                 $('#' + key + 'Barcode').barcode(key, 'code39', {output: "svg"});
-                $('#' + key + 'Barcode').append('<h2>' + skuNumbers[key][0] + '</h2>');
+                $('#' + key + 'Barcode').append('<h2>' + skuNumbers[key].productName + '</h2>');
             
             }
 
