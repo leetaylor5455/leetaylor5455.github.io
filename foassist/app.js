@@ -7,15 +7,15 @@ $(document).ready(function() {
     $.getJSON('skunumbers.json')
     .done( function(rawSkus) {
 
-        generateList(rawSkus);
+        skuNumbers = rawSkus;
+        populateList(skuNumbers);
 
     });
-
     
-    function generateList(rawSkus) {
-
+    // sorts object and populates list
+    function populateList(skusObj) {
         // converts json into array
-        var arraySkus = Object.entries(rawSkus);
+        var arraySkus = Object.entries(skusObj);
 
         // compares name values
         arraySkus.sort(function(a, b){
@@ -24,31 +24,15 @@ $(document).ready(function() {
             return 0;
         });
 
-        var sortedSkus = {}
-        arraySkus.forEach(function(item){
-            sortedSkus[item[0]]=item[1]
-        });
+        for (var i = 0; i < arraySkus.length-1; i++) {
+            var name = arraySkus[i][1].productName;
+            var key = arraySkus[i][0];
 
-        console.log(sortedSkus)
-        
-        skuNumbers = rawSkus;
-
-        // console.log(skuNumbers)
-
-        for (var key in skuNumbers) {
-
-            // key values in the JSON file are stored as single length arrays
-            var name = skuNumbers[key].productName;
-            
             // appends list with item with sku number as id (always unique)
             $('#nameList').append('<li class="list-item" id="' + key + '">' + name + '</li>');
-            $('#' + key).append('<h6>' + key + '</h6>');
-
+            $('#' + key).append('<h6>' + key + '</h6>');            
         }
-
-        //console.log(skuNumbers)
-            
-        // assigns altered skus to public variable
+        
 
     };
 
@@ -70,6 +54,8 @@ $(document).ready(function() {
         }
 
     });
+
+    
 
     // generates bar codes on OK button click
     $('#btnOk').click(function() {
