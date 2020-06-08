@@ -36,19 +36,33 @@ ul {
 }
 
 li {
-    border-radius: 2px;
+    border-radius: 3px;
     cursor: pointer;
     font-size: 1.5rem;
     padding: .3rem;
     padding-left: .6rem;
-    margin: .5rem 0;
+    margin: .7rem 0;
+    color: #333;
     background-color: #ddd;
     transition: .2s ease-in-out;
+    font-weight: bold;
+}
+
+.liSku {
+    font-size: .5em;
+    float: right;
+    font-weight: normal;
+    vertical-align: top;
+    margin-left: 20px;
+}
+
+.liName {
+    margin-right: 20px;
 }
 
 button {
     cursor: pointer;
-    border-radius: 2px;
+    border-radius: 3px;
 }
 
 .stocked, #btnOk {

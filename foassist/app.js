@@ -29,8 +29,8 @@ $(document).ready(function() {
             var key = arraySkus[i][0];
 
             // appends list with item with sku number as id (always unique)
-            $('#nameList').append('<li class="list-item" id="' + key + '">' + name + '</li>');
-            $('#' + key).append('<h6>' + key + '</h6>');            
+            $('#nameList').append('<li class="list-item" id="' + key + '"><span class="liSku">' + key + '</span><span class="liName">' + name + '</span></li>');
+            //$('#' + key).append('<span class="liSku">' + key + '</span>');            
         }
         
 
