@@ -70,21 +70,37 @@ $(document).ready(function() {
         $('.list').toggle();
         $('#barcodes').toggle();
 
+        var slideNumber = 0;
+
         for (var key in skuNumbers) {
 
             // if not in stock
             if (!skuNumbers[key].inStock) {
 
+                slideNumber++;
+
                 // id will return as sku number with Barcode concatted, e.g. 1234567Barcode
                 $('#barcodes').append('<div class="swiper-slide"><div class="barcode-holder" id="' + key + 'Barcode"></div></div>');
                 $('#' + key + 'Barcode').barcode(key, 'code39', {output: "svg"});
                 $('#' + key + 'Barcode').append('<h2>' + skuNumbers[key].productName + '</h2>');
-            
+                $('#' + key + 'Barcode').append('<h2 style="font-weight: 100; color: #444">' + slideNumber + '</h2>');
             }
 
         }
         swiper.update();
 
+    });
+
+    // search listener
+    $("#inputString").keyup(function () {
+        var filter = $(this).val();
+        $("ul li").each(function () {
+            if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                $(this).hide();
+            } else {
+                $(this).show()
+            }
+        });
     });
         
 

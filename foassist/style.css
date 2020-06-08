@@ -24,7 +24,7 @@ h1 {
 
 h2 {
     text-align: center;
-    margin-bottom: 5rem;
+    margin: 0;
 }
 
 h6 {margin: 0;}
@@ -36,13 +36,19 @@ ul {
 }
 
 li {
+    border-radius: 2px;
     cursor: pointer;
     font-size: 1.5rem;
     padding: .3rem;
-    padding-left: .5rem;
+    padding-left: .6rem;
     margin: .5rem 0;
     background-color: #ccc;
     transition: .2s ease-in-out;
+}
+
+button {
+    cursor: pointer;
+    border-radius: 2px;
 }
 
 .stocked, #btnOk {
@@ -78,6 +84,24 @@ footer {
 img {
     display: block;
     width: 80%;
-    margin: 5rem auto 1rem auto;
+    margin: 5rem auto;
     overflow: none;
+}
+
+.search {
+    font-family: 'Roboto Mono', monospace;
+    display: inline-block;
+    font-size: 20px;
+    margin: 1rem 0;
+    padding: .3rem 0;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #00000063;
+    transition: .2s ease-in-out;
+}
+
+.search:focus {
+    border-bottom: 2px solid #f06c0080;
+    transition: .3s ease-in-out;
 }
