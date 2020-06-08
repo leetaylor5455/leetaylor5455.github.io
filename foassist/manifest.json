@@ -3,8 +3,8 @@
   "short_name": "FOAssist",
   "display": "minimal-ui",
   "start_url": "index.html",
-  "theme_color": "#f06c00",
-  "background_color": "#ffffff",
+  "theme_color": "#e97f28",
+  "background_color": "#e97f28",
   "icons": [{
       "src": "android-chrome-192x192.png",
       "sizes": "192x192",
