@@ -42,7 +42,7 @@ li {
     padding: .3rem;
     padding-left: .6rem;
     margin: .5rem 0;
-    background-color: #ccc;
+    background-color: #ddd;
     transition: .2s ease-in-out;
 }
 
@@ -52,7 +52,7 @@ button {
 }
 
 .stocked, #btnOk {
-    background-color: #f06c00;
+    background-color: #e97f28;
     color: #fff;
     transition: .2s ease-in-out;
 }

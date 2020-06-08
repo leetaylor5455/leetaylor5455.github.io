@@ -61,13 +61,17 @@ $(document).ready(function() {
     $('#btnOk').click(function() {
 
         var textContent = $(this).text();
+
+        // list page
         if (textContent === 'OK') {
             $(this).text('Back');
+
+        // barcode page
         } else {
             $(this).text('OK');
         }
 
-        $('.list').toggle();
+        $('#list').toggle();
         $('#barcodes').toggle();
 
         var slideNumber = 0;
