@@ -1,7 +1,7 @@
 {
   "name": "FOAsisst",
   "short_name": "FOAssist",
-  "display": "minimal-ui",
+  "display": "standalone",
   "start_url": "index.html",
   "theme_color": "#e97f28",
   "background_color": "#e97f28",
