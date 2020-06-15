@@ -1,5 +1,9 @@
 $(document).ready(function() {
 
+    function mouseDown() {
+        alert('mouse down')
+    }
+
     var skuNumbers = {};
     var swiper = new Swiper('.swiper-container');
     
@@ -28,32 +32,84 @@ $(document).ready(function() {
             var name = arraySkus[i][1].productName;
             var key = arraySkus[i][0];
 
-            // appends list with item with sku number as id (always unique)
-            $('#nameList').append('<li class="list-item" id="' + key + '"><span class="liSku">' + key + '</span><span class="liName">' + name + '</span></li>');
+            // li html to be appended
+            var listItem = `<li class="list-item" id="` + key + `">
+                                <span class="liSku">` + key + `</span>
+                                <span class="liName">` + name + `</span>
+                                <div id="` + key + `DDBarcode" class="ddbarcode ddbarcode-hidden" style="display: none;"></div>
+                            </li>`;
+
+            $('#nameList').append(listItem);
+            $('#' + key + 'DDBarcode').barcode(key, 'code39', {output: "svg"});
             //$('#' + key).append('<span class="liSku">' + key + '</span>');            
         }
         
 
     };
 
+    // declare timer
+    var timeoutId = null;
 
-    // list item click listener (delegation necessary due to appended elements)
-    $('#nameList').on('click', '.list-item', function() {
 
-        // gets sku number from element id
-        var sku = $(this).attr('id');
+    // list item mousedown listener (delegation necessary due to appended elements)
+    $('#nameList').on('touchstart', '.list-item', function() {
 
-        $('#' + sku).toggleClass('stocked');
+        // gets sku for list item
+        var productKey = $(this).attr('id');
 
-        // toggles 'stocked' boolean
-        console.log()
-        if (skuNumbers[sku].inStock) {
-            skuNumbers[sku].inStock = false;
-        } else {
-            skuNumbers[sku].inStock = true;
-        }
+        timeoutId = setTimeout(function() {
+            onProductDropdown(productKey);
+        }, 800);
 
     });
+    
+    // list item mouseup listener (delegation necessary due to appended elements)
+    $('#nameList').on('touchend', '.list-item', function() {
+
+        // if tap (not hold)
+        if (timeoutId != null) {
+            // gets sku number from element id
+            var sku = $(this).attr('id');
+
+            $('#' + sku).toggleClass('stocked');
+
+            // toggles 'stocked' boolean
+            console.log()
+            if (skuNumbers[sku].inStock) {
+                skuNumbers[sku].inStock = false;
+            } else {
+                skuNumbers[sku].inStock = true;
+            }
+        }
+
+        clearTimeout(timeoutId);
+        timeoutId = null;
+
+    });
+
+    $('#nameList').on('mousedown', '.ddBtn', function(e) {
+        e.stopPropagation();
+        var productKey = $(this).closest('li').attr('id');
+        onProductDropdown(productKey);
+    })
+
+    function onProductDropdown(productKey) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+
+        // fixes stuck width issue
+        $('#' + productKey + 'DDBarcode').css('width', '80%');
+
+        if ($('#' + productKey + 'DDBarcode').hasClass('ddbarcode-hidden')) {
+            $('#' + productKey + 'DDBarcode').removeClass('ddbarcode-hidden');
+            $('#' + productKey + 'DDBarcode').slideDown(200);
+
+        } else {
+            $('#' + productKey + 'DDBarcode').addClass('ddbarcode-hidden');
+            $('#' + productKey + 'DDBarcode').slideUp(200);
+        }
+
+    }
 
     
 
@@ -84,7 +140,7 @@ $(document).ready(function() {
                 slideNumber++;
 
                 // id will return as sku number with Barcode concatted, e.g. 1234567Barcode
-                $('#barcodes').append('<div class="swiper-slide"><div class="barcode-holder" id="' + key + 'Barcode"></div></div>');
+                $('#barcodes').append('<div class="swiper-slide"><div class="swiper-barcode barcode-holder" id="' + key + 'Barcode"></div></div>');
                 $('#' + key + 'Barcode').barcode(key, 'code39', {output: "svg"});
                 $('#' + key + 'Barcode').append('<h2>' + skuNumbers[key].productName + '</h2>');
                 $('#' + key + 'Barcode').append('<h2 style="font-weight: 100; color: #444">' + slideNumber + '</h2>');

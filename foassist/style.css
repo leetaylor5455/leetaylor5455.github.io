@@ -46,6 +46,7 @@ li {
     background-color: #ddd;
     transition: .2s ease-in-out;
     font-weight: bold;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .liSku {
@@ -95,11 +96,34 @@ footer {
     overflow: none;
 }
 
-img {
+.swiper-barcode img {
     display: block;
     width: 80%;
     margin: 5rem auto;
     overflow: none;
+}
+
+.ddbarcode {
+    /* transition: .2s ease-in-out; */
+    height: auto;
+    width: auto;
+    margin: auto !important;
+    padding: 0;
+    overflow: none;
+}
+
+.ddbarcode img {
+    display: block;
+    width: 100%;
+    margin: 5rem auto;
+    overflow: none;
+}
+
+.ddBtn {
+    width: 15px;
+    border: none;
+    padding: .2rem .5rem;
+    margin: auto;
 }
 
 .search {
