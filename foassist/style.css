@@ -49,6 +49,16 @@ li {
     -webkit-tap-highlight-color: transparent;
 }
 
+::selection {
+    color: none;
+    background: none;
+}
+/* For Mozilla Firefox */
+::-moz-selection {
+    color: none;
+    background: none;
+}
+
 .liSku {
     font-size: .5em;
     float: right;

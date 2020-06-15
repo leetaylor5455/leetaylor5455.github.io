@@ -66,6 +66,13 @@ $(document).ready(function() {
     // list item mouseup listener (delegation necessary due to appended elements)
     $('#nameList').on('touchend', '.list-item', function() {
 
+        // clearTimeout(timeoutId);
+        // timeoutId = null;
+
+    });
+
+    $('#nameList').on('click', '.list-item', function() {
+
         // if tap (not hold)
         if (timeoutId != null) {
             // gets sku number from element id
@@ -87,11 +94,6 @@ $(document).ready(function() {
 
     });
 
-    $('#nameList').on('mousedown', '.ddBtn', function(e) {
-        e.stopPropagation();
-        var productKey = $(this).closest('li').attr('id');
-        onProductDropdown(productKey);
-    })
 
     function onProductDropdown(productKey) {
         clearTimeout(timeoutId);
