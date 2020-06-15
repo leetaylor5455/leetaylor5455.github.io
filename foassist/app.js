@@ -6,7 +6,7 @@ $(document).ready(function() {
 
     var skuNumbers = {};
     var swiper = new Swiper('.swiper-container');
-    
+
     // gets list from skunumbers.json and assigns to list variable
     $.getJSON('skunumbers.json')
     .done( function(rawSkus) {
@@ -15,7 +15,7 @@ $(document).ready(function() {
         populateList(skuNumbers);
 
     });
-    
+
     // sorts object and populates list
     function populateList(skusObj) {
         // converts json into array
@@ -28,7 +28,7 @@ $(document).ready(function() {
             return 0;
         });
 
-        for (var i = 0; i < arraySkus.length-1; i++) {
+        for (var i = 0; i < arraySkus.length; i++) {
             var name = arraySkus[i][1].productName;
             var key = arraySkus[i][0];
 
@@ -43,7 +43,7 @@ $(document).ready(function() {
             $('#' + key + 'DDBarcode').barcode(key, 'code39', {output: "svg"});
             //$('#' + key).append('<span class="liSku">' + key + '</span>');            
         }
-        
+
 
     };
 
@@ -113,6 +113,7 @@ $(document).ready(function() {
 
     
 
+
     // generates bar codes on OK button click
     $('#btnOk').click(function() {
 
@@ -162,6 +163,6 @@ $(document).ready(function() {
             }
         });
     });
-        
+
 
 });
