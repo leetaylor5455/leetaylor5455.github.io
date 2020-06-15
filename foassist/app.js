@@ -59,7 +59,7 @@ $(document).ready(function() {
 
         timeoutId = setTimeout(function() {
             onProductDropdown(productKey);
-        }, 600);
+        }, 1000);
 
     });
     
