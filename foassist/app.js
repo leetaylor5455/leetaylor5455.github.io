@@ -34,7 +34,7 @@ $(document).ready(function() {
 
             // li html to be appended
             var listItem = `<li class="list-item" id="` + key + `">
-                                <span class="liSku">` + key + `</span>
+                                <i class="arrow down ddBtn"></i>
                                 <span class="liName">` + name + `</span>
                                 <div id="` + key + `DDBarcode" class="ddbarcode ddbarcode-hidden" style="display: none;"></div>
                             </li>`;
@@ -47,57 +47,35 @@ $(document).ready(function() {
 
     };
 
-    // declare timer
-    var timeoutId = null;
-
-
-    // list item mousedown listener (delegation necessary due to appended elements)
-    $('#nameList').on('touchstart', '.list-item', function() {
-
-        // gets sku for list item
-        var productKey = $(this).attr('id');
-
-        timeoutId = setTimeout(function() {
-            onProductDropdown(productKey);
-        }, 1000);
-
-    });
-    
-    // list item mouseup listener (delegation necessary due to appended elements)
-    $('#nameList').on('touchend', '.list-item', function() {
-
-        // clearTimeout(timeoutId);
-        // timeoutId = null;
-
-    });
+    // dropdown button listener
+    $('#nameList').on('click', '.ddBtn', function(e) {
+        $(this).toggleClass('down');
+        $(this).toggleClass('up');
+        e.stopPropagation();
+        var productKey = $(this).closest('li').attr('id');
+        productDropdown(productKey);
+    })
 
     $('#nameList').on('click', '.list-item', function() {
 
-        // if tap (not hold)
-        if (timeoutId != null) {
-            // gets sku number from element id
-            var sku = $(this).attr('id');
+        // gets sku number from element id
+        var sku = $(this).attr('id');
 
-            $('#' + sku).toggleClass('stocked');
+        $('#' + sku).toggleClass('stocked');
+        $('#' + sku + ' .ddBtn').toggleClass('arrow-stocked');
 
-            // toggles 'stocked' boolean
-            console.log()
-            if (skuNumbers[sku].inStock) {
-                skuNumbers[sku].inStock = false;
-            } else {
-                skuNumbers[sku].inStock = true;
-            }
+        // toggles 'stocked' boolean
+        if (skuNumbers[sku].inStock) {
+            skuNumbers[sku].inStock = false;
+        } else {
+            skuNumbers[sku].inStock = true;
         }
-
-        clearTimeout(timeoutId);
-        timeoutId = null;
+        
 
     });
 
 
-    function onProductDropdown(productKey) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
+    function productDropdown(productKey) {
 
         // fixes stuck width issue
         $('#' + productKey + 'DDBarcode').css('width', '80%');

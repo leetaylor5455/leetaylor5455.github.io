@@ -49,24 +49,6 @@ li {
     -webkit-tap-highlight-color: transparent;
 }
 
-::selection {
-    color: none;
-    background: none;
-}
-/* For Mozilla Firefox */
-::-moz-selection {
-    color: none;
-    background: none;
-}
-
-.liSku {
-    font-size: .5em;
-    float: right;
-    font-weight: normal;
-    vertical-align: top;
-    margin-left: 20px;
-}
-
 .liName {
     margin-right: 20px;
 }
@@ -129,11 +111,31 @@ footer {
     overflow: none;
 }
 
-.ddBtn {
-    width: 15px;
-    border: none;
-    padding: .2rem .5rem;
-    margin: auto;
+.arrow {
+    float: right;
+    margin: .5rem;
+    border: solid #333;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 5px;
+    transition: .2s ease-in-out; 
+}
+
+.arrow-stocked {
+    border-color: #fff;
+    transition: .2s ease-in-out;
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transition: .2s ease-in-out;
+}
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    transition: .2s ease-in-out;
 }
 
 .search {
