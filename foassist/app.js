@@ -156,7 +156,7 @@ $(document).ready(function() {
         
         var input = $(this).val();
 
-        skuNumbers[productKey].inStock = true;
+        skuNumbers[productKey].inStock = false;
         $('#' + productKey).removeClass('stocked');
         $('#' + productKey + ' .ddBtn').removeClass('arrow-stocked');
         
@@ -167,7 +167,7 @@ $(document).ready(function() {
         }
 
         skuNumbers[productKey].units = parseInt(input, 10);
-
+        console.log(skuNumbers[productKey])
     });
 
     // search listener
