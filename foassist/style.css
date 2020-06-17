@@ -111,6 +111,17 @@ footer {
     overflow: none;
 }
 
+.input-amount {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 20px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    margin-top: 1rem;
+    width: 4rem;
+    text-align: center;
+}
+
 .arrow {
     float: right;
     margin: .5rem;

@@ -36,7 +36,10 @@ $(document).ready(function() {
             var listItem = `<li class="list-item" id="` + key + `">
                                 <i class="arrow down ddBtn"></i>
                                 <span class="liName">` + name + `</span>
-                                <div id="` + key + `DDBarcode" class="ddbarcode ddbarcode-hidden" style="display: none;"></div>
+                                <div id="` + key + `DDContent" class="ddcontent ddcontent-hidden" style="display: none;">
+                                <span style="font-weight: normal;">Units: </span><input id="` + key + `Amount" type="number" class="input-amount" placeholder="0">
+                                    <div id="` + key + `DDBarcode" class="ddbarcode"></div>
+                                </div>
                             </li>`;
 
             $('#nameList').append(listItem);
@@ -54,22 +57,26 @@ $(document).ready(function() {
         e.stopPropagation();
         var productKey = $(this).closest('li').attr('id');
         productDropdown(productKey);
-    })
+    });
 
     $('#nameList').on('click', '.list-item', function() {
 
         // gets sku number from element id
         var sku = $(this).attr('id');
-
-        $('#' + sku).toggleClass('stocked');
-        $('#' + sku + ' .ddBtn').toggleClass('arrow-stocked');
-
-        // toggles 'stocked' boolean
-        if (skuNumbers[sku].inStock) {
-            skuNumbers[sku].inStock = false;
-        } else {
-            skuNumbers[sku].inStock = true;
+        
+        if (skuNumbers[sku].units == 0) {
+            $('#' + sku).toggleClass('stocked');
+            $('#' + sku + ' .ddBtn').toggleClass('arrow-stocked');
+    
+            // toggles 'stocked' boolean
+            if (skuNumbers[sku].inStock) {
+                skuNumbers[sku].inStock = false;
+            } else {
+                skuNumbers[sku].inStock = true;
+            } 
         }
+
+        
         
 
     });
@@ -80,16 +87,21 @@ $(document).ready(function() {
         // fixes stuck width issue
         $('#' + productKey + 'DDBarcode').css('width', '80%');
 
-        if ($('#' + productKey + 'DDBarcode').hasClass('ddbarcode-hidden')) {
-            $('#' + productKey + 'DDBarcode').removeClass('ddbarcode-hidden');
-            $('#' + productKey + 'DDBarcode').slideDown(200);
+        if ($('#' + productKey + 'DDContent').hasClass('ddcontent-hidden')) {
+            $('#' + productKey + 'DDContent').removeClass('ddcontent-hidden');
+            $('#' + productKey + 'DDContent').slideDown(200);
 
         } else {
-            $('#' + productKey + 'DDBarcode').addClass('ddbarcode-hidden');
-            $('#' + productKey + 'DDBarcode').slideUp(200);
+            $('#' + productKey + 'DDContent').addClass('ddcontent-hidden');
+            $('#' + productKey + 'DDContent').slideUp(200);
         }
 
-    }
+    };
+
+
+    $('#nameList').on('click', '.input-amount', function(e) {
+        e.stopPropagation();
+    });
 
     
 
@@ -124,7 +136,13 @@ $(document).ready(function() {
                 $('#barcodes').append('<div class="swiper-slide"><div class="swiper-barcode barcode-holder" id="' + key + 'Barcode"></div></div>');
                 $('#' + key + 'Barcode').barcode(key, 'code39', {output: "svg"});
                 $('#' + key + 'Barcode').append('<h2>' + skuNumbers[key].productName + '</h2>');
+                if (skuNumbers[key].units != 0) {
+                    $('#' + key + 'Barcode').append('<h2 style="font-weight: bold; color: #e97f28;"> Units: ' + skuNumbers[key].units + '</h2>');
+                }
                 $('#' + key + 'Barcode').append('<h2 style="font-weight: 100; color: #444">' + slideNumber + '</h2>');
+                
+                
+                
             }
 
         }
@@ -132,8 +150,28 @@ $(document).ready(function() {
 
     });
 
+    // unit input listener (delegated)
+    $('#nameList').on('keyup', '.input-amount', function() {
+        var productKey = $(this).closest('.list-item').attr('id');
+        
+        var input = $(this).val();
+
+        skuNumbers[productKey].inStock = true;
+        $('#' + productKey).removeClass('stocked');
+        $('#' + productKey + ' .ddBtn').removeClass('arrow-stocked');
+        
+        // returned to 0 if box is empty
+        if (input == "") {
+            input = 0;
+            skuNumbers[productKey].inStock = false;
+        }
+
+        skuNumbers[productKey].units = parseInt(input, 10);
+
+    });
+
     // search listener
-    $("#inputString").keyup(function () {
+    $("#inputString").keyup(function() {
         var filter = $(this).val();
         $("ul li").each(function () {
             if ($(this).text().search(new RegExp(filter, "i")) < 0) {
