@@ -22,7 +22,7 @@ h1 {
     padding: 1rem 0;
 }
 
-h2 {
+h4, h2 {
     text-align: center;
     margin: 0;
 }
@@ -95,6 +95,15 @@ footer {
     overflow: none;
 }
 
+.sub-amount-visible {
+    background-color: #fff;
+    color: #333;
+    font-weight: normal;
+    font-size: 20px;
+    padding: 0 10px;
+    border-radius: 3px;
+}
+
 .ddbarcode {
     /* transition: .2s ease-in-out; */
     height: auto;
@@ -121,6 +130,12 @@ footer {
     width: 4rem;
     text-align: center;
 }
+
+.arrow-container {
+    float: right;
+    width: 5rem;
+}
+
 
 .arrow {
     float: right;

@@ -1,9 +1,5 @@
 $(document).ready(function() {
 
-    function mouseDown() {
-        alert('mouse down')
-    }
-
     var skuNumbers = {};
     var swiper = new Swiper('.swiper-container');
 
@@ -16,17 +12,25 @@ $(document).ready(function() {
 
     });
 
-    // sorts object and populates list
-    function populateList(skusObj) {
+    function sortData(obj) {
         // converts json into array
-        var arraySkus = Object.entries(skusObj);
+        var arraySkus = Object.entries(obj);
 
-        // compares name values
         arraySkus.sort(function(a, b){
             if(a[1].productName < b[1].productName) { return -1; }
             if(a[1].productName > b[1].productName) { return 1; }
             return 0;
         });
+
+        return arraySkus;
+    }
+
+    // sorts object and populates list
+    function populateList(skusObj) {
+        
+
+        var arraySkus = sortData(skusObj);
+        
 
         for (var i = 0; i < arraySkus.length; i++) {
             var name = arraySkus[i][1].productName;
@@ -34,8 +38,10 @@ $(document).ready(function() {
 
             // li html to be appended
             var listItem = `<li class="list-item" id="` + key + `">
-                                <i class="arrow down ddBtn"></i>
-                                <span class="liName">` + name + `</span>
+                                <div class="arrow-container">
+                                    <i class="arrow down ddBtn"></i>
+                                </div>
+                                <span class="liName">` + name + `</span><span id="` + key + `subAmount"></span>
                                 <div id="` + key + `DDContent" class="ddcontent ddcontent-hidden" style="display: none;">
                                 <span style="font-weight: normal;">Units: </span><input id="` + key + `Amount" type="number" class="input-amount" placeholder="0">
                                     <div id="` + key + `DDBarcode" class="ddbarcode"></div>
@@ -51,9 +57,10 @@ $(document).ready(function() {
     };
 
     // dropdown button listener
-    $('#nameList').on('click', '.ddBtn', function(e) {
-        $(this).toggleClass('down');
-        $(this).toggleClass('up');
+    $('#nameList').on('click', '.arrow-container', function(e) {
+        var $ddBtn = $(this).find('.ddBtn')
+        $ddBtn.toggleClass('down');
+        $ddBtn.toggleClass('up');
         e.stopPropagation();
         var productKey = $(this).closest('li').attr('id');
         productDropdown(productKey);
@@ -123,14 +130,20 @@ $(document).ready(function() {
         $('#list').toggle();
         $('#barcodes').toggle();
 
-        var slideNumber = 0;
+        var sortedSkus = sortData(skuNumbers);
 
-        for (var key in skuNumbers) {
+        // calculates gaps in total
+        var gapsAmount = 0;
+        for (var i = 0; i < sortedSkus.length; i++) {
+            if (!sortedSkus[i][1].inStock) {
+                gapsAmount++;
+            }
+        }
 
-            // if not in stock
-            if (!skuNumbers[key].inStock) {
+        for (var i = 0; i < sortedSkus.length; i++) {
 
-                slideNumber++;
+            var key = sortedSkus[i][0];
+            if (!sortedSkus[i][1].inStock) {
 
                 // id will return as sku number with Barcode concatted, e.g. 1234567Barcode
                 $('#barcodes').append('<div class="swiper-slide"><div class="swiper-barcode barcode-holder" id="' + key + 'Barcode"></div></div>');
@@ -139,10 +152,8 @@ $(document).ready(function() {
                 if (skuNumbers[key].units != 0) {
                     $('#' + key + 'Barcode').append('<h2 style="font-weight: bold; color: #e97f28;"> Units: ' + skuNumbers[key].units + '</h2>');
                 }
-                $('#' + key + 'Barcode').append('<h2 style="font-weight: 100; color: #444">' + slideNumber + '</h2>');
-                
-                
-                
+                $('#' + key + 'Barcode').append('<h4 style="font-weight: 100; color: #444; margin-top: 1rem;">' + (i+1) + ' / ' + gapsAmount + '</h4>');
+
             }
 
         }
@@ -153,17 +164,27 @@ $(document).ready(function() {
     // unit input listener (delegated)
     $('#nameList').on('keyup', '.input-amount', function() {
         var productKey = $(this).closest('.list-item').attr('id');
-        
+
         var input = $(this).val();
 
+        $('#' + productKey + 'subAmount').addClass('sub-amount-visible');
+
+        if (input != "0") {
+            $('#' + productKey + 'subAmount').text(input)
+        }
+        
+
         skuNumbers[productKey].inStock = false;
-        $('#' + productKey).removeClass('stocked');
-        $('#' + productKey + ' .ddBtn').removeClass('arrow-stocked');
+        $('#' + productKey).addClass('stocked');
+        $('#' + productKey + ' .ddBtn').addClass('arrow-stocked');
         
         // returned to 0 if box is empty
-        if (input == "") {
+        if (input == "" || input == "0") {
             input = 0;
             skuNumbers[productKey].inStock = false;
+            $('#' + productKey).removeClass('stocked');
+            $('#' + productKey + ' .ddBtn').removeClass('arrow-stocked');
+            $('#' + productKey + 'subAmount').removeClass('sub-amount-visible');
         }
 
         skuNumbers[productKey].units = parseInt(input, 10);
