@@ -59,7 +59,7 @@ button {
 }
 
 .stocked, #btnOk {
-    background-color: #e97f28;
+    background-color: #f06c00;
     color: #fff;
     transition: .2s ease-in-out;
 }

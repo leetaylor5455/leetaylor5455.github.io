@@ -140,10 +140,12 @@ $(document).ready(function() {
             }
         }
 
+        var gapNum = 0;
         for (var i = 0; i < sortedSkus.length; i++) {
 
             var key = sortedSkus[i][0];
             if (!sortedSkus[i][1].inStock) {
+                gapNum++;
 
                 // id will return as sku number with Barcode concatted, e.g. 1234567Barcode
                 $('#barcodes').append('<div class="swiper-slide"><div class="swiper-barcode barcode-holder" id="' + key + 'Barcode"></div></div>');
@@ -152,7 +154,7 @@ $(document).ready(function() {
                 if (skuNumbers[key].units != 0) {
                     $('#' + key + 'Barcode').append('<h2 style="font-weight: bold; color: #e97f28;"> Units: ' + skuNumbers[key].units + '</h2>');
                 }
-                $('#' + key + 'Barcode').append('<h4 style="font-weight: 100; color: #444; margin-top: 1rem;">' + (i+1) + ' / ' + gapsAmount + '</h4>');
+                $('#' + key + 'Barcode').append('<h4 style="font-weight: 100; color: #444; margin-top: 1rem;">' + gapNum + ' / ' + gapsAmount + '</h4>');
 
             }
 
