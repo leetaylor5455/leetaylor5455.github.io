@@ -116,6 +116,9 @@ $(document).ready(function() {
     // generates bar codes on OK button click
     $('#btnOk').click(function() {
 
+        // clears barcode div to stop duplication
+        $('#barcodes').html('');
+
         var textContent = $(this).text();
 
         // list page
