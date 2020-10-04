@@ -26,7 +26,7 @@
     "8016369": {"productName": "Easter Tulip Bouquet", "inStock": false, "units": 0},
     "7514126": {"productName": "Fairtrade Roses", "inStock": false, "units": 0},
     "7511181": {"productName": "Freesia Posy", "inStock": false, "units": 0},
-    "7743793": {"productName": "Gerbera and Rose", "inStock": false, "units": 0},
+    "7743793": {"productName": "Germini and Rose", "inStock": false, "units": 0},
     "380522": {"productName": "Gypsophila", "inStock": false, "units": 0},
     "6802117": {"productName": "Indulgence Bouquet", "inStock": false, "units": 0},
     "8019086": {"productName": "Large Daffodil Bunch", "inStock": false, "units": 0},
@@ -85,6 +85,5 @@
     "8037114": {"productName": "Autumn Shades Bouquet", "inStock": false, "units": 0},
     "8037116": {"productName": "Toffee Crumble Bouquet", "inStock": false, "units": 0},
     "8044688": {"productName": "Midori Bouquet", "inStock": false, "units": 0},
-    "7514192": {"productName": "Roses", "inStock": false, "units": 0},
-    "7743739": {"productName": "Germini and Rose", "inStock": false, "units": 0}
+    "7514192": {"productName": "Roses", "inStock": false, "units": 0}
 }
