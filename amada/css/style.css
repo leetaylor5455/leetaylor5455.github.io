@@ -1,0 +1,90 @@
+html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+@font-face {
+    font-family: 'Eras';
+    src: url('../fonts/eras.ttf');
+}
+
+@font-face {
+    font-family: 'Fidena';
+    src: url('../fonts/Fidena.woff');
+}
+
+html {
+    background-color: #AA8C79;
+}
+
+body {
+    font-family: 'Fidena', sans-serif
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    /* float: left; */
+    color: white;
+    margin: 0;
+}
+
+header {
+    margin-top: 20px;
+    padding: 2px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+nav {
+    position: relative;
+    /* float: right; */
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: auto;
+}
+
+nav li {
+    margin-left: 2rem;
+    padding: 0;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+nav li a {
+    display: block;
+    text-align: right;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:active,
+a:visited {
+    color: white;
+}
+
+nav a:hover {
+    transition: .1s ease-in;
+    -webkit-transform: scale(1.2);
+}
+
+.slider-image {
+    width: 100%;
+    margin: 20px auto;
+    /* border-radius: 5px; */
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1); */
+}

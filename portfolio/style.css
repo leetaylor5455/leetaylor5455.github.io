@@ -108,7 +108,6 @@ nav ul, .overlay ul {
 
 nav li, .overlay li {
   text-align: right;
-  float: right;
   padding: 3px 0px;
   cursor: pointer;
   display: inline-block;

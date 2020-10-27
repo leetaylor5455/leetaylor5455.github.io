@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
     var skuNumbers = {};
+    var skusObj = {};
+    //var editedSkus = {};
     var swiper = new Swiper('.swiper-container');
 
     // gets list from skunumbers.json and assigns to list variable
@@ -8,7 +10,22 @@ $(document).ready(function() {
     .done( function(rawSkus) {
 
         skuNumbers = rawSkus;
-        populateList(skuNumbers);
+
+        //skusObj = JSON.parse(rawSkus);
+
+        let arrSkus = Object.entries(rawSkus)
+
+        arrSkus.forEach((product) => {
+            product[1].inStock = false;
+            product[1].units = 0;
+        });
+
+        let editedSkus = Object.fromEntries(arrSkus);
+        
+        
+        populateList(editedSkus);
+
+        
 
     });
 
