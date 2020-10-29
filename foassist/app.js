@@ -1,8 +1,6 @@
 $(document).ready(function() {
 
     var skuNumbers = {};
-    var skusObj = {};
-    //var editedSkus = {};
     var swiper = new Swiper('.swiper-container');
 
     // gets list from skunumbers.json and assigns to list variable
@@ -34,8 +32,8 @@ $(document).ready(function() {
         var arraySkus = Object.entries(obj);
 
         arraySkus.sort(function(a, b){
-            if(a[1].productName < b[1].productName) { return -1; }
-            if(a[1].productName > b[1].productName) { return 1; }
+            if(a[1].productName < b[1].productName) return -1;
+            if(a[1].productName > b[1].productName) return 1;
             return 0;
         });
 
