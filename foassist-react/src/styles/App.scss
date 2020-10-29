@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+@import 'Header.scss';
+@import 'List.scss';
+
+html {
+    width: 100%;
+}
+
+body {
+    font-family: 'Roboto Mono';
+}
+
+.container {
+    display: block;
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+}

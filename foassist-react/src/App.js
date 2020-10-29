@@ -1,0 +1,18 @@
+import React from 'react';
+import './styles/App.scss';
+
+// COMPONENTS
+import Header from './components/Header';
+import List from './components/List';
+
+function App() {
+
+  return (
+    <div className="App">
+      <Header />
+      <List />
+    </div>
+  );
+}
+
+export default App;
