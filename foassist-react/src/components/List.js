@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ListItem from './ListItem';
 
 import skuNumbers from '../data/skunumbers.json';
@@ -10,48 +10,30 @@ import skuNumbers from '../data/skunumbers.json';
 
 function List() {
     
-    let list = [];
+    const allSkus = Object.entries(skuNumbers)
+    const [arrSkus, updateList] = useState(allSkus);
+
+    arrSkus.sort(function(a, b){
+        if(a[1].productName < b[1].productName) return -1;
+        if(a[1].productName > b[1].productName) return 1;
+        return 0;
+    });
 
 
-    const populateList = products => {
-        products.sort(function(a, b){
-            if(a[1].productName < b[1].productName) return -1;
-            if(a[1].productName > b[1].productName) return 1;
-            return 0;
-        });
-    
-        products.forEach((product) => {
-    
-            let name = product[1].productName;
-            let sku = product[0];
-    
-            list.push(
-                <ListItem 
-                    key = {sku}
-                    name = {name}
-                    sku = {sku}
-                />
-            )
+    const [searchTerm, setSearchTerm] = useState("");
 
-            return list;
-        });
-    }
-
-
-    const [searchTerm, setSearchTerm] = React.useState("");
     const handleChange = event => {
-        setSearchTerm(event.target.value);
+        setSearchTerm(event.target.value, filter(event.target.value));
     };
 
-    let arrSkus = Object.entries(skuNumbers);
-
-    const filtered = !searchTerm
-        ? arrSkus
-        : arrSkus.filter(product => 
+    const filter = searchTerm => {
+        const filtered = !searchTerm
+        ? allSkus
+        : allSkus.filter(product =>
             product[1].productName.toLowerCase().includes(searchTerm.toLocaleLowerCase())
         );
-    
-    populateList(filtered);
+        updateList(filtered);
+    }
 
     return (
         <div className="list container">
@@ -61,8 +43,15 @@ function List() {
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={handleChange}
+                //updateUnits = {updateUnits}
             />
-            {list}
+            {arrSkus.map(product => (
+                <ListItem 
+                    name = {product[1].productName} 
+                    sku = {product[0]}
+                    key = {product[0]}
+                />
+            ))}
         </div> 
     );
 }

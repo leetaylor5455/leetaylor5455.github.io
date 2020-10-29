@@ -5,10 +5,15 @@ function ListItem(props) {
     return (
         <div className="list-item">
             <p className="list-item-name">{props.name}</p>
-            {/* <Barcode 
-                value={props.sku}
-                background = '#ddd'
-            /> */}
+            <div className="list-item-dropdown hidden">
+                <Barcode 
+                    value={props.sku}
+                    background = '#ddd'
+                    width = {6}
+                    height = {150}
+                    marginTop = {20}
+                />
+            </div>
         </div>
     )
 }

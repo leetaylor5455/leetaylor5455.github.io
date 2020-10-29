@@ -16,6 +16,18 @@
         .list-item-name {
             margin: 0 20px 0 0;
         }
+
+        .list-item-dropdown {
+
+            svg {
+                display: block;
+                margin: auto;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
     }
 
     .search {
