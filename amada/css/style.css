@@ -79,7 +79,8 @@ a:visited {
 
 nav a:hover {
     transition: .1s ease-in;
-    -webkit-transform: scale(1.2);
+    /* -webkit-transform: scale(1.2); */
+    transform: translate(0px, -5px);
 }
 
 .slider-image {
@@ -87,4 +88,9 @@ nav a:hover {
     margin: 20px auto;
     /* border-radius: 5px; */
     /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1); */
+}
+
+img {
+    width: 1296px;
+    height: 871px;
 }
