@@ -1,0 +1,24 @@
+.barcodes {
+    padding-bottom: 50px;
+
+    .barcode-units {
+        color: $orange;
+    }
+
+    svg {
+        display: block;
+        margin: 50px auto;
+    }
+
+    h2, h4 {
+        text-align: center;
+    }
+
+    h2 {
+        margin: 0;
+    }
+
+    h4 {
+        font-weight: normal;
+    }
+}

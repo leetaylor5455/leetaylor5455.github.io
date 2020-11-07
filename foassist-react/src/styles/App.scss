@@ -1,7 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
 
+@import 'colours.scss';
 @import 'Header.scss';
-@import 'List.scss';
+@import 'Search.scss';
+@import 'Main.scss';
+@import 'ListItem.scss';
+@import 'Barcodes.scss';
 
 html {
     width: 100%;

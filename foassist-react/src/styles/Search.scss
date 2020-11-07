@@ -1,0 +1,22 @@
+.list {
+
+    .search {
+        font-family: 'Roboto Mono', monospace;
+        display: inline-block;
+        font-size: 20px;
+        margin: 1rem 0;
+        padding: .3rem 0;
+        width: 100%;
+        outline: none;
+        border: none;
+        border-bottom: 2px solid #00000063;
+        transition: .2s ease-in-out;
+    }
+    
+    .search:focus {
+        border-bottom: 2px solid #f06c0080;
+        transition: .3s ease-in-out;
+    }
+    
+}
+

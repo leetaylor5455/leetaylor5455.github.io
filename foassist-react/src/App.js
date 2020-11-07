@@ -3,14 +3,14 @@ import './styles/App.scss';
 
 // COMPONENTS
 import Header from './components/Header';
-import List from './components/List';
+import Main from './components/Main';
 
 function App() {
 
   return (
     <div className="App">
       <Header />
-      <List />
+      <Main />
     </div>
   );
 }
