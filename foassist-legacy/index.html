@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- styling and fonts -->
+    <link rel="stylesheet" href="swiper.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- PWA -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#f06c00">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#f06c00">
+
+    <!-- Service Worker -->
+    <script defer src="site.js"></script>
+
+    <title>FOAssist</title>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1><i style="color: #f06c00;">FOA</i>ssist</h1>
+        </div>   
+    </header>
+
+    <div class="container">
+        
+
+        <div id="list">
+            <input class="search" id="inputString" type="text" placeholder="Search...">
+            <ul id="nameList"></ul>
+        </div>
+
+        <div class="swiper-container">
+            <div id="barcodes" class="swiper-wrapper" style="display: none;"></div>  
+        </div>
+
+        <button id="btnOk">OK</button>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <h6>Created by Lee Taylor</h6>
+        </div>
+    </footer>
+    
+</body>
+
+<!-- Libraries and Scripts -->
+<script src="js-libs/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="js-libs/jquery-barcode.min.js"></script>
+<script src="js-libs/swiper.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
+
+</html>
