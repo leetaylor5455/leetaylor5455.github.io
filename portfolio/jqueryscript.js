@@ -16,13 +16,13 @@ $(document).ready(function() {
   });
 
   // Navbar fade in/out handle
-  $(window).scroll(function() {
-    if ($(this).scrollTop() > 150) {
-      $('.navbar-fade').fadeIn();
-    } else {
-      $('.navbar-fade').fadeOut();
-    }
-  });
+  // $(window).scroll(function() {
+  //   if ($(this).scrollTop() > 150) {
+  //     $('.navbar-fade').fadeIn();
+  //   } else {
+  //     $('.navbar-fade').fadeOut();
+  //   }
+  // });
 
   // Mobile nav menu handle
   $('.btn-nav-toggle').click(function() {
