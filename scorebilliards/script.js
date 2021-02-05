@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
   function fadeOutIn(toFadeOut, toFadeIn) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
       $.when(toFadeOut.fadeOut(100)).then(function() {
         toFadeIn.fadeIn(300);
         toFadeIn.css('filter', 'blur(0)');
@@ -14,6 +14,16 @@ $(document).ready(function() {
     });
 
   };
+
+  $(document).on("keypress", function (e) {
+    if (e.which === 13) {
+      e.preventDefault();
+      var player = players[playerCounter];
+      player.total += player.breaks[0].score;
+      $('#playerScore' + playerCounter).text(player.total);
+      nextPlayer();
+    }
+  });
 
   function gatherResults() {
     var results = [];
