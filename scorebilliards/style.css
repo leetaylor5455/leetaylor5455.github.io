@@ -138,6 +138,21 @@ button {
   margin: 10px 5px 10px 5px;
 }
 
+#btnSafe {
+  background-color: #61a550;
+  color: white;
+}
+
+#btnFoul {
+  background-color: #a55050;
+  color: white;
+}
+
+#btnBlack {
+  background-color: #363636;
+  color: white;
+}
+
 /* .button-primary {
   background-color: #8fc1e3;
 } */
