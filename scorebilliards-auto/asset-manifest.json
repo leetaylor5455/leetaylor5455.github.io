@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/scorebilliards-auto/static/css/main.afc3ca61.chunk.css",
-    "main.js": "/scorebilliards-auto/static/js/main.33caf971.chunk.js",
-    "main.js.map": "/scorebilliards-auto/static/js/main.33caf971.chunk.js.map",
+    "main.js": "/scorebilliards-auto/static/js/main.bdaab495.chunk.js",
+    "main.js.map": "/scorebilliards-auto/static/js/main.bdaab495.chunk.js.map",
     "runtime-main.js": "/scorebilliards-auto/static/js/runtime-main.1639f767.js",
     "runtime-main.js.map": "/scorebilliards-auto/static/js/runtime-main.1639f767.js.map",
     "static/js/2.d665e834.chunk.js": "/scorebilliards-auto/static/js/2.d665e834.chunk.js",
@@ -23,6 +23,6 @@
     "static/js/runtime-main.1639f767.js",
     "static/js/2.d665e834.chunk.js",
     "static/css/main.afc3ca61.chunk.css",
-    "static/js/main.33caf971.chunk.js"
+    "static/js/main.bdaab495.chunk.js"
   ]
 }
