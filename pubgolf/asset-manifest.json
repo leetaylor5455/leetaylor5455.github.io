@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/pubgolf/static/css/main.bea195f0.css",
-    "main.js": "/pubgolf/static/js/main.9581ec2b.js",
-    "static/js/787.64203cfe.chunk.js": "/pubgolf/static/js/787.64203cfe.chunk.js",
-    "static/media/logo.svg": "/pubgolf/static/media/logo.fdf95caf66337fba61ce873b8a7e8599.svg",
-    "index.html": "/pubgolf/index.html",
-    "main.bea195f0.css.map": "/pubgolf/static/css/main.bea195f0.css.map",
-    "main.9581ec2b.js.map": "/pubgolf/static/js/main.9581ec2b.js.map",
-    "787.64203cfe.chunk.js.map": "/pubgolf/static/js/787.64203cfe.chunk.js.map"
+    "main.css": "./static/css/main.bea195f0.css",
+    "main.js": "./static/js/main.9581ec2b.js",
+    "static/js/787.64203cfe.chunk.js": "./static/js/787.64203cfe.chunk.js",
+    "static/media/logo.svg": "./static/media/logo.fdf95caf66337fba61ce873b8a7e8599.svg",
+    "index.html": "./index.html",
+    "main.bea195f0.css.map": "./static/css/main.bea195f0.css.map",
+    "main.9581ec2b.js.map": "./static/js/main.9581ec2b.js.map",
+    "787.64203cfe.chunk.js.map": "./static/js/787.64203cfe.chunk.js.map"
   },
   "entrypoints": [
-    "pubgolf/static/css/main.bea195f0.css",
-    "pubgolf/static/js/main.9581ec2b.js"
+    "./static/css/main.bea195f0.css",
+    "./static/js/main.9581ec2b.js"
   ]
 }
