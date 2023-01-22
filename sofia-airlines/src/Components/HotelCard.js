@@ -46,7 +46,6 @@ function HotelCard(props) {
             <ul className='key-points'>
                 {props.keyPoints.map((point, index) => (
                     <li 
-                        // key={`${props.name}Point${index}`} 
                         className='key-point'
                     >{point}</li>
                 ))}

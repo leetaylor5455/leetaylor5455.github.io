@@ -1,11 +1,14 @@
 import './App.css';
 import AnimatedRoutes from './Components/AnimatedRoutes';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { MemoryRouter as Router } from 'react-router-dom';
+
+import ScrollToTop from './Components/ScrollToTop';
 
 function App() {
   return (
     <div className='App'>
-      <Router>
+      <Router basename={window.location.pathname}>
+        <ScrollToTop />
         <AnimatedRoutes/>
       </Router>
     </div>
